@@ -1,6 +1,14 @@
 .App {
   text-align: center;
 }
+.navbar-bg-color{
+  background-color: #1F2058;
+}
+.nav-text{
+  color: #ffffff!important;
+  font-weight: 600;
+
+}
 
 .App-logo {
   height: 40vmin;
