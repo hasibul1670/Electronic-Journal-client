@@ -21,7 +21,7 @@ export default class Home extends PureComponent {
     </div>
     <div class="col-md-8">
       <div class="card-body">
-      <h5 class="card-title">International Journal Of Electronic And  Computer Science And Engineering </h5>
+      <h5 class="card-title">International Journal of Computer and Electronics Engineering </h5>
       <p class="card-text">ISSN (print): 0219-4678 | ISSN (online): 1793-6756</p>
       <a href="/login" class="btn btn-primary">Submit An Article</a>
       </div>

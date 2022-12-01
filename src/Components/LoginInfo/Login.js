@@ -1,9 +1,17 @@
 import React from 'react';
 import Navbar from '../Shared/Navbar'
 import LoginNav from './LoginNav';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import logo from './../../logo/home.jpg';
-
+import { Link, useHistory } from 'react-router-dom';
 const Login = () => {
+
+
+  let history = useHistory();
+
+  function handleClick() {
+    history.push("/author");
+  }
     return (
         <div >
             <LoginNav></LoginNav>
@@ -14,30 +22,38 @@ const Login = () => {
             <div className=' p-5'>
             <h3>Login</h3>
             <hr />
-            <h5>International Journal Of Electronic And Computer Science And Engineering For National University</h5>
+            <h5>International Journal of Computer and Electronics Engineering</h5>
             <h6 className='text-danger'>Please Enter the Following</h6>
             </div>
             </div>
    <form className='w-50 border p-4 mx-auto bg-login'>
-  <div class="form-group ">
+
+  <div class="form-group w-50 ">
     <label for="exampleInputEmail1">Email address</label>
     <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
 
+
+{/* //password */}
   </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Password</label>
+  <div class="form-group w-50 ">
+    <label  for="exampleInputPassword1">Password</label>
+ 
+    
     <input type="password" class="form-control" id="exampleInputPassword1"/>
   </div>
   
-  <button type="submit" class="btn mr-5 btn-primary rounded-pill">Author Login</button>
-  <button type="submit" class="btn mr-5 btn-primary rounded-pill">Editor Login</button>
-  <button type="submit" class="btn mr-5 btn-primary rounded-pill">Reviewer Login</button>
+
+
+
+  <button onClick={handleClick} type="submit" class="btn mt-2 mr-5 btn-primary rounded-pill">Author Login</button> 
+  <button type="submit" class="btn mt-2 mr-5 btn-primary rounded-pill"> Editor Login</button>
+  <button type="submit" class="btn mt-2 mr-5 btn-primary rounded-pill">Reviewer Login</button>
 
 </form>
 
 <div class="mx-auto bg-login  p-4 w-50">
 <hr />
-<h3>For Authors: Why choose Gold Open Access?</h3>
+<h4>For Authors: Why choose Gold Open Access?</h4>
 <p>- You will retain copyright of your article (with some exceptions) <br />
 
 - Your article publication process will be fast-tracked <br />

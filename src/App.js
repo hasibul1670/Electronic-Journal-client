@@ -10,6 +10,9 @@ import {
 } from "react-router-dom";
 import Nomatch from './Components/Nomatch';
 import Login from './Components/LoginInfo/Login';
+import Author from './Components/Author/Author';
+import AuthorMainMenu from './Components/Author/AuthorMainMenu';
+import Submit from './Components/Author/Submit';
 
 function App() {
   return (
@@ -18,6 +21,10 @@ function App() {
   <Route exact path="/home"><Header></Header> </Route>
   <Route exact path="/"><Header></Header> </Route>
   <Route path="/login"><Login></Login></Route>
+  <Route path="/author"><Author></Author></Route>
+  <Route path="/mainmenu"><AuthorMainMenu></AuthorMainMenu></Route>
+  <Route path="/submit"><Submit></Submit></Route>
+
  <Route path="*"><Nomatch></Nomatch> </Route>
 
         </Switch>

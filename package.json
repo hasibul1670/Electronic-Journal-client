@@ -1,6 +1,5 @@
 {
   "name": "electronic-journal-client",
-  "homepage": "https://hasibul1670.github.io/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+//mport {library} from "@fortawesome/free-solid-svg-core";
+import { faUser ,faEye,faEyeSlash, faLock,faEnvelope} from '@fortawesome/free-solid-svg-icons'
+//library.add (faUser,faEye,faLock,faEyeSlash,faEnvelope);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
