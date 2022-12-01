@@ -9,7 +9,20 @@
   font-weight: 600;
 
 }
-
+.bg-login{
+  background-color:#F4F4F4!important;
+}
+.border-left {
+  border-left: 3px solid rgb(255, 255, 255)!important;
+  height: px;
+}
+.btn-secondary{
+  background-color:#1F2058!important;
+  border: 0px solid #1F2058;
+}
+.home-bg{
+  background-color: #0c0c93;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;

@@ -10,16 +10,31 @@ import logo from './../../logo/logo2.jpg';
 
 function Navbar() {
     return (
-        <div>  
+        <div class="">  
             <div>
-<div><a class="navbar-brand" href="#"><img  style={{height:"60px",width:"400px"}}src={logo}alt="" srcset=""/> </a></div>
+<div class="d-flex flex-row " ><a class="navbar-brand" href="#"><img  style={{height:"60px",width:"400px"}}src={logo}alt="" srcset=""/> </a></div>
 
-<div></div>
-<h1>hello </h1>
-<FontAwesomeIcon icon={faCoffee} />
-<FontAwesomeIcon icon={faMagnifyingGlass}/>
-<FontAwesomeIcon icon={faShoppingCart} />
+<div class=" d-flex flex-row-reverse pr-5">
+
+<div class="pr-3">
 <FontAwesomeIcon icon={faUser} />
+<h6 >User</h6>
+</div>
+<div class="pr-3">
+<FontAwesomeIcon icon={faShoppingCart} />
+<h6 >My Cart</h6>
+</div>
+
+
+<div class="pr-3">
+<FontAwesomeIcon icon={faMagnifyingGlass}/>
+<h6 >Search</h6>
+</div>
+
+
+
+</div>
+
 </div>
 <br />
 <div class="navbar-bg-color d-flex justify-content-center" >
@@ -30,9 +45,22 @@ function Navbar() {
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item active">
-      <Link to="/home" class="nav-link nav-text" href="#">Subjects <span class="sr-only">(current)</span></Link>
-      </li>
+
+    <div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  Subjects
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="#">Algorithm</a>
+    <a class="dropdown-item" href="#">Image Processing</a>
+    <a class="dropdown-item" href="#">IOT</a>
+    <a class="dropdown-item" href="#">Compiler Design</a>
+    <a class="dropdown-item" href="#">Web Engineering</a>
+    <a class="dropdown-item" href="#">Data Mining</a>
+  </div>
+</div>
+     
+
       <li class="nav-item active">
         <a class="nav-link nav-text" href="#About">Journals</a>
       </li>
