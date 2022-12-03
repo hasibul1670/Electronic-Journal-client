@@ -8,7 +8,7 @@ import {
   Route,
 
 } from "react-router-dom";
-import Nomatch from './Components/Nomatch';
+import Nomatch from './Components/Shared/Nomatch';
 import Login from './Components/LoginInfo/Login';
 import Author from './Components/Author/Author';
 import AuthorMainMenu from './Components/Author/AuthorMainMenu';

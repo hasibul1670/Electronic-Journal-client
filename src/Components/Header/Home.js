@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 
 import { Link } from 'react-router-dom';
+import Footer from '../Footer/Footer';
 
 import logo from './../../logo/home.jpg';
 
@@ -60,6 +61,8 @@ export default class Home extends PureComponent {
   </div>
 </nav>
 </div>
+
+
 
       </div>
     )
