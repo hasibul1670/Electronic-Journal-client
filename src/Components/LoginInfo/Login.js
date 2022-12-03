@@ -1,5 +1,6 @@
 import React from 'react';
 import Navbar from '../Shared/Navbar'
+import ShowPassword from './ShowPassword';
 import LoginNav from './LoginNav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import logo from './../../logo/home.jpg';
@@ -20,7 +21,7 @@ const Login = () => {
             <img  style={{height:"225px",width:"165px"}}src={logo}alt="" srcset=""/>
          
             <div className=' p-5'>
-            <h3>Login</h3>
+            <h1 class="text-lime-600 ">Login</h1>
             <hr />
             <h5>International Journal of Computer and Electronics Engineering</h5>
             <h6 className='text-danger'>Please Enter the Following</h6>
@@ -29,27 +30,21 @@ const Login = () => {
    <form className='w-50 border p-4 mx-auto bg-login'>
 
   <div class="form-group w-50 ">
-    <label for="exampleInputEmail1">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
 
-
-{/* //password */}
-  </div>
-  <div class="form-group w-50 ">
-    <label  for="exampleInputPassword1">Password</label>
- 
+    <ShowPassword></ShowPassword>
     
-    <input type="password" class="form-control" id="exampleInputPassword1"/>
   </div>
   
 
 
 
   <button onClick={handleClick} type="submit" class="btn mt-2 mr-5 btn-primary rounded-pill">Author Login</button> 
-  <button type="submit" class="btn mt-2 mr-5 btn-primary rounded-pill"> Editor Login</button>
+  <button type="submit" class="btn mt-2  mr-5 btn-primary rounded-pill"> Editor Login</button>
   <button type="submit" class="btn mt-2 mr-5 btn-primary rounded-pill">Reviewer Login</button>
 
 </form>
+
+
 
 <div class="mx-auto bg-login  p-4 w-50">
 <hr />
