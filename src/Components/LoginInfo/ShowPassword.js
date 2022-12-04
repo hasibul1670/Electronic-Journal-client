@@ -12,7 +12,24 @@ import TextField from '@mui/material/TextField';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+import { useForm } from "react-hook-form";
+
+
+
+
+
+
 export default function InputAdornments() {
+
+
+  const { register, formState: { errors }, handleSubmit } = useForm();
+  const onSubmit = (data) =>{
+    console.log(data);
+  }
+  
+
+
+
   const [values, setValues] = React.useState({
     amount: '',
     password: '',
