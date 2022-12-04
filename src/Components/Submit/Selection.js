@@ -1,38 +1,35 @@
-import * as React from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 
 const currencies = [
-  {
-    value: 'None',
-    label: 'None',
-  },
-  {
-    value: 'Research Paper',
-    label: 'Research Paper',
-  },
-  {
-    value: 'Review Paper',
-    label: 'Review Paper',
-  },
-  {
-    value: 'Special Issue',
-    label: 'Special Issue',
-  },
+    {
+      value: 'None',
+      label: 'None',
+    },
+    {
+      value: 'Research Paper',
+      label: 'Research Paper',
+    },
+    {
+      value: 'Review Paper',
+      label: 'Review Paper',
+    },
+    {
+      value: 'Special Issue',
+      label: 'Special Issue',
+    },
+]
 
-];
-
-export default function SelectTextFields({currency, setCurrency}) {
-  // const [currency, setCurrency] = React.useState("");
-
-  const handleChange = (event) => {
-    setCurrency(event.target.value);
-    console.log("hello",currency);
-  };
-
-  return (
-    <Box  className='ml-5'
+const Selection = ({currency, setCurrency}) => {
+    const handleChange = (event) => {
+        setCurrency(event.target.value);
+     
+      };
+      return (
+        <div>
+                <Box  className='ml-5'
       component="form"
       sx={{
         '& .MuiTextField-root': { m: 1, width: '25ch' },
@@ -57,8 +54,10 @@ export default function SelectTextFields({currency, setCurrency}) {
         </TextField>
   
       </div>
-     
-      {/* <h1>hello:{currency}</h1> */}
+
     </Box>
-  );
-}
+        </div>
+    );
+};
+
+export default Selection;

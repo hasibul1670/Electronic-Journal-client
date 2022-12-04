@@ -1,6 +1,6 @@
 import * as React from 'react';
   import Box from '@mui/material/Box';
-    import Selection from './Selection'
+    import Selection from './Selection.js'
     import Stepper from '@mui/material/Stepper';
     import Step from '@mui/material/Step';
     import StepLabel from '@mui/material/StepLabel';
@@ -22,8 +22,34 @@ import AttachFile from './AttachFile';
 
     
     export default function HorizontalLinearStepper() {
+      var [currency, setCurrency] = React.useState("None");
+      var [file,setFile] = React.useState();
       const [activeStep, setActiveStep] = React.useState(0);
       const [skipped, setSkipped] = React.useState(new Set());
+
+
+let command;
+if (activeStep===0) {
+  command= <Selection currency={currency}
+  setCurrency={setCurrency}            
+></Selection>
+  
+} else if(activeStep===1){
+  command=<AttachFile  
+  file={file} setFile={setFile}
+  
+  ></AttachFile>
+ 
+  
+}
+else {
+  <AttachFile  
+  file={file} setFile={setFile}
+  
+  ></AttachFile>
+ 
+  
+}
 
 
 
@@ -37,6 +63,7 @@ import AttachFile from './AttachFile';
     
       const handleNext = (e) => {
         e.preventDefault();
+       
         let newSkipped = skipped;
         
 
@@ -47,22 +74,15 @@ import AttachFile from './AttachFile';
     
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
         setSkipped(newSkipped)
-        formContent ();
+        
 
       };
 
-      const formContent = (steps) => {
-        switch(steps) {
-          case 0:
-            return <AttachFile  />;
-          // case 1:
-          //   return <PersonalInfo  />;
-          // case 2:
-          //   return <ReviewInfo  />;
-          default:
-            return <div>404: Not Found</div>
-        }
-      };
+ 
+
+ 
+    
+
  
       const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -88,34 +108,61 @@ import AttachFile from './AttachFile';
       };
 
  
-    var [currency, setCurrency] = React.useState("None");
+ 
 
 
       return (
         <Box className='p-5' sx={{ width: '100%' }}>
-          <Stepper activeStep={activeStep}>
+          <Stepper alternativeLabel activeStep={activeStep}>
+            
             {steps.map((label, index) => {
               const stepProps = {};
               const labelProps = {};
               if (isStepOptional(index)) {
-               
+                        
               }
               if (isStepSkipped(index)) {
                 stepProps.completed = false;
+               
               }
+            
+       
+
+             
+              
               return (
                 <Step key={label} {...stepProps}>
-                  <StepLabel {...labelProps}>{label}</StepLabel>
+
+              <StepLabel {...labelProps}>{label}</StepLabel>
+           
+         
+
+
                 </Step>
+
+ 
               );
             })}
           </Stepper>
+
+{/* 
+if (index=0) {
+  
+  <Selection currency={currency}
+  setCurrency={setCurrency}            
+></Selection>
+  
+} */}
+
+         
+
           
           {activeStep === steps.length ? (
             <React.Fragment>
              
               <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                 <Box sx={{ flex: '1 1 auto' }} />
+
                 <Button onClick={handleReset}>Reset</Button>
               </Box>
             </React.Fragment>
@@ -125,20 +172,23 @@ import AttachFile from './AttachFile';
 
 
               
-             <Selection currency={currency}
-              setCurrency={setCurrency}            
-            ></Selection>
-            <AttachFile></AttachFile>
-           
-   
+       
+{/* 
 
-   <h1>hello from:{currency}</h1>
+        <AttachFile></AttachFile> */}
+      
+
+   <h1>01:{currency}</h1>
+   <h1>02:{file}</h1>
+   
+   <h1>step no:{activeStep}</h1>
+   {command}
 
               <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                 <button
                 type="button" class="btn btn-primary btn-lg "
            
-                  disabled={activeStep === 0}
+               
                   onClick={handleBack}
                   sx={{ mr: 1 }}
                 >
@@ -156,7 +206,7 @@ import AttachFile from './AttachFile';
 
   
       <button type="button" class="btn btn-primary btn-lg " 
-      disabled={currency==="None"}
+    
       onClick={handleNext}>
 
   
