@@ -14,7 +14,7 @@ const Login = () => {
   let history = useHistory();
 
   function handleClick() {
-    history.push("/author");
+    history.push("/submithome");
   }
     return (
         <div >

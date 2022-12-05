@@ -8,6 +8,9 @@ import * as React from 'react';
 
     import Button from '@mui/material/Button';
 import AttachFile from './AttachFile';
+import ReviewPreference from './ReviewPreference.js';
+import Comment from './Comment.js';
+import ManuscriptData from './ManuscriptData.js';
 
    
   const steps = [
@@ -42,11 +45,20 @@ if (activeStep===0) {
  
   
 }
-else {
-  <AttachFile  
-  file={file} setFile={setFile}
+ else if(activeStep===2){
+  command=<ReviewPreference></ReviewPreference>
+ 
   
-  ></AttachFile>
+}
+
+else if(activeStep===3){
+  command=<Comment></Comment>
+ 
+  
+}
+
+else if(activeStep===4){
+  command=<ManuscriptData></ManuscriptData>
  
   
 }

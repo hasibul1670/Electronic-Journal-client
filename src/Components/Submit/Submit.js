@@ -10,6 +10,7 @@ const Submit = () => {
     return (
         <div>
             <AuthorNav></AuthorNav>
+            
     <StepProgressBar></StepProgressBar>
 
  

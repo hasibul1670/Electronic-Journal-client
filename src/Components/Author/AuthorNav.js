@@ -16,7 +16,7 @@ const AuthorNav = () => {
 
      
 <li class="nav-item active">
-        <a class=" nav-link nav-text" href="/">Home</a>
+        <a class=" nav-link nav-text" href="/submithome">Home</a>
       </li>
 
       <li class="  nav-item active">
