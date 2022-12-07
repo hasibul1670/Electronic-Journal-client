@@ -14,6 +14,7 @@ import Author from './Components/Author/Author';
 import AuthorMainMenu from './Components/Author/AuthorMainMenu';
 import Submit from './Components/Submit/Submit';
 import SubmitHome from './Components/Submit/SubmitHome';
+import NewUser from './Components/NewUser/NewUser';
 
 
 
@@ -29,6 +30,7 @@ function App() {
   <Route path="/mainmenu"><AuthorMainMenu></AuthorMainMenu></Route>
   <Route path="/submit"> <Submit></Submit></Route>
   <Route path="/submithome"><SubmitHome/> </Route>
+  <Route path="/newuser"><NewUser></NewUser> </Route>
 
 
 
