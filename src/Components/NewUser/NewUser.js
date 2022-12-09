@@ -1,9 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import app from '../LoginInfo/firebase.config';
+
+
+
+const auth = getAuth(app )
+
+
+
 
 const NewUser = () => {
+
+
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  // const [username, setUsername] = useState('');
+  const [error, setError] = useState('');
+
+const handleEmailChange =e =>{
+
+setEmail(e.target.value)
+
+}
+const handlePasswordChange =e =>{
+
+  setPassword(e.target.value)
+
+}
+
+const handleFormSubmit =e=>{
+
+  createUserWithEmailAndPassword(auth, email, password)
+  .then((result) => {
+    // Signed in 
+    const user = result.user;
+    console.log(user)
+    setEmail('')
+    setPassword('')
+    // ...
+  })
+  .catch((error) => {
+
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    setError('Email already in Use');
+
+
+    console.log(errorCode)
+    
+    // ..
+  });
+
+
+  e.preventDefault();
+}
+
     return (
         <div   className='mt-2 p-4 bg-login w-75 mx-auto justify-content-center'>
-<form >
+<form onSubmit={handleFormSubmit} >
 {/* personal InfoForm Start */}
 
 
@@ -12,41 +67,36 @@ const NewUser = () => {
 <legend class="float-none border border-warning p-2 text-success w-auto">Personal Information</legend>
 
 <div class="form-row">
-
-
-{/* ssddfhs */}
-  
+  {/* Name Section */}
 <div class="col-md-4 mb-3">
       <label for="validationCustom01">First Name :</label>
       <input type="text" class="form-control mx-sm-3" id="validationCustom01" placeholder="First name" required/>
-      <div class="valid-feedback">
-        Looks good!
-      </div>
+  
     </div>
 
     <div class="col-md-4 mb-3">
       <label for="validationCustom01">Last Name :</label>
       <input type="text" class="form-control mx-sm-3" id="validationCustom01" placeholder="Last Name" required/>
-      <div class="valid-feedback">
-        Looks good!
-      </div>
-    </div>
 
+    </div>
+{/* Email Section */}
 
     <div class="col-md-4 mb-3">
     <label for="exampleInputEmail1">Email Address : </label>
-    <input type="email"  class="form-control mx-sm-3" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required/>
+    <input onBlur={handleEmailChange} type="email"  class="form-control mx-sm-3" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required/>
  
   </div>
 
+{/* Password */}
+
   <div class="col-md-4 mb-3">
     <label for="inputPassword6">Password</label>
-    <input type="password" id="inputPassword6" class="form-control mx-sm-3" aria-describedby="passwordHelpInline" placeholder="Password"  required/>
+    <input onBlur={handlePasswordChange} type="password" id="inputPassword6" class="form-control mx-sm-3" aria-describedby="passwordHelpInline" placeholder="Password"  required/>
   </div>
 
 
-{/* kjhdsofhisf */}
 
+{/* USerName Section */}
 
 <div class="col-md-4 mb-3">
 
@@ -67,7 +117,7 @@ const NewUser = () => {
     <div class="col-md-4 mb-3">
       <label for="validationServer01">Degree</label>
       <small>(Ph.D., M.D., etc.)</small>
-      <input type="text" class="form-control" id="validationServer01" placeholder="Degree"  required/>
+      <input type="text" class="form-control" id="validationServer01" placeholder="Degree"  />
      
     </div>
 
@@ -87,7 +137,7 @@ const NewUser = () => {
 
     <div class="col-md-3 mb-3">
       <label for="validationServer05">Zip or Postal Code</label>
-      <input type="text" class="form-control " id="validationServer05" placeholder="Zip" required/>
+      <input type="text" class="form-control " id="validationServer05" placeholder="Zip"/>
    
     </div>
     
@@ -127,7 +177,7 @@ const NewUser = () => {
 
     <div class="col-md-4 mb-3">
       <label for="validationServer02">Department</label>
-      <input type="text" class="form-control " id="validationServer02" placeholder="Department"  required/>
+      <input type="text" class="form-control " id="validationServer02" placeholder="Department"/>
     
     </div>
  
@@ -151,7 +201,7 @@ const NewUser = () => {
 
     <div class="form-group">
     <div class="form-check">
-      <input class="form-check-input " type="checkbox" value="" id="invalidCheck3" required/>
+      <input class="form-check-input " type="checkbox" value="" id="invalidCheck3"/>
       <label class="form-check-label" for="invalidCheck3">
         Available as a Reviewer?
       </label>
@@ -179,8 +229,9 @@ const NewUser = () => {
    
     </div>
   </div>
+  <h5 className='text-danger'>{error}</h5>
+  <button type="submit" class="btn btn-primary">Register</button>
 
-  <button type="submit" class="btn btn-primary">Submit</button>
 
 
 

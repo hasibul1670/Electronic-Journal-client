@@ -7,23 +7,43 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { useState } from 'react';
+import { getAuth,signInWithEmailAndPassword } from "firebase/auth";
 
-import { useForm } from "react-hook-form";
+import app from '../LoginInfo/firebase.config';
 
 
 
-
+const auth = getAuth(app )
 
 
 export default function InputAdornments() {
 
-
-  const { register, formState: { errors }, handleSubmit } = useForm();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  // const [username, setUsername] = useState('');
+  const [error, setError] = useState('');
 
 
   const handleFormSubmit = event=>{
+
+ 
+signInWithEmailAndPassword (auth, email, password)
+  .then((result) => {
+    // Signed in 
+    const user = result.user;
+    console.log(user);
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(errorCode);
+  });
   
+    
     event.preventDefault();
+
   }
   
 
@@ -37,13 +57,14 @@ export default function InputAdornments() {
 
   const handleEmailChange = (prop) => (event) => {
 
-    console.log(event.target.value);
+    setEmail(event.target.value)
 
     setValues({ ...values, [prop]: event.target.value });
   };
   const handlePassChange = (prop) => (event) => {
 
     console.log(event.target.value);
+    setPassword(event.target.value)
 
     setValues({ ...values, [prop]: event.target.value });
   };
