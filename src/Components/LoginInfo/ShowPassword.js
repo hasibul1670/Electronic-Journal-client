@@ -84,10 +84,10 @@ signInWithEmailAndPassword (auth, email, password)
       <div  className='w-75'>
      
         {/* Email */}
-        <form  onSubmit={handleFormSubmit} >
+        <form  onSubmit={ handleFormSubmit} >
         
         <FormControl  fullWidth sx={{ m: 1 }}>
-          <InputLabel htmlFor="outlined-adornment-amount">Email</InputLabel>
+          <InputLabel  htmlFor="outlined-adornment-amount">Email</InputLabel>
           <OutlinedInput
             id="outlined-adornment-amount"
             value={values.email}
