@@ -60,10 +60,10 @@ export default function InputAdornments() {
 
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-      <div>
+      <div  className='w-75'>
      
         {/* Email */}
-        <form onSubmit={handleFormSubmit} >
+        <form  onSubmit={handleFormSubmit} >
         
         <FormControl  fullWidth sx={{ m: 1 }}>
           <InputLabel htmlFor="outlined-adornment-amount">Email</InputLabel>
@@ -102,14 +102,14 @@ export default function InputAdornments() {
           />
         </FormControl>
         
-<div className="d-flex">  <button type="submit" class="btn mt-2 mr-5 btn-primary rounded-pill">Author Login</button> 
-  <button type="submit" class="btn mt-2  mr-5 btn-primary rounded-pill"> Editor Login</button>
-  <button type="submit" class="btn mt-2 mr-5 btn-primary rounded-pill">Reviewer Login</button> 
+<div className="d-flex w-75"> 
+ <button type="submit" class="btn  btn-primary rounded-pill">Author Login</button>
+  <button type="submit" class="btn ml-2  btn-primary rounded-pill"> Editor Login</button>
+  <button type="submit" class="btn ml-2 btn-primary rounded-pill">Reviewer Login</button> 
   </div>
   </form>
 <p></p>
-
-  <a class="btn mt-2 mr-5 btn-secondary rounded-pill" href="/newuser" role="button">Register</a>
+  <a class="btn  btn-secondary rounded-pill" href="/newuser" role="button">Register</a>
 
 
       </div>
