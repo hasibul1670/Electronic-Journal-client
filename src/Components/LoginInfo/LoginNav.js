@@ -8,7 +8,12 @@ import { faCoffee ,faMagnifyingGlass,faShoppingCart,faUser} from '@fortawesome/f
 
 /// ...
 import logo from './../../logo/logo2.jpg';
+import userEvent from '@testing-library/user-event';
+import useFireBase from '../../hooks/useFireBase';
 const LoginNav = () => {
+
+
+
     return (
         <div>
             <div class="navbar-bg-color d-flex justify-content-center" >
@@ -19,9 +24,7 @@ const LoginNav = () => {
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
-
-
-     
+  
 <li class="nav-item mr-4 active">
         <a class="nav-link nav-text" href="/">Home</a>
       </li>
@@ -52,7 +55,14 @@ const LoginNav = () => {
    
    
     </ul>
+
+  
+      
+
   </div>
+
+
+  
 </nav>
 </div>
         </div>

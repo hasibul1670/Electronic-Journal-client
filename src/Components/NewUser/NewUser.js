@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, verifyBeforeUpdateEmail } from "firebase/auth";
 import app from '../LoginInfo/firebase.config';
+import { useHistory } from 'react-router-dom';
 
 
 
@@ -11,12 +12,26 @@ const auth = getAuth(app )
 
 const NewUser = () => {
 
-
+ 
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   // const [username, setUsername] = useState('');
   const [error, setError] = useState('');
+const [success, setSuccess] = useState('');
+
+  const verifyEmail=()=>{
+
+
+   sendEmailVerification(auth.currentUser)
+  .then(() => {
+
+    console.log("Email verification sent!");
+    // Email verification sent!
+    // ...
+  });
+  }
+
 
 const handleEmailChange =e =>{
 
@@ -33,21 +48,21 @@ const handleFormSubmit =e=>{
 
   createUserWithEmailAndPassword(auth, email, password)
   .then((result) => {
-    // Signed in 
+    // Signed up 
     const user = result.user;
-    console.log(user)
+    setSuccess("Please Check Your Email(inbox/Spam) For Verification")
     setEmail('')
     setPassword('')
+    verifyEmail();
+
+
+
     // ...
   })
   .catch((error) => {
 
     const errorCode = error.code;
-    const errorMessage = error.message;
     setError('Email already in Use');
-
-
-    console.log(errorCode)
     
     // ..
   });
@@ -230,6 +245,7 @@ const handleFormSubmit =e=>{
     </div>
   </div>
   <h5 className='text-danger'>{error}</h5>
+  <h5 className='text-success'>{success}</h5>
   <button type="submit" class="btn btn-primary">Register</button>
 
 

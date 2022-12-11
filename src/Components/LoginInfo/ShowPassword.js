@@ -8,9 +8,10 @@ import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useState } from 'react';
-import { getAuth,signInWithEmailAndPassword } from "firebase/auth";
-
+import { getAuth,onAuthStateChanged,sendPasswordResetEmail,signInWithEmailAndPassword } from "firebase/auth";
 import app from '../LoginInfo/firebase.config';
+import useFireBase from '../../hooks/useFireBase';
+
 
 
 
@@ -19,55 +20,56 @@ const auth = getAuth(app )
 
 export default function InputAdornments() {
 
+
+
+  const {editorSignIn}=useFireBase();
+  const {handleFormSubmit,success,error,
+  setValues,
+  values,
+  handleEmailChange,
+  handlePassChange
+  
+  
+  
+  }=useFireBase();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   // const [username, setUsername] = useState('');
-  const [error, setError] = useState('');
 
-
-  const handleFormSubmit = event=>{
-
- 
-signInWithEmailAndPassword (auth, email, password)
-  .then((result) => {
-    // Signed in 
-    const user = result.user;
-    console.log(user);
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log(errorCode);
-  });
-  
+  // useEffect (() => {
+  //   onAuthStateChanged(auth, (user) => {
     
-    event.preventDefault();
+  //     setUser(user);
+  //   })
+  
+  // }, []);  
+
+
+
+
+
+  
+
+   
+  const handlePasswordReset=()=>{
+
+    sendPasswordResetEmail(auth, email)
+    .then(() => {
+      // Password reset email sent!
+      // ..
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+
+      // ..
+    });
 
   }
-  
 
 
 
-  const [values, setValues] = React.useState({
-    email: '',
-    password: '',
-    showPassword: false,
-  });
-
-  const handleEmailChange = (prop) => (event) => {
-
-    setEmail(event.target.value)
-
-    setValues({ ...values, [prop]: event.target.value });
-  };
-  const handlePassChange = (prop) => (event) => {
-
-    console.log(event.target.value);
-    setPassword(event.target.value)
-
-    setValues({ ...values, [prop]: event.target.value });
-  };
   const handleClickShowPassword = () => {
     setValues({
       ...values,
@@ -84,7 +86,7 @@ signInWithEmailAndPassword (auth, email, password)
       <div  className='w-75'>
      
         {/* Email */}
-        <form  onSubmit={ handleFormSubmit} >
+        <form   >
         
         <FormControl  fullWidth sx={{ m: 1 }}>
           <InputLabel  htmlFor="outlined-adornment-amount">Email</InputLabel>
@@ -122,15 +124,21 @@ signInWithEmailAndPassword (auth, email, password)
             
           />
         </FormControl>
+        {success ? <h5 className='text-success'>{success}</h5>:
+
+        <h5 className='text-danger'>{error}</h5>}
         
 <div className="d-flex w-75"> 
- <button type="submit" class="btn  btn-primary rounded-pill">Author Login</button>
-  <button type="submit" class="btn ml-2  btn-primary rounded-pill"> Editor Login</button>
+
+ <button onClick={ handleFormSubmit} type="submit" class="btn  btn-primary rounded-pill">Author Login</button>
+
+  <button onClick={editorSignIn} type="submit" class="btn ml-2  btn-primary rounded-pill"> Editor Login</button>
   <button type="submit" class="btn ml-2 btn-primary rounded-pill">Reviewer Login</button> 
   </div>
   </form>
 <p></p>
   <a class="btn  btn-secondary rounded-pill" href="/newuser" role="button">Register</a>
+  <a onClick={handlePasswordReset} class="btn ml-3 btn-secondary rounded-pill" href="/forgetPass" role="button">Forget Password</a>
 
 
       </div>
