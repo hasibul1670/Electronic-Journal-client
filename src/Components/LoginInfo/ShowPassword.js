@@ -8,14 +8,7 @@ import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useState } from 'react';
-import { getAuth,onAuthStateChanged,sendPasswordResetEmail,signInWithEmailAndPassword } from "firebase/auth";
-import app from '../LoginInfo/firebase.config';
 import useFireBase from '../../hooks/useFireBase';
-
-
-
-
-const auth = getAuth(app )
 
 
 export default function InputAdornments() {
@@ -27,7 +20,8 @@ export default function InputAdornments() {
   setValues,
   values,
   handleEmailChange,
-  handlePassChange
+  handlePassChange,
+  handlePasswordReset
   
   
   
@@ -52,22 +46,6 @@ export default function InputAdornments() {
   
 
    
-  const handlePasswordReset=()=>{
-
-    sendPasswordResetEmail(auth, email)
-    .then(() => {
-      // Password reset email sent!
-      // ..
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-
-      // ..
-    });
-
-  }
-
 
 
   const handleClickShowPassword = () => {

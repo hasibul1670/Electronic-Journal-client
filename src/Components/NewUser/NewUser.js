@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, verifyBeforeUpdateEmail } from "firebase/auth";
 import app from '../LoginInfo/firebase.config';
 import { useHistory } from 'react-router-dom';
+import useFireBase from '../../hooks/useFireBase';
 
 
 
@@ -13,6 +14,7 @@ const auth = getAuth(app )
 const NewUser = () => {
 
  
+  const {handleGoogleSignIn }=useFireBase();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -54,7 +56,7 @@ const handleFormSubmit =e=>{
     setEmail('')
     setPassword('')
     verifyEmail();
-
+console.log("done");
 
 
     // ...
@@ -73,6 +75,14 @@ const handleFormSubmit =e=>{
 
     return (
         <div   className='mt-2 p-4 bg-login w-75 mx-auto justify-content-center'>
+
+
+
+<div className='mt-2 p-4 bg-login w-75  justify-content-end'> 
+
+<button onClick={ handleGoogleSignIn} className="btn btn-primary"> Sign In With Google</button>
+ </div>
+
 <form onSubmit={handleFormSubmit} >
 {/* personal InfoForm Start */}
 

@@ -1,13 +1,15 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { getAuth,onAuthStateChanged,sendPasswordResetEmail,signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { getAuth,GoogleAuthProvider,onAuthStateChanged,sendPasswordResetEmail,signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 import { useState } from 'react';
 import app from '../Components/LoginInfo/firebase.config';
+import { useNavigate,useLocation  } from "react-router-dom";
 
 
 
 const auth = getAuth(app )
 const useFireBase = () => {
+  const provider = new GoogleAuthProvider();
 
 
 
@@ -52,11 +54,60 @@ const editorSignIn=(e)=>{
 
 
 
+// Google SignIn
+const handleGoogleSignIn =()=>{
+  
+signInWithPopup(auth, provider)
+.then((result) => {
+  // This gives you a Google Access Token. You can use it to access the Google API.
+  const credential = GoogleAuthProvider.credentialFromResult(result);
+  const token = credential.accessToken;
+  // The signed-in user info.
+  const user = result.user;
+  // ...
+}).catch((error) => {
+  // Handle Errors here.
+  const errorCode = error.code;
+  const errorMessage = error.message;
+  // The email of the user's account used.
+  const email = error.customData.email;
+  // The AuthCredential type that was used.
+  const credential = GoogleAuthProvider.credentialFromError(error);
+  // ...
+});
+
+}
+
+//pass reset
+const handlePasswordReset=()=>{
+
+  sendPasswordResetEmail(auth, email)
+  .then(() => {
+    // Password reset email sent!
+    // ..
+    console.log('Password reset email sent');
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(errorCode);
+    console.log('error');
+
+    // ..
+  });
+
+}
+
+
 // email signIN section start 
+
+
+
 
 
   const [values, setValues] = React.useState({
     email: '',
+    displayName:'',
     password: '',
     showPassword: false,
   });
@@ -75,26 +126,27 @@ const editorSignIn=(e)=>{
     setValues({ ...values, [prop]: event.target.value });
   };
 
+  let location = useLocation();
+  const navigate = useNavigate();
+  let { from } = location?.state?.from?.pathname ||"/";
+
   const handleFormSubmit = event=>{ 
     signInWithEmailAndPassword (auth, email, password)
     .then((result) => {
+      navigate("/mainmenu");
     // Signed in 
     const user = result.user;
 if(user.emailVerified===true){
   setSuccess('Login Successfully');
-  console.log(user.emailVerified)
+
+
+
   
 
 }
 else
   setSuccess('Please Verify Your Email!!')
 
-     
-
-    console.log(user.emailVerified)
-  
-
-    // ...
     })
     .catch((error) => {
      const errorCode = error.code;
@@ -109,6 +161,10 @@ else
 // email signIN section end
 
 
+// email redirect section
+
+
+//returning elements
     return {user,  
         success,
         error, 
@@ -118,7 +174,9 @@ else
         signOutFunc,
         editorSignIn,
         setValues,
-        handleFormSubmit
+        handleFormSubmit,
+        handlePasswordReset,
+        handleGoogleSignIn
     
     };
 };

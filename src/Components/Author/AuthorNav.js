@@ -1,10 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import useFireBase from '../../hooks/useFireBase';
 
 const AuthorNav = () => {
 
-  const {signOutFunc}=useFireBase();
+  const {signOutFunc , user}=useFireBase();
     return (
       
 <div>
@@ -37,7 +36,12 @@ const AuthorNav = () => {
     
     <div class="form-inline my-2 my-lg-0">
      
-      <a  onClick={signOutFunc} class="btn  btn-primary rounded-pill" href="/login" role="button">Sign Out</a>
+
+
+<a  class="btn  btn-primary rounded-pill mr-2" href="/" >{user?user.email: 'No Body'} </a>
+
+<a  onClick={signOutFunc} class="btn  btn-danger rounded-pill" href="/login" >Sign Out</a>
+
 
      
     </div>

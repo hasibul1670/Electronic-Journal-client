@@ -62,7 +62,7 @@ function Navbar() {
      
 
       <li class="nav-item active">
-        <a class="nav-link nav-text" href="#About">Journals</a>
+        <a class="nav-link nav-text" href="mainmenu">Author</a>
       </li>
     
       <li class="nav-right ">
