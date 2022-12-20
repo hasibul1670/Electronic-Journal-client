@@ -13,10 +13,10 @@ const Login = () => {
            
             <div  style={{height:"500px"}}  className=' p-4  bg-login w-75 d-flex justify-content-center p-2 mt-2 mx-auto mb-2'>
 
-            <img  className='image-fluid mt-5' style={{height:"190px",width:"165px"}}src={logo}alt="" srcset=""/>
+            <img  className='image-fluid mt-5' style={{height:"190px",width:"165px"}}src={logo}alt="" srcSet=""/>
          
             <div className=' w-75 p-5'>
-            <h1 class="text-lime-600 ">Login</h1>
+            <h1 className="text-lime-600 ">Login</h1>
             <hr />
             <h5>International Journal of Computer and Electronics Engineering</h5>
         <p></p>
@@ -32,7 +32,7 @@ const Login = () => {
 
 
 
-<div class="mx-auto bg-login  p-5 w-75">
+<div className="mx-auto bg-login  p-5 w-75">
 
 <h4>For Authors: Why choose <span className='text-primary'>Gold Open Access?</span> </h4>
 <h6>- You will retain copyright of your article (with some exceptions) <br />
@@ -55,7 +55,7 @@ const Login = () => {
 
 <p></p>
 
-<p class="text-danger">If you are accessing the system for the first time as an Editor, please click on the Instructions button to go through a concise user guide before you proceed.
+<p className="text-danger">If you are accessing the system for the first time as an Editor, please click on the Instructions button to go through a concise user guide before you proceed.
 
 </p>
 </h6>

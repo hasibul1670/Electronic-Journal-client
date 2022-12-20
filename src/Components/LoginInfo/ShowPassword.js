@@ -23,8 +23,8 @@ const ShowPassword = () => {
   let from = location.state?.from?.pathname ||"/";
 
 if(loading){
-  return <div class="spinner-border m-5" role="status">
-  <span class="visually-hidden"></span>
+  return <div className="spinner-border m-5" role="status">
+  <span className="visually-hidden"></span>
 </div>
 }
 if(error){
@@ -46,10 +46,10 @@ if(user){
     <div>
       <form onSubmit={handleSubmit(onSubmit)} >
 {/* Email Section */}
-<div class="col-md-6 mb-3">
-    <label className='ml-2' for="exampleInputEmail1">Email Address : </label>
+<div className="col-md-6 mb-3">
+    <label className='ml-2' htmlFor="exampleInputEmail1">Email Address : </label>
     <input
-    type="email"  class="form-control mx-sm-3"
+    type="email"  className="form-control mx-sm-3"
      {...register("email", {
       required:
       {
@@ -63,19 +63,19 @@ if(user){
     })} 
     aria-invalid={errors.email ? "true" : "false"} 
      placeholder="Enter Your Email"/>
-     <p class='text-danger' >{errors.email?.message}</p>
+     <p className='text-danger' >{errors.email?.message}</p>
 {/* 
-       {errors.email?.type === 'required' && <p class='text-danger' >{errors.email?.message}</p>}
-       {errors.email?.type === 'pattern' && <p class='text-danger' >{errors.email?.message}</p>} */}
+       {errors.email?.type === 'required' && <p className='text-danger' >{errors.email?.message}</p>}
+       {errors.email?.type === 'pattern' && <p className='text-danger' >{errors.email?.message}</p>} */}
  
   </div>
 
 {/* Password */}
 
-<div class="col-md-6 mb-3">
+<div className="col-md-6 mb-3">
     <label className='ml-2'>Password: </label>
     <input
-    type="password"  class="form-control mx-sm-3" placeholder="Enter Your Password"
+    type="password"  className="form-control mx-sm-3" placeholder="Enter Your Password"
      {...register("password", {
       required:
       {
@@ -89,16 +89,16 @@ if(user){
 
     })} 
 />
-<p class='text-danger' >{errors.password?.message}</p>
+<p className='text-danger' >{errors.password?.message}</p>
 
      
   </div>
 
 {signiInError}
-  <button  onSubmit={handleSubmit(onSubmit)} type="submit" class="btn  btn-primary rounded-pill">Author Login</button>
+  <button  onSubmit={handleSubmit(onSubmit)} type="submit" className="btn  btn-primary rounded-pill">Author Login</button>
 
-<button  type="submit" class="btn ml-2  btn-primary rounded-pill"> Editor Login</button>
-<button type="submit" class="btn ml-2 btn-primary rounded-pill">Reviewer Login</button>
+<button  type="submit" className="btn ml-2  btn-primary rounded-pill"> Editor Login</button>
+<button type="submit" className="btn ml-2 btn-primary rounded-pill">Reviewer Login</button>
       </form>
 
       
@@ -109,8 +109,8 @@ if(user){
  </div>
 <p></p>
 
- <a class="btn  btn-secondary rounded-pill" href="/newuser" role="button">Register</a>
- <a  class="btn ml-3 btn-secondary rounded-pill" href="/forgetPass" role="button">Forget Password</a>
+ <a className="btn  btn-secondary rounded-pill" href="/newuser" role="button">Register</a>
+ <a  className="btn ml-3 btn-secondary rounded-pill" href="/forgetPass" role="button">Forget Password</a>
     </div>
   );
 };

@@ -49,8 +49,8 @@ const [
 let signiInError;
 
 if(loading || updating){
-  return <div class="spinner-border m-5" role="status">
-  <span class="visually-hidden"></span>
+  return <div className="spinner-border m-5" role="status">
+  <span className="visually-hidden"></span>
 </div>
 }
 if(error||updateError){
@@ -98,32 +98,32 @@ const password = e.target.password.value;
 <form onSubmit={handleSubmit(onSubmit)} >
 {/* personal InfoForm Start */}
   <fieldset  className=' border border-primary p-5' >
-<legend class="float-none border border-warning p-2 text-success w-auto">Personal Information</legend>
+<legend className="float-none border border-warning p-2 text-success w-auto">Personal Information</legend>
 
-<div class="form-row">
+<div className="form-row">
   {/* Name Section */}
-<div class="col-md-4 mb-3">
+<div className="col-md-4 mb-3">
       <label for="validationCustom01">First Name :</label>
       <input      {...register("firstName", { required: true })} 
         aria-invalid={errors.firstName ? "true" : "false"} 
-     name="firstName" type="text" class="form-control mx-sm-3" id="validationCustom01" placeholder="First name"
+     name="firstName" type="text" className="form-control mx-sm-3" id="validationCustom01" placeholder="First name"
      />
      {errors.firstName?.type === 'required' && <p className='text-danger' role="alert">First name is required</p>}
     </div>
 
-    <div class="col-md-4 mb-3">
+    <div className="col-md-4 mb-3">
       <label for="validationCustom01">Last Name :</label>
       <input 
       {...register("lastName", { required: true })} 
-      type="text" class="form-control mx-sm-3" id="validationCustom01" placeholder="Last Name" required/>
+      type="text" className="form-control mx-sm-3" id="validationCustom01" placeholder="Last Name" required/>
 
     </div>
 {/* Email Section */}
 
-    <div class="col-md-4 mb-3">
+    <div className="col-md-4 mb-3">
     <label className='ml-2' for="exampleInputEmail1">Email Address : </label>
     <input
-    type="email"  class="form-control mx-sm-3"
+    type="email"  className="form-control mx-sm-3"
      {...register("email", {
       required:
       {
@@ -137,19 +137,19 @@ const password = e.target.password.value;
     })} 
     aria-invalid={errors.email ? "true" : "false"} 
      placeholder="Enter Your Email"/>
-     <p class='text-danger' >{errors.email?.message}</p>
+     <p className='text-danger' >{errors.email?.message}</p>
 {/* 
-       {errors.email?.type === 'required' && <p class='text-danger' >{errors.email?.message}</p>}
-       {errors.email?.type === 'pattern' && <p class='text-danger' >{errors.email?.message}</p>} */}
+       {errors.email?.type === 'required' && <p className='text-danger' >{errors.email?.message}</p>}
+       {errors.email?.type === 'pattern' && <p className='text-danger' >{errors.email?.message}</p>} */}
  
   </div>
 
 {/* Password */}
 
-<div class="col-md-4 mb-3">
+<div className="col-md-4 mb-3">
     <label className='ml-2'>Password: </label>
     <input
-    type="password"  class="form-control mx-sm-3" placeholder="Enter Your Password"
+    type="password"  className="form-control mx-sm-3" placeholder="Enter Your Password"
      {...register("password", {
       required:
       {
@@ -163,16 +163,16 @@ const password = e.target.password.value;
 
     })} 
 />
-<p class='text-danger' >{errors.password?.message}</p>
+<p className='text-danger' >{errors.password?.message}</p>
 
      
   </div>
 {/* phoneNumber Section */}
 
-    <div class="col-md-4 ml-4 mb-3">
+    <div className="col-md-4 ml-4 mb-3">
       <label for="validationServer02">Primary Phone Number</label>
       <input
-        type="text" class="form-control"
+        type="text" className="form-control"
      placeholder="Phone Number"  
      
      {...register("phone", {
@@ -188,24 +188,24 @@ const password = e.target.password.value;
 
     })} 
 />
-<p class='text-danger' >{errors.phone?.message}</p>
+<p className='text-danger' >{errors.phone?.message}</p>
 
     </div>
  
 
  
-    <div class="col-md-4 mb-3">
+    <div className="col-md-4 mb-3">
       <label for="validationServer03">City</label>
       <input 
-      {...register("city", { required: true })} type="text" class="form-control " id="validationServer03" placeholder="City" required/>
+      {...register("city", { required: true })} type="text" className="form-control " id="validationServer03" placeholder="City" required/>
     </div>
 
 
-    <div class="col-md-3 mb-3">
+    <div className="col-md-3 mb-3">
       <label for="validationServer05">Zip or Postal Code</label>
       <input 
       {...register("postalCode", { required: true })} 
-      type="number" class="form-control " id="validationServer05" placeholder="Zip"/>
+      type="number" className="form-control " id="validationServer05" placeholder="Zip"/>
    
     </div>
     
@@ -225,45 +225,45 @@ const password = e.target.password.value;
  
 
 <fieldset  className=' border border-primary mt-4 p-5' >
-<legend class="float-none border border-secondary p-2 text-primary w-auto">Institution Related Information</legend>
+<legend className="float-none border border-secondary p-2 text-primary w-auto">Institution Related Information</legend>
 
-<div class="form-row">
+<div className="form-row">
 
-<div class="col-md-4 mb-3">
+<div className="col-md-4 mb-3">
       <label for="validationServerUsername">Position</label>
-      <div class="input-group">
+      <div className="input-group">
         <input 
         {...register("position", { required: true })} 
-        type="text" class="form-control " id="validationServerUsername" placeholder="Position" aria-describedby="inputGroupPrepend3"/>
+        type="text" className="form-control " id="validationServerUsername" placeholder="Position" aria-describedby="inputGroupPrepend3"/>
       
       </div>
     </div>
 
-    <div class="col-md-4 mb-3">
+    <div className="col-md-4 mb-3">
       <label for="validationServer01">Institution Name </label>
       <input
       {...register("institutionName ", { required: true })} 
-      type="text" class="form-control" id="validationServer01" placeholder="Institution "  required/>
+      type="text" className="form-control" id="validationServer01" placeholder="Institution "  required/>
      
     </div>
 
-    <div class="col-md-4 mb-3">
+    <div className="col-md-4 mb-3">
       <label for="validationServer02">Department</label>
       <input
          {...register("department", { required: true })} 
-      type="text" class="form-control " id="validationServer02" placeholder="Department"/>
+      type="text" className="form-control " id="validationServer02" placeholder="Department"/>
     
     </div>
  
   </div>
 
 
-  <div class="form-row">
-    <div class="col-md-6 mb-3">
+  <div className="form-row">
+    <div className="col-md-6 mb-3">
       <label for="validationServer03">Areas of   or Expertise : </label>
       <select
         {...register("field", { required: true })} 
-      class="form-select  mx-sm-3" aria-label="Default select example">
+      className="form-select  mx-sm-3" aria-label="Default select example">
   <option value="Algorithm">Algorithm</option>
   <option value="Image Processing">Image Processing</option>
   <option value="IOT">IOT</option>
@@ -284,10 +284,10 @@ const password = e.target.password.value;
 {/* personal infoForm end */}
 
 
-  <div class="form-group">
-    <div class="form-check">
-      <input class="form-check-input " type="checkbox" value="false" id="invalidCheck3" required/>
-      <label class="form-check-label" for="invalidCheck3">
+  <div className="form-group">
+    <div className="form-check">
+      <input className="form-check-input " type="checkbox" value="false" id="invalidCheck3" required/>
+      <label className="form-check-label" for="invalidCheck3">
         Agree to terms and conditions
       </label>
    
@@ -296,7 +296,7 @@ const password = e.target.password.value;
   <h5 className='text-danger'>{errorno}</h5>
   <h5 className='text-success'>{success}</h5>
 
-  <button type="submit" class="btn btn-primary">Register</button>
+  <button type="submit" className="btn btn-primary">Register</button>
 
 
 </form>

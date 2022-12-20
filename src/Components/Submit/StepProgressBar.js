@@ -198,7 +198,7 @@ if (index=0) {
 
               <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                 <button
-                type="button" class="btn btn-primary btn-lg "
+                type="button" className="btn btn-primary btn-lg "
            
                
                   onClick={handleBack}
@@ -217,7 +217,7 @@ if (index=0) {
 
 
   
-      <button type="button" class="btn btn-primary btn-lg " 
+      <button type="button" className="btn btn-primary btn-lg " 
     
       onClick={handleNext}>
 

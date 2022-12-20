@@ -9,7 +9,7 @@ const auth = getAuth(app)
 const AuthorNav = () => {
 
   const [user, loading, error] = useAuthState(auth);
-  console.log(user);
+ 
 
   const signOutFunc=()=>{
     signOut(auth);  
@@ -23,38 +23,38 @@ const AuthorNav = () => {
 <div>
 
 
-<nav class="navbar navbar-expand-lg navbar-bg-color ">
+<nav className="navbar navbar-expand-lg navbar-bg-color ">
 
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+  <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span className="navbar-toggler-icon"></span>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-    <li class="nav-item active">
-        <a class=" nav-link nav-text" href="/submithome">Home</a>
+  <div className="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul className="navbar-nav mr-auto">
+    <li className="nav-item active">
+        <a className=" nav-link nav-text" href="/submithome">Home</a>
       </li>
 
-      <li class="  nav-item active">
-        <a class="nav-link nav-text" href="/mainmenu">Main Menu</a>
+      <li className="  nav-item active">
+        <a className="nav-link nav-text" href="/mainmenu">Main Menu</a>
       </li>
 
 
-     <li class="nav-item active">
-        <a class="nav-link nav-text" href="/submit">Submit a Manuscript</a>
+     <li className="nav-item active">
+        <a className="nav-link nav-text" href="/submit">Submit a Manuscript</a>
       </li>
-            <li class="nav-right mr-3 ">        
-          <a  href="/submit" class="nav-link active nav-text">About</a>
+            <li className="nav-right mr-3 ">        
+          <a  href="/submit" className="nav-link active nav-text">About</a>
             </li>
     </ul>
     
-    <div class="form-inline my-2 my-lg-0">
+    <div className="form-inline my-2 my-lg-0">
      
 
 
-<a  class="btn  btn-primary rounded-pill mr-2" href="/" >{user?user.displayName: 'No Body'} </a>
+<a  className="btn  btn-primary rounded-pill mr-2" href="/" >{user?user.displayName: 'No Body'} </a>
 
-<a  onClick={signOutFunc} class="btn  btn-danger rounded-pill" href="/login" >Sign Out</a>
+<a  onClick={signOutFunc} className="btn  btn-danger rounded-pill" href="/login" >Sign Out</a>
 
 
      
