@@ -1,26 +1,31 @@
 import React, { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, verifyBeforeUpdateEmail } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, verifyBeforeUpdateEmail} from "firebase/auth";
 import app from '../LoginInfo/firebase.config';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation, useNavigate } from 'react-router-dom';
 import useFireBase from '../../hooks/useFireBase';
-
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useUpdateProfile } from 'react-firebase-hooks/auth';
+import useToken from '../../hooks/useToken';
 
 
 const auth = getAuth(app )
-
-
-
-
 const NewUser = () => {
+  
+  let location = useLocation();
+  const navigate = useNavigate();
 
  
   const {handleGoogleSignIn }=useFireBase();
 
+
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [username, setUsername] = useState('');
-  const [error, setError] = useState('');
+  //const [user, setUser] = useState('');
+  const [errorno, setError] = useState('');
 const [success, setSuccess] = useState('');
+const [displayName, setDisplayName] = useState('');
+const [updateProfile, updating, errorUpdate] = useUpdateProfile(auth);
 
   const verifyEmail=()=>{
 
@@ -45,32 +50,44 @@ const handlePasswordChange =e =>{
   setPassword(e.target.value)
 
 }
+const handleNameChange =e =>{
 
-const handleFormSubmit =e=>{
+  setDisplayName(e.target.value);
+  console.log(displayName)
 
-  createUserWithEmailAndPassword(auth, email, password)
-  .then((result) => {
-    // Signed up 
-    const user = result.user;
-    setSuccess("Please Check Your Email(inbox/Spam) For Verification")
-    setEmail('')
-    setPassword('')
-    verifyEmail();
-console.log("done");
+}
 
 
-    // ...
-  })
-  .catch((error) => {
+const [
+  createUserWithEmailAndPassword,
+  user,
+  loading,
+  error,
+] = useCreateUserWithEmailAndPassword(auth);
 
-    const errorCode = error.code;
-    setError('Email already in Use');
-    
-    // ..
-  });
+  const [token]=useToken(user);
 
-
+const handleFormSubmit= async(e) =>{
   e.preventDefault();
+const name = e.target.name.value;
+const email = e.target.email.value;
+const password = e.target.password.value;
+
+
+ await createUserWithEmailAndPassword(email,password);
+await updateProfile({displayName:name});
+    // Signed up 
+    
+      console.log("profile update",  user,
+      loading,
+      error
+      );
+      setSuccess("Please Check Your Email(inbox/Spam) For Verification")
+      setEmail('')
+      setPassword('')
+      verifyEmail();
+    navigate("/login");
+  
 }
 
     return (
@@ -85,9 +102,6 @@ console.log("done");
 
 <form onSubmit={handleFormSubmit} >
 {/* personal InfoForm Start */}
-
-
- 
   <fieldset  className=' border border-primary p-5' >
 <legend class="float-none border border-warning p-2 text-success w-auto">Personal Information</legend>
 
@@ -95,7 +109,7 @@ console.log("done");
   {/* Name Section */}
 <div class="col-md-4 mb-3">
       <label for="validationCustom01">First Name :</label>
-      <input type="text" class="form-control mx-sm-3" id="validationCustom01" placeholder="First name" required/>
+      <input  onBlur={handleNameChange} name="name" type="text" class="form-control mx-sm-3" id="validationCustom01" placeholder="First name" required/>
   
     </div>
 
@@ -108,7 +122,7 @@ console.log("done");
 
     <div class="col-md-4 mb-3">
     <label for="exampleInputEmail1">Email Address : </label>
-    <input onBlur={handleEmailChange} type="email"  class="form-control mx-sm-3" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required/>
+    <input onBlur={handleEmailChange} name="email" type="email"  class="form-control mx-sm-3" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required/>
  
   </div>
 
@@ -116,30 +130,15 @@ console.log("done");
 
   <div class="col-md-4 mb-3">
     <label for="inputPassword6">Password</label>
-    <input onBlur={handlePasswordChange} type="password" id="inputPassword6" class="form-control mx-sm-3" aria-describedby="passwordHelpInline" placeholder="Password"  required/>
+    <input onBlur={handlePasswordChange}  name="password"  type="password" id="inputPassword6" class="form-control mx-sm-3" aria-describedby="passwordHelpInline" placeholder="Password"  required/>
   </div>
 
 
 
 {/* USerName Section */}
 
-<div class="col-md-4 mb-3">
 
-      <label for="validationServerUsername">Username</label>
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="inputGroupPrepend3">@</span>
-          </div>
-
-        <input type="text" class="form-control " id="validationServerUsername" placeholder="Username" aria-describedby="inputGroupPrepend3" required/>
-      
-      </div>
-</div>
-
-
-
-
-    <div class="col-md-4 mb-3">
+    <div class="col-md-4 mb-3 ml-3">
       <label for="validationServer01">Degree</label>
       <small>(Ph.D., M.D., etc.)</small>
       <input type="text" class="form-control" id="validationServer01" placeholder="Degree"  />
@@ -247,14 +246,14 @@ console.log("done");
 
   <div class="form-group">
     <div class="form-check">
-      <input class="form-check-input " type="checkbox" value="" id="invalidCheck3" required/>
+      <input class="form-check-input " type="checkbox" value="false" id="invalidCheck3" required/>
       <label class="form-check-label" for="invalidCheck3">
         Agree to terms and conditions
       </label>
    
     </div>
   </div>
-  <h5 className='text-danger'>{error}</h5>
+  <h5 className='text-danger'>{errorno}</h5>
   <h5 className='text-success'>{success}</h5>
   <button type="submit" class="btn btn-primary">Register</button>
 

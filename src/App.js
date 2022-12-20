@@ -17,6 +17,7 @@ import SubmitHome from './Components/Submit/SubmitHome';
 import NewUser from './Components/NewUser/NewUser';
 import ForgetPass from './Components/NewUser/ForgetPass';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
+import Dashbord from './Components/Admin/Dashbord';
 
 
 
@@ -39,6 +40,7 @@ function App() {
   <Route path="/submithome" element={<SubmitHome/>}> </Route>
   <Route path="/newuser"element={<NewUser/>}> </Route>
   <Route path="/forgetpass" element={<ForgetPass/>}> </Route>
+  <Route path="/dashbord" element={<Dashbord/>}> </Route>
 
   <Route path="/mainmenu" element={
     <PrivateRoute>

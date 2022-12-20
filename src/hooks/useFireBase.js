@@ -4,6 +4,8 @@ import { getAuth,GoogleAuthProvider,onAuthStateChanged,sendPasswordResetEmail,si
 import { useState } from 'react';
 import app from '../Components/LoginInfo/firebase.config';
 import { useNavigate,useLocation  } from "react-router-dom";
+import useToken from './useToken';
+
 
 
 
@@ -17,6 +19,7 @@ const useFireBase = () => {
 const [user, setUser] = useState({});
     
   const [email, setEmail] = useState('');
+
   const [password, setPassword] = useState('');
   // const [username, setUsername] = useState('');
   const [error, setError] = useState('');
@@ -32,24 +35,19 @@ const [user, setUser] = useState({});
       
       }, []);  
     
-
+      const navigate = useNavigate();
 
     const signOutFunc=()=>{
 
-        signOut(auth)
-        .then(() => {
-            console.log("Sign-out successful.");
-            
-          })
-        .catch((error) => {
-            // An error happened.
-        });
-
+        signOut(auth);
+        localStorage.removeItem('accessToken');     
+        navigate("/mainmenu");
+      
     }
 
-const editorSignIn=(e)=>{
+const handleEditorLogin=(e)=>{
     e.preventDefault();
-    console.log('editorSignIn comming soon')
+    console.log('handleEditorLogin comming soon')
 }
 
 
@@ -114,41 +112,38 @@ const handlePasswordReset=()=>{
   const handlePassChange = (prop) => (event) => {
 
     console.log(event.target.value);
-    setPassword(event.target.value)
+    setPassword(event.target.value);
 
     setValues({ ...values, [prop]: event.target.value });
   };
 
   const handleEmailChange = (prop) => (event) => {
 
-    setEmail(event.target.value)
+    setEmail(event.target.value);
 
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  let location = useLocation();
-  const navigate = useNavigate();
-  let { from } = location?.state?.from?.pathname ||"/";
+
 
   const handleFormSubmit = event=>{ 
+  
     signInWithEmailAndPassword (auth, email, password)
     .then((result) => {
-      navigate("/mainmenu");
     // Signed in 
     const user = result.user;
+ 
 if(user.emailVerified===true){
   setSuccess('Login Successfully');
-
-
-
-  
-
+  navigate("/mainmenu");
 }
 else
   setSuccess('Please Verify Your Email!!')
 
+
     })
     .catch((error) => {
+ 
      const errorCode = error.code;
      const errorMessage = error.message;
    
@@ -163,6 +158,15 @@ else
 
 // email redirect section
 
+const token = useToken(user)
+
+useEffect(() => {
+  if(token){
+    console.log(token)
+    //navigate("/mainmenu");
+  }
+
+}, []);
 
 //returning elements
     return {user,  
@@ -172,7 +176,7 @@ else
         handlePassChange,
         handleEmailChange,   
         signOutFunc,
-        editorSignIn,
+        handleEditorLogin,
         setValues,
         handleFormSubmit,
         handlePasswordReset,

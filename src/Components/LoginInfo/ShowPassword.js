@@ -15,17 +15,20 @@ export default function InputAdornments() {
 
 
 
-  const {editorSignIn}=useFireBase();
   const {handleFormSubmit,success,error,
   setValues,
   values,
   handleEmailChange,
+  handleEditorLogin,
   handlePassChange,
   handlePasswordReset
   
   
   
   }=useFireBase();
+
+
+  
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -110,7 +113,7 @@ export default function InputAdornments() {
 
  <button onClick={ handleFormSubmit} type="submit" class="btn  btn-primary rounded-pill">Author Login</button>
 
-  <button onClick={editorSignIn} type="submit" class="btn ml-2  btn-primary rounded-pill"> Editor Login</button>
+  <button onClick={handleEditorLogin} type="submit" class="btn ml-2  btn-primary rounded-pill"> Editor Login</button>
   <button type="submit" class="btn ml-2 btn-primary rounded-pill">Reviewer Login</button> 
   </div>
   </form>
