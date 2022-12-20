@@ -18,12 +18,22 @@ import NewUser from './Components/NewUser/NewUser';
 import ForgetPass from './Components/NewUser/ForgetPass';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 import Dashbord from './Components/Admin/Dashbord';
+import Editor from './Components/Editor/Editor';
+import { createContext } from 'react';
+import { useState } from 'react';
 
-
+export const editorContext = createContext();
 
 
 function App() {
+  const [editor, setEditor] = useState({});
   return (
+
+
+    <editorContext.Provider value={[editor,setEditor]}>
+
+
+
     <Router>
   <Routes>
 
@@ -40,13 +50,12 @@ function App() {
   <Route path="/submithome" element={<SubmitHome/>}> </Route>
   <Route path="/newuser"element={<NewUser/>}> </Route>
   <Route path="/forgetpass" element={<ForgetPass/>}> </Route>
-  <Route path="/dashbord" element={<Dashbord/>}> </Route>
 
-  <Route path="/mainmenu" element={
-    <PrivateRoute>
-  <AuthorMainMenu/>
-    </PrivateRoute>
-}> </Route>
+  <Route path="/editor" element={<Editor/>}> </Route>
+
+{/* private Route */}
+  <Route path="/mainmenu" element={<PrivateRoute><AuthorMainMenu/></PrivateRoute>}> </Route>
+  <Route path="/dashbord" element={<PrivateRoute><Dashbord/></PrivateRoute>}> </Route>
 
  <Route path="*" element={<Nomatch/>}> </Route>
 
@@ -56,6 +65,7 @@ function App() {
 
 
     </Router>
+    </editorContext.Provider>
 
    
   );

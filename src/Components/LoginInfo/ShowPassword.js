@@ -1,129 +1,118 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
-import FormControl from '@mui/material/FormControl';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useState } from 'react';
-import useFireBase from '../../hooks/useFireBase';
+import { getAuth } from 'firebase/auth';
+import React from 'react';
+import app from './firebase.config';
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useForm } from "react-hook-form";
+import { useLocation, useNavigate } from 'react-router';
+const auth = getAuth(app)
 
+const ShowPassword = () => {
 
-export default function InputAdornments() {
-
-
-
-  const {handleFormSubmit,success,error,
-  setValues,
-  values,
-  handleEmailChange,
-  handleEditorLogin,
-  handlePassChange,
-  handlePasswordReset
+  const { register, formState: { errors }, handleSubmit }=useForm();
   
+  const [
+    signInWithEmailAndPassword,
+    user,
+    loading,
+    error,
+  ] = useSignInWithEmailAndPassword(auth);
+
+  let signiInError;
+  const navigate = useNavigate();
+  let location = useLocation();
+  let from = location.state?.from?.pathname ||"/";
+
+if(loading){
+  return <div class="spinner-border m-5" role="status">
+  <span class="visually-hidden"></span>
+</div>
+}
+if(error){
+  signiInError=<p className='text-danger'>{error?.message}</p>
   
-  
-  }=useFireBase();
+}
+if(user){
+  console.log(user)
+  navigate(from,{replace:true});
+}
 
-
-  
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  // const [username, setUsername] = useState('');
-
-  // useEffect (() => {
-  //   onAuthStateChanged(auth, (user) => {
-    
-  //     setUser(user);
-  //   })
-  
-  // }, []);  
-
-
-
-
-
-  
-
+  const onSubmit = (data) => {
+    signInWithEmailAndPassword(data.email,data.password);
+    console.log(data)
    
-
-
-  const handleClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword,
-    });
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
+  }
 
   return (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-      <div  className='w-75'>
+    <div>
+      <form onSubmit={handleSubmit(onSubmit)} >
+{/* Email Section */}
+<div class="col-md-6 mb-3">
+    <label className='ml-2' for="exampleInputEmail1">Email Address : </label>
+    <input
+    type="email"  class="form-control mx-sm-3"
+     {...register("email", {
+      required:
+      {
+        value: true,
+        message: 'Email is Required'
+      },
+      pattern: {
+        value:/\S+@\S+\.\S+/,
+        message: 'Provide a valid Email'
+      }
+    })} 
+    aria-invalid={errors.email ? "true" : "false"} 
+     placeholder="Enter Your Email"/>
+     <p class='text-danger' >{errors.email?.message}</p>
+{/* 
+       {errors.email?.type === 'required' && <p class='text-danger' >{errors.email?.message}</p>}
+       {errors.email?.type === 'pattern' && <p class='text-danger' >{errors.email?.message}</p>} */}
+ 
+  </div>
+
+{/* Password */}
+
+<div class="col-md-6 mb-3">
+    <label className='ml-2'>Password: </label>
+    <input
+    type="password"  class="form-control mx-sm-3" placeholder="Enter Your Password"
+     {...register("password", {
+      required:
+      {
+        value: true,
+        message: 'Password is Required'
+      },
+      minLength: {
+        value:6,
+        message: 'Must be 6 Characters or longer'
+      }
+
+    })} 
+/>
+<p class='text-danger' >{errors.password?.message}</p>
+
      
-        {/* Email */}
-        <form   >
-        
-        <FormControl  fullWidth sx={{ m: 1 }}>
-          <InputLabel  htmlFor="outlined-adornment-amount">Email</InputLabel>
-          <OutlinedInput
-            id="outlined-adornment-amount"
-            value={values.email}
-            onChange={handleEmailChange('email')}
-            startAdornment={<InputAdornment position="start"></InputAdornment>}
-            label="email"
-          />
-        </FormControl>
+  </div>
 
-{/* Password  */}
-        <FormControl  fullWidth  sx={{ m:1 }} variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-          <OutlinedInput
-            id="outlined-adornment-password"
-            type={values.showPassword ? 'text' : 'password'}
-            value={values.password}
-            onChange={handlePassChange('password')}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-            label="Password"
+{signiInError}
+  <button  onSubmit={handleSubmit(onSubmit)} type="submit" class="btn  btn-primary rounded-pill">Author Login</button>
 
-            
-          />
-        </FormControl>
-        {success ? <h5 className='text-success'>{success}</h5>:
+<button  type="submit" class="btn ml-2  btn-primary rounded-pill"> Editor Login</button>
+<button type="submit" class="btn ml-2 btn-primary rounded-pill">Reviewer Login</button>
+      </form>
 
-        <h5 className='text-danger'>{error}</h5>}
-        
+      
+
 <div className="d-flex w-75"> 
 
- <button onClick={ handleFormSubmit} type="submit" class="btn  btn-primary rounded-pill">Author Login</button>
-
-  <button onClick={handleEditorLogin} type="submit" class="btn ml-2  btn-primary rounded-pill"> Editor Login</button>
-  <button type="submit" class="btn ml-2 btn-primary rounded-pill">Reviewer Login</button> 
-  </div>
-  </form>
+ 
+ </div>
 <p></p>
-  <a class="btn  btn-secondary rounded-pill" href="/newuser" role="button">Register</a>
-  <a onClick={handlePasswordReset} class="btn ml-3 btn-secondary rounded-pill" href="/forgetPass" role="button">Forget Password</a>
 
-
-      </div>
-
-    </Box>
+ <a class="btn  btn-secondary rounded-pill" href="/newuser" role="button">Register</a>
+ <a  class="btn ml-3 btn-secondary rounded-pill" href="/forgetPass" role="button">Forget Password</a>
+    </div>
   );
-}
+};
+
+export default ShowPassword;

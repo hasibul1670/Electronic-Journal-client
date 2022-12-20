@@ -1,9 +1,23 @@
+import { getAuth, signOut } from 'firebase/auth';
 import React from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { Navigate } from 'react-router';
 import useFireBase from '../../hooks/useFireBase';
+import app from '../LoginInfo/firebase.config';
+const auth = getAuth(app)
 
 const AuthorNav = () => {
 
-  const {signOutFunc , user}=useFireBase();
+  const [user, loading, error] = useAuthState(auth);
+  console.log(user);
+
+  const signOutFunc=()=>{
+    signOut(auth);  
+    Navigate("/login");
+  
+}
+
+
     return (
       
 <div>

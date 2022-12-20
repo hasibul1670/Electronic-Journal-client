@@ -45,11 +45,6 @@ const [user, setUser] = useState({});
       
     }
 
-const handleEditorLogin=(e)=>{
-    e.preventDefault();
-    console.log('handleEditorLogin comming soon')
-}
-
 
 
 // Google SignIn
@@ -127,7 +122,6 @@ const handlePasswordReset=()=>{
 
 
   const handleFormSubmit = event=>{ 
-  
     signInWithEmailAndPassword (auth, email, password)
     .then((result) => {
     // Signed in 
@@ -156,13 +150,14 @@ else
 // email signIN section end
 
 
+
 // email redirect section
 
 const token = useToken(user)
 
 useEffect(() => {
   if(token){
-    console.log(token)
+    
     //navigate("/mainmenu");
   }
 
@@ -176,7 +171,6 @@ useEffect(() => {
         handlePassChange,
         handleEmailChange,   
         signOutFunc,
-        handleEditorLogin,
         setValues,
         handleFormSubmit,
         handlePasswordReset,
