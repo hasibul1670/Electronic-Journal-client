@@ -1,116 +1,105 @@
-import { getAuth } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import React from 'react';
 import app from './firebase.config';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from 'react-router';
+import { useState } from 'react';
 const auth = getAuth(app)
 
 const ShowPassword = () => {
 
-  const { register, formState: { errors }, handleSubmit }=useForm();
-  
-  const [
-    signInWithEmailAndPassword,
-    user,
-    loading,
-    error,
-  ] = useSignInWithEmailAndPassword(auth);
 
-  let signiInError;
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [success, setSuccess] = useState('');
+  const [error, setError] = useState('');
+
+
+
+
   const navigate = useNavigate();
-  let location = useLocation();
-  let from = location.state?.from?.pathname ||"/";
+   let location = useLocation();
+   let from = location.state?.from?.pathname || "/";
 
-if(loading){
-  return <div className="spinner-border m-5" role="status">
-  <span className="visually-hidden"></span>
-</div>
-}
-if(error){
-  signiInError=<p className='text-danger'>{error?.message}</p>
-  
-}
-if(user){
-  console.log(user)
-  navigate(from,{replace:true});
-}
+  // navigate(from, { replace: true });
 
-  const onSubmit = (data) => {
-    signInWithEmailAndPassword(data.email,data.password);
-    console.log(data)
-   
+  const handleEmailChange =(event)=> {
+    setEmail(event.target.value);
+    console.log(event.target.value);
+    event.preventDefault();
+  };
+
+  const handlePassChange =(event)=>{
+    console.log("hello",event.target.value)
+    setPassword(event.target.value);
+    event.preventDefault();
+  };
+
+
+  const handleFormSubmit = event => {
+    signInWithEmailAndPassword(auth,email, password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+
+        if (user.emailVerified === true) {
+          setSuccess('Login Successfully');
+         navigate(from, { replace: true });
+        }
+        else
+          setSuccess('Please Verify Your Email!!')
+        })
+        .catch((error) => {
+    
+              console.log("errorrrr",error.message)
+              setError(error.message);
+
+            })
+
+    
+    event.preventDefault();
+
   }
+
+
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)} >
-{/* Email Section */}
-<div className="col-md-6 mb-3">
-    <label className='ml-2' htmlFor="exampleInputEmail1">Email Address : </label>
-    <input
-    type="email"  className="form-control mx-sm-3"
-     {...register("email", {
-      required:
-      {
-        value: true,
-        message: 'Email is Required'
-      },
-      pattern: {
-        value:/\S+@\S+\.\S+/,
-        message: 'Provide a valid Email'
-      }
-    })} 
-    aria-invalid={errors.email ? "true" : "false"} 
-     placeholder="Enter Your Email"/>
-     <p className='text-danger' >{errors.email?.message}</p>
-{/* 
-       {errors.email?.type === 'required' && <p className='text-danger' >{errors.email?.message}</p>}
-       {errors.email?.type === 'pattern' && <p className='text-danger' >{errors.email?.message}</p>} */}
- 
+      <form>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input onChange={handleEmailChange} type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
+
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input onChange={handlePassChange} type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"/>
   </div>
 
-{/* Password */}
-
-<div className="col-md-6 mb-3">
-    <label className='ml-2'>Password: </label>
-    <input
-    type="password"  className="form-control mx-sm-3" placeholder="Enter Your Password"
-     {...register("password", {
-      required:
-      {
-        value: true,
-        message: 'Password is Required'
-      },
-      minLength: {
-        value:6,
-        message: 'Must be 6 Characters or longer'
-      }
-
-    })} 
-/>
-<p className='text-danger' >{errors.password?.message}</p>
-
+</form>
      
-  </div>
 
-{signiInError}
-  <button  onSubmit={handleSubmit(onSubmit)} type="submit" className="btn  btn-primary rounded-pill">Author Login</button>
+        <button onClick={handleFormSubmit} type="submit" className="btn  btn-primary rounded-pill">Author Login</button>
 
-<button  type="submit" className="btn ml-2  btn-primary rounded-pill"> Editor Login</button>
-<button type="submit" className="btn ml-2 btn-primary rounded-pill">Reviewer Login</button>
-      </form>
+        <button type="submit" className="btn ml-2  btn-primary rounded-pill"> Editor Login</button>
+        <button type="submit" className="btn ml-2 btn-primary rounded-pill">Reviewer Login</button>
 
-      
 
-<div className="d-flex w-75"> 
 
- 
- </div>
-<p></p>
+        <div className="d-flex w-75">
 
- <a className="btn  btn-secondary rounded-pill" href="/newuser" role="button">Register</a>
- <a  className="btn ml-3 btn-secondary rounded-pill" href="/forgetPass" role="button">Forget Password</a>
+
+        </div>
+        <p></p>
+
+        <a className=" btn btn-dark rounded-pill" href="/newuser" role="button"> New User? Register</a>
+        <a className=" ml-3 btn btn-dark rounded-pill" href="/forgetpass" role="button">Forget Password</a>
+<br />
+        <p className='text-danger font-weight-bold'>{success||error}</p> 
+  
+
+
     </div>
   );
 };

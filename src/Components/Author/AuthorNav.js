@@ -17,7 +17,6 @@ const AuthorNav = () => {
   
 }
 
-
     return (
       
 <div>
@@ -52,7 +51,7 @@ const AuthorNav = () => {
      
 
 
-<a  className="btn  btn-primary rounded-pill mr-2" href="/" >{user?user.displayName: 'No Body'} </a>
+<a  className="btn  btn-primary rounded-pill mr-2" href="/authordashboard" >{user?user.displayName:'No Body'} </a>
 
 <a  onClick={signOutFunc} className="btn  btn-danger rounded-pill" href="/login" >Sign Out</a>
 

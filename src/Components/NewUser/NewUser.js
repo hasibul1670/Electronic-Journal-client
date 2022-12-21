@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, verifyBeforeUpdateEmail} from "firebase/auth";
+import { getAuth} from "firebase/auth";
 import app from '../LoginInfo/firebase.config';
 import {useLocation,useNavigate } from 'react-router-dom';
-import useFireBase from '../../hooks/useFireBase';
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { useUpdateProfile } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword,useSendEmailVerification,useUpdateProfile,useSignOut } from 'react-firebase-hooks/auth';
 import useToken from '../../hooks/useToken';
 import { useForm } from "react-hook-form";
 
@@ -13,88 +11,80 @@ const auth = getAuth(app )
 const NewUser = () => {
 
   const { register, formState: { errors }, handleSubmit } = useForm();
- 
+  const [updateProfile] = useUpdateProfile(auth);
+  const [signOut] = useSignOut(auth);
+  const [
+    createUserWithEmailAndPassword,
+    user,
+    loading,
+    error,
+] = useCreateUserWithEmailAndPassword(auth);
+const [sendEmailVerification,email] = useSendEmailVerification(auth);
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  //const [user, setUser] = useState('');
-  const [errorno, setError] = useState('');
+
+
 const [success, setSuccess] = useState('');
-const [displayName, setDisplayName] = useState('');
-
-const [updateProfile, updating,updateError] = useUpdateProfile(auth);
-
-  const verifyEmail=()=>{
-
-
-   sendEmailVerification(auth.currentUser)
-  .then(() => {
-
-    console.log("Email verification sent!");
-    // Email verification sent!
-    // ...
-  });
-  }
 
   const navigate = useNavigate()
   const location = useLocation();
 
-const [
-  createUserWithEmailAndPassword,
-  user,
-  loading,
-  error,
-] = useCreateUserWithEmailAndPassword(auth);
+
 
 let signiInError;
 
-if(loading || updating){
+if(loading ){
   return <div className="spinner-border m-5" role="status">
   <span className="visually-hidden"></span>
 </div>
 }
-if(error||updateError){
-  signiInError=<p className='text-danger'>{error?.message}||{updateError.message}</p>
+if(error){
+  signiInError=<p className='text-danger'>{error?.message}</p>
 }
+// if(user){
+//   signiInError=<p className='text-danger'>{error?.message}||{updateError.message}</p>
+// }
+
+
 
 const onSubmit =async (data) =>{
-    
   await createUserWithEmailAndPassword(data.email,data.password);
+  await sendEmailVerification(data.email);
+  await signOut(data.email);
   await updateProfile({displayName:data.firstName});
   console.log('update done');
-  navigate('/login');
 
+  const authorInfoInDb ={
+    authorName:data.firstName,
+    authorEmail:data.email,
+    phone:data.phone,
+    postalCode:data.postalCode,
+    authorPosition:data.position,
+    field:data.feild,
+    institutionName:data.institutionName,
+    department:data.department,
+    city:data.city,
+    }
+
+    fetch('http://localhost:4000/author',{
+method:'POST',
+headers:{
+  'content-type':'application/json'
+},
+body:JSON.stringify(authorInfoInDb)
+})
+.then(res=>res.json())
+.then(data=>{
+
+  setSuccess(<p className=' font-weight-bold text-danger'>Verification Email is Sent!!
+    Please! Check Your Email inbox/spam</p>) 
+  
+  console.log("hello: ",data.success);
+
+})
 
 } 
-
-
-const handleFormSubmit= async(e) =>{
-  e.preventDefault();
-const name = e.target.name.value;
-const email = e.target.email.value;
-const password = e.target.password.value;
-
-
- await createUserWithEmailAndPassword(email,password);
-
-
-      console.log("profile update",  user,
-      loading,
-      error
-      );
-      setSuccess("Please Check Your Email(inbox/Spam) For Verification")
-      setEmail('')
-      setPassword('')
-      verifyEmail();
-
-  
-}
-
     return (
         <div   className='mt-2 p-4 bg-login w-75 mx-auto justify-content-center'>
-
-
-
 <form onSubmit={handleSubmit(onSubmit)} >
 {/* personal InfoForm Start */}
   <fieldset  className=' border border-primary p-5' >
@@ -138,9 +128,7 @@ const password = e.target.password.value;
     aria-invalid={errors.email ? "true" : "false"} 
      placeholder="Enter Your Email"/>
      <p className='text-danger' >{errors.email?.message}</p>
-{/* 
-       {errors.email?.type === 'required' && <p className='text-danger' >{errors.email?.message}</p>}
-       {errors.email?.type === 'pattern' && <p className='text-danger' >{errors.email?.message}</p>} */}
+
  
   </div>
 
@@ -189,11 +177,7 @@ const password = e.target.password.value;
     })} 
 />
 <p className='text-danger' >{errors.phone?.message}</p>
-
     </div>
- 
-
- 
     <div className="col-md-4 mb-3">
       <label for="validationServer03">City</label>
       <input 
@@ -242,7 +226,7 @@ const password = e.target.password.value;
     <div className="col-md-4 mb-3">
       <label for="validationServer01">Institution Name </label>
       <input
-      {...register("institutionName ", { required: true })} 
+      {...register("institutionName", { required: true })} 
       type="text" className="form-control" id="validationServer01" placeholder="Institution "  required/>
      
     </div>
@@ -293,14 +277,14 @@ const password = e.target.password.value;
    
     </div>
   </div>
-  <h5 className='text-danger'>{errorno}</h5>
-  <h5 className='text-success'>{success}</h5>
 
-  <button type="submit" className="btn btn-primary">Register</button>
+  <button type="submit" className="btn btn-primary rounded-pill">Register</button>
+  <a className="btn ml-3 btn-secondary rounded-pill" href="/login" role="button">Go to Login Page</a>
 
 
 </form>
-{signiInError}
+
+{signiInError || success }
         </div>
     );
 };

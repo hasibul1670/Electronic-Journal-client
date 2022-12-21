@@ -42,7 +42,6 @@ const [user, setUser] = useState({});
         signOut(auth);
         localStorage.removeItem('accessToken');     
         navigate("/mainmenu");
-      
     }
 
 
@@ -126,6 +125,7 @@ const handlePasswordReset=()=>{
     .then((result) => {
     // Signed in 
     const user = result.user;
+ console.log(user);
  
 if(user.emailVerified===true){
   setSuccess('Login Successfully');
@@ -136,14 +136,6 @@ else
 
 
     })
-    .catch((error) => {
- 
-     const errorCode = error.code;
-     const errorMessage = error.message;
-   
-  setError(errorCode)
-  });
-    
     event.preventDefault();
 
   }
