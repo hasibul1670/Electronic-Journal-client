@@ -1,11 +1,10 @@
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import React from 'react';
 import app from './firebase.config';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from 'react-router';
 import { useState } from 'react';
-const auth = getAuth(app)
+const auth = getAuth(app);
+
 
 const ShowPassword = () => {
 
@@ -36,29 +35,34 @@ const ShowPassword = () => {
     event.preventDefault();
   };
 
+  const signOutFunc=()=>{
+    signOut(auth);  
+    navigate("/login");
+  
+}
+
 
   const handleFormSubmit = event => {
     signInWithEmailAndPassword(auth,email, password)
       .then((result) => {
         const user = result.user;
-        console.log(user);
-
         if (user.emailVerified === true) {
           setSuccess('Login Successfully');
          navigate(from, { replace: true });
         }
-        else
-          setSuccess('Please Verify Your Email!!')
+        else{
+          setSuccess('Please Verify Your Email!!');
+          signOutFunc();
+        }
         })
-        .catch((error) => {
-    
+        .catch((error) => {   
               console.log("errorrrr",error.message)
               setError(error.message);
-
             })
-
-    
+   
     event.preventDefault();
+
+    // 74.2
 
   }
 

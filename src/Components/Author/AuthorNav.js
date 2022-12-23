@@ -14,6 +14,7 @@ const AuthorNav = () => {
   const signOutFunc=()=>{
     signOut(auth);  
     Navigate("/login");
+    
   
 }
 
