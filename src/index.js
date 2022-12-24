@@ -6,13 +6,22 @@ import reportWebVitals from './reportWebVitals';
 //mport {library} from "@fortawesome/free-solid-svg-core";
 import { faUser ,faEye,faEyeSlash, faLock,faEnvelope} from '@fortawesome/free-solid-svg-icons'
 import { BrowserRouter } from 'react-router-dom';
-//library.add (faUser,faEye,faLock,faEyeSlash,faEnvelope);
+import {
+  QueryClient,
+  QueryClientProvider,
+} from 'react-query'
+
+const queryClient = new QueryClient()
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <BrowserRouter >
   <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
     <App />
+</QueryClientProvider>
+ 
   </React.StrictMode>
   // </BrowserRouter>
   

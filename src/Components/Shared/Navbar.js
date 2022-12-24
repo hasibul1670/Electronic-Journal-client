@@ -1,37 +1,37 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { faCoffee ,faMagnifyingGlass,faShoppingCart,faUser} from '@fortawesome/free-solid-svg-icons'
+import app from '../LoginInfo/firebase.config';
 
-/// ...
 import logo from './../../logo/logo2.jpg';
+import { getAuth, signOut } from 'firebase/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
+
 
 
 function Navbar() {
+
+  const auth = getAuth(app)
+  const signOutFunc=()=>{
+    signOut(auth);  
+    Navigate("/login"); 
+  }
+  const [user] = useAuthState(auth);
+
     return (
         <div className="">  
             <div>
 <div className="d-flex flex-row " ><a className="navbar-brand" href="#"><img  style={{height:"60px",width:"400px"}}src={logo}alt="" srcet=""/> </a></div>
 
 <div className=" d-flex flex-row-reverse pr-5">
+{user ?  <a onClick={signOutFunc} className="btn  btn-danger rounded-pill">Sign Out </a>:
 
-<div className="pr-3">
-<FontAwesomeIcon icon={faUser} />
-<h6 >User</h6>
-</div>
-<div className="pr-3">
-<FontAwesomeIcon icon={faShoppingCart} />
-<h6 >My Cart</h6>
-</div>
+<a  className="btn  btn-danger rounded-pill" href="/login" >Login </a>
+} 
 
-
-<div className="pr-3">
-<FontAwesomeIcon icon={faMagnifyingGlass}/>
-<h6 >Search</h6>
-</div>
-
-
+<a  className="btn  btn-primary rounded-pill mr-2" href="/mainmenu">{user?user.displayName:"Guest"}</a>
 
 </div>
 
@@ -47,7 +47,7 @@ function Navbar() {
     <ul className="navbar-nav ml-auto">
 
     <div className="dropdown">
-  <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <button className="btn nav-link nav-text btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
   Subjects
   </button>
   <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -60,10 +60,13 @@ function Navbar() {
   </div>
 </div>
      
+     {
+      user &&   <li className="nav-item active">
+      <a className="nav-link nav-text" href="/dashboard">Dashboard</a>
+    </li>
+  
+     }
 
-      <li className="nav-item active">
-        <a className="nav-link nav-text" href="mainmenu">Author</a>
-      </li>
     
       <li className="nav-right ">
           <Link to="/Service" className="nav-link nav-text active">Books</Link>

@@ -3,7 +3,6 @@ import { getAuth} from "firebase/auth";
 import app from '../LoginInfo/firebase.config';
 import {useLocation,useNavigate } from 'react-router-dom';
 import { useCreateUserWithEmailAndPassword,useSendEmailVerification,useUpdateProfile,useSignOut } from 'react-firebase-hooks/auth';
-import useToken from '../../hooks/useToken';
 import { useForm } from "react-hook-form";
 
 
@@ -15,11 +14,10 @@ const NewUser = () => {
   const [signOut] = useSignOut(auth);
   const [
     createUserWithEmailAndPassword,
-    user,
     loading,
     error,
 ] = useCreateUserWithEmailAndPassword(auth);
-const [sendEmailVerification,email] = useSendEmailVerification(auth);
+const [sendEmailVerification] = useSendEmailVerification(auth);
 
 
 
@@ -40,19 +38,12 @@ if(loading ){
 if(error){
   signiInError=<p className='text-danger'>{error?.message}</p>
 }
-// if(user){
-//   signiInError=<p className='text-danger'>{error?.message}||{updateError.message}</p>
-// }
-
-
 
 const onSubmit =async (data) =>{
   await createUserWithEmailAndPassword(data.email,data.password);
   await sendEmailVerification(data.email);
   await signOut(data.email);
   await updateProfile({displayName:data.firstName});
-  console.log('update done');
-
   const authorInfoInDb ={
     authorName:data.firstName,
     authorEmail:data.email,
@@ -74,11 +65,8 @@ body:JSON.stringify(authorInfoInDb)
 })
 .then(res=>res.json())
 .then(data=>{
-
-  setSuccess(<p className=' font-weight-bold text-danger'>Verification Email is Sent!!
-    Please! Check Your Email inbox/spam</p>) 
   
-  console.log("hello: ",data.success);
+  setSuccess(<p className=' font-weight-bold text-danger'>Verification Email is sent to {data.email}. Check Your Email inbox/spam</p>) 
 
 })
 

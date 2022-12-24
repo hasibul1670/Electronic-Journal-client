@@ -2,6 +2,9 @@
   text-align: center;
 }
 
+.style2{
+  height:200px
+}
 
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -88,7 +91,10 @@ background-image:url(./logo/banner-journal.jpg)
     transform: rotate(360deg);
   }
 }
+.lightgray{
+  background-color: lightgray;
 
+}
 .line-height{
   line-height: 150%!important;
 }
@@ -98,3 +104,13 @@ background-image:url(./logo/banner-journal.jpg)
   height: 440px;
 
 }
+.textDecoration{
+  font-size:1.2rem;
+}
+
+.textDecoration:hover{
+  color: rgb(235, 205, 194) !important;
+  text-decoration: none; 
+}
+
+

@@ -3,51 +3,19 @@ import React, { PureComponent } from 'react'
 export default class Nomatch extends PureComponent {
   render() {
     return (
-      <div><h1>404 error</h1>
-
-
-
-        <div>
-
-
-
-
-
-
-
-
-
-
-          ///////////////////////
-
-        <div className="card mb-3" style="max-width: 540px;">
-  <div className="row no-gutters">
-    <div className="col-md-4">
-      <img src="..." className="card-img" alt="..."/>
-    </div>
-    <div className="col-md-8">
-      <div className="card-body">
-        <h5 className="card-title">Card title</h5>
-        <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-        <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+      <div>    <div class="d-flex align-items-center justify-content-center vh-100">
+      <div class="text-center">
+          <h1 class="display-1 fw-bold font-weight-bold " >404</h1>
+          <p class="fs-3 font-weight-bold "> <span class="text-danger ">Opps!</span> Page not found.</p>
+          <p class="lead font-weight-bold ">
+              The page you’re looking for doesn’t exist.
+            </p>
+          <a href="/" class="btn btn-primary">Go Home</a>
       </div>
-    </div>
   </div>
-</div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-        </div>
+     
       </div>
     )
   }

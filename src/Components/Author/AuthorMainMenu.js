@@ -20,6 +20,7 @@ const AuthorMainMenu = () => {
     <div className="col-md-8">
       <div className="card-body">
 
+
    <h5 className="line-height card-title">New Submissions</h5>
          <div className='ml-5'>
             <h6>Submit New Manuscript</h6>
