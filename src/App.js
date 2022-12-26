@@ -25,6 +25,10 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import MySubmission from './Components/Admin/MySubmission';
 import MyPublished from './Components/Admin/MyPublished';
+import AboutUs from './Components/Shared/AboutUs';
+import Help from './Components/Shared/Help';
+import News from './Components/Shared/News';
+import Copyright from './Components/Shared/Copyright';
 export const editorContext = createContext();
 
 
@@ -75,6 +79,10 @@ useEffect(() => {
   <Route path="/submit"element= {<PrivateRoute><Submit/></PrivateRoute>}></Route>
   <Route path="/editor" element={<PrivateRoute><Editor/></PrivateRoute>}></Route>
 
+ <Route path="/about" element={<AboutUs/>}> </Route>
+ <Route path="/help" element={<Help/>}> </Route>
+ <Route path="/news" element={<News/>}> </Route>
+ <Route path="/copyright" element={<Copyright/>}> </Route>
  <Route path="*" element={<Nomatch/>}> </Route>
 
  

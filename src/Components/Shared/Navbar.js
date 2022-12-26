@@ -23,7 +23,7 @@ function Navbar() {
     return (
         <div className="">  
             <div>
-<div className="d-flex flex-row " ><a className="navbar-brand" href="#"><img  style={{height:"60px",width:"400px"}}src={logo}alt="" srcet=""/> </a></div>
+<div className="d-flex flex-row " ><a className="navbar-brand" href="/"><img  style={{height:"60px",width:"400px"}}src={logo}alt="" srcet=""/> </a></div>
 
 <div className=" d-flex flex-row-reverse pr-5">
 {user ?  <a onClick={signOutFunc} className="btn  btn-danger rounded-pill">Sign Out </a>:
