@@ -28,7 +28,9 @@ import MyPublished from './Components/Admin/MyPublished';
 import AboutUs from './Components/Shared/AboutUs';
 import Help from './Components/Shared/Help';
 import News from './Components/Shared/News';
+import OpenAccess from './Components/Shared/OpenAccess';
 import Copyright from './Components/Shared/Copyright';
+
 export const editorContext = createContext();
 
 
@@ -82,7 +84,9 @@ useEffect(() => {
  <Route path="/about" element={<AboutUs/>}> </Route>
  <Route path="/help" element={<Help/>}> </Route>
  <Route path="/news" element={<News/>}> </Route>
+ <Route path="/openaccess" element={<OpenAccess/> }> </Route>
  <Route path="/copyright" element={<Copyright/>}> </Route>
+
  <Route path="*" element={<Nomatch/>}> </Route>
 
  

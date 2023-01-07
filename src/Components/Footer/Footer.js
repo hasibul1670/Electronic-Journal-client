@@ -33,9 +33,7 @@ const Footer = () => {
             <li>
               <a href="/copyright" class="text-white">Copyright & Permissions</a>
             </li>
-            <li>
-              <a href="#!" class="text-white">Translation Rights</a>
-            </li>
+          
             <li>
               <a href="#!" class="text-white">Contact Us</a>
             </li>

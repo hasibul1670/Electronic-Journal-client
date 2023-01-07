@@ -11,6 +11,11 @@ const AttachFile = ({file,setFile}) => {
 
     return (
         <div className='p-5'>
+             <fieldset  className=' border border-primary p-5'>
+<legend className="float-none border border-warning p-2 text-success w-auto"> Attach Files</legend>
+
+
+
                
                <div className="input-group mb-3">
   <label className="input-group-text" for="inputGroupFile01">Upload</label>
@@ -21,7 +26,7 @@ const AttachFile = ({file,setFile}) => {
 
 
 
-        
+</fieldset>
   
         </div>
     );

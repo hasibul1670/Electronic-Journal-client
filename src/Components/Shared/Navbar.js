@@ -45,11 +45,16 @@ function Navbar() {
   </button>
   <div className="collapse navbar-collapse" id="navbarNav">
     <ul className="navbar-nav ml-auto">
-
+    
+    <li className="nav-right ">
+          <Link to="/" className="nav-link nav-text active">Home</Link>
+            </li>
+        
     <div className="dropdown">
   <button className="btn nav-link nav-text btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
   Subjects
   </button>
+  
   <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
     <a className="dropdown-item" href="#">Algorithm</a>
     <a className="dropdown-item" href="#">Image Processing</a>
@@ -60,6 +65,7 @@ function Navbar() {
   </div>
 </div>
      
+
      {
       user &&   <li className="nav-item active">
       <a className="nav-link nav-text" href="/dashboard">Dashboard</a>
@@ -69,22 +75,18 @@ function Navbar() {
 
     
       <li className="nav-right ">
-          <Link to="/Service" className="nav-link nav-text active">Books</Link>
+          <Link to="/book" className="nav-link nav-text active">Books</Link>
             </li>
-            <li className="nav-right ">        
-          <a className="nav-link active nav-text">Major Reference Works</a>
+        
+         
+            <li className="nav-right ">
+          <a href='/openaccess' className="nav-link active nav-text">Open Access</a>
             </li>
             <li className="nav-right ">
-          <a className="nav-link active nav-text">Resources For Partners</a>
+          <a href='/about' className="nav-link active nav-text">About Us</a>
             </li>
             <li className="nav-right ">
-          <a className="nav-link active nav-text">Open Access</a>
-            </li>
-            <li className="nav-right ">
-          <a className="nav-link active nav-text">About Us</a>
-            </li>
-            <li className="nav-right ">
-          <a className="nav-link active nav-text" >Help</a>
+          <a href='/help' className="nav-link active nav-text" >Help</a>
             </li>
       
    

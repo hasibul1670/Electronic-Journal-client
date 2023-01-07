@@ -188,12 +188,9 @@ if (index=0) {
 {/* 
 
         <AttachFile></AttachFile> */}
-      
 
-   <h1>01:{currency}</h1>
-   <h1>02:{file}</h1>
    
-   <h1>step no:{activeStep}</h1>
+<p className='mb-4'></p>
    {command}
 
               <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>

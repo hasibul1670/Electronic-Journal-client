@@ -29,6 +29,9 @@ const Selection = ({currency, setCurrency}) => {
       };
       return (
         <div>
+          <fieldset  className=' border border-primary p-5'>
+<legend className="float-none border border-warning p-2 text-success w-auto"> Select Article Type</legend>
+
                 <Box  className='ml-5'
       component="form"
       sx={{
@@ -56,6 +59,7 @@ const Selection = ({currency, setCurrency}) => {
       </div>
 
     </Box>
+    </fieldset>
         </div>
     );
 };
