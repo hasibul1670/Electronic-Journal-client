@@ -30,6 +30,7 @@ import Help from './Components/Shared/Help';
 import News from './Components/Shared/News';
 import OpenAccess from './Components/Shared/OpenAccess';
 import Copyright from './Components/Shared/Copyright';
+import VerifyEmail from './Components/NewUser/VerifyEmail';
 
 export const editorContext = createContext();
 
@@ -40,9 +41,8 @@ useEffect(() => {
   axios
   .get('http://localhost:4000/author')
   .then(res => {
-
-      console.log(res)
       setEditor(res.data);
+
 
     })
   .catch(err=>{
@@ -87,7 +87,11 @@ useEffect(() => {
  <Route path="/openaccess" element={<OpenAccess/> }> </Route>
  <Route path="/copyright" element={<Copyright/>}> </Route>
 
+ <Route path="/verifyemail" element={<VerifyEmail/>}> </Route>
+ verifyemail
+
  <Route path="*" element={<Nomatch/>}> </Route>
+
 
  
 

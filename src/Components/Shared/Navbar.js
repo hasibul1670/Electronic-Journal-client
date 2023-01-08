@@ -1,17 +1,20 @@
 import React from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { faCoffee ,faMagnifyingGlass,faShoppingCart,faUser} from '@fortawesome/free-solid-svg-icons'
 import app from '../LoginInfo/firebase.config';
 
 import logo from './../../logo/logo2.jpg';
 import { getAuth, signOut } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useContext } from 'react';
+import { editorContext } from '../../App';
+
 
 
 
 function Navbar() {
+
+  const [editor] = useContext(editorContext);
 
   const auth = getAuth(app)
   const signOutFunc=()=>{
@@ -19,6 +22,7 @@ function Navbar() {
     Navigate("/login"); 
   }
   const [user] = useAuthState(auth);
+  console.log([user]);
 
     return (
         <div className="">  
@@ -31,7 +35,7 @@ function Navbar() {
 <a  className="btn  btn-danger rounded-pill" href="/login" >Login </a>
 } 
 
-<a  className="btn  btn-primary rounded-pill mr-2" href="/mainmenu">{user?user.displayName:"Guest"}</a>
+<a  className="btn  btn-primary rounded-pill mr-2" href="/mainmenu">{user?user.email:"Guest"}</a>
 
 </div>
 

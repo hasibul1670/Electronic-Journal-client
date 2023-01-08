@@ -55,16 +55,17 @@ const ShowPassword = () => {
         else{
           setSuccess('Please Verify Your Email!!');
           signOutFunc();
+      
         }
         })
         .catch((error) => {   
-              console.log("errorrrr",error.message)
               setError(error.message);
+            
             })
    
-    event.preventDefault();
+  
 
-    // 74.2
+    
 
   }
 

@@ -1,11 +1,14 @@
 import { getAuth, signOut } from 'firebase/auth';
 import React from 'react';
+import { useContext } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Navigate } from 'react-router';
+import { editorContext } from '../../App';
 import app from '../LoginInfo/firebase.config';
 const auth = getAuth(app)
 
 const AuthorNav = () => {
+  const [editor] = useContext(editorContext);
 
   const [user] = useAuthState(auth);
  
@@ -16,6 +19,7 @@ const AuthorNav = () => {
   return (    
 
 <div>
+
 <nav className="navbar navbar-expand-lg navbar-bg-color ">
   <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span className="navbar-toggler-icon"></span>
@@ -41,7 +45,7 @@ const AuthorNav = () => {
      
 
 
-<a  className="btn  btn-primary rounded-pill mr-2" href="/dashboard" >{user?user.displayName:'No Body'} </a>
+<a  className="btn  btn-primary rounded-pill mr-2" href="/dashboard" >{user.email} </a>
 
 <a  onClick={signOutFunc} className="btn  btn-danger rounded-pill" href="/login" >Sign Out</a>
 

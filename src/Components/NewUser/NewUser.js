@@ -14,6 +14,7 @@ const NewUser = () => {
   const [signOut] = useSignOut(auth);
   const [
     createUserWithEmailAndPassword,
+    user,
     loading,
     error,
 ] = useCreateUserWithEmailAndPassword(auth);
@@ -38,14 +39,20 @@ if(loading ){
 if(error){
   signiInError=<p className='text-danger'>{error?.message}</p>
 }
+if(user){
+  navigate("/verifyemail");
+}
 
 const onSubmit =async (data) =>{
   await createUserWithEmailAndPassword(data.email,data.password);
   await sendEmailVerification(data.email);
   await signOut(data.email);
-  await updateProfile({displayName:data.firstName});
+await updateProfile({displayName:data.displayName});
+
+
+
   const authorInfoInDb ={
-    authorName:data.firstName,
+    authorName:data.displayName,
     authorEmail:data.email,
     phone:data.phone,
     postalCode:data.postalCode,
@@ -65,8 +72,9 @@ body:JSON.stringify(authorInfoInDb)
 })
 .then(res=>res.json())
 .then(data=>{
+
   
-  setSuccess(<p className=' font-weight-bold text-danger'>Verification Email is sent to {data.email}. Check Your Email inbox/spam</p>) 
+
 
 })
 
@@ -82,11 +90,12 @@ body:JSON.stringify(authorInfoInDb)
   {/* Name Section */}
 <div className="col-md-4 mb-3">
       <label for="validationCustom01">First Name :</label>
-      <input      {...register("firstName", { required: true })} 
-        aria-invalid={errors.firstName ? "true" : "false"} 
-     name="firstName" type="text" className="form-control mx-sm-3" id="validationCustom01" placeholder="First name"
+      <input
+         {...register("displayName", { required: true })}  
+        aria-invalid={errors.displayName ? "true" : "false"} 
+     name="displayName" type="text" className="form-control mx-sm-3" id="validationCustom01" placeholder="First name"
      />
-     {errors.firstName?.type === 'required' && <p className='text-danger' role="alert">First name is required</p>}
+     {errors.displayName?.type === 'required' && <p className='text-danger' role="alert">First name is required</p>}
     </div>
 
     <div className="col-md-4 mb-3">
