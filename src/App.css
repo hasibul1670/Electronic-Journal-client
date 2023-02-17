@@ -112,5 +112,8 @@ background-image:url(./logo/banner-journal.jpg)
   color: rgb(235, 205, 194) !important;
   text-decoration: none; 
 }
+.opacity{
+  opacity: 1;
 
+}
 

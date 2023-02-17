@@ -14,16 +14,16 @@ export default class Home extends PureComponent {
 <br />
 <br />
 
-<div className="card  p-5 mb-3 w-75 mx-auto">
+<div className="card opacity p-5 mb-3 w-75 mx-auto">
   <div className=" row no-gutters">
     <div className="col-md-4">
      
-      <img  style={{height:"225px",width:"165px"}}src={logo}alt="" srcet=""/>
+      <img className='image-fluid'  style={{height:"225px",width:"165px"}}src={logo}alt="" srcet=""/>
     </div>
     <div className="col-md-8">
       <div className="card-body">
-      <h5 className="card-title">International Journal of Computer and Electronics Engineering </h5>
-      <p className="card-text">ISSN (print): 0219-4678 | ISSN (online): 1793-6756</p>
+      <h5 className="card-title"> International Journal of Computer and Electronics Engineering </h5>
+      <p className="card-text">ISSN (print): 0219-46785 | ISSN (online): 1793-6756</p>
       <a href="/login" className="btn btn-primary">Submit An Article</a>
       </div>
     </div>
