@@ -15,10 +15,12 @@ import ManuscriptData from './ManuscriptData.js';
    
   const steps = [
     'Article Type Selection',
-    'Attach Files',
-    'Review Preferences',
-    'Comments',
     'Manuscript Data',
+    'Attach Files',
+    'Comments',
+    'Review Preferences',
+
+  
 
   ];
 
@@ -26,6 +28,7 @@ import ManuscriptData from './ManuscriptData.js';
     
     export default function HorizontalLinearStepper() {
       var [currency, setCurrency] = React.useState("None");
+      var [reviewer,setReviewer] = React.useState([]);
       var [file,setFile] = React.useState();
       const [activeStep, setActiveStep] = React.useState(0);
       const [skipped, setSkipped] = React.useState(new Set());
@@ -37,16 +40,20 @@ if (activeStep===0) {
   setCurrency={setCurrency}            
 ></Selection>
   
-} else if(activeStep===1){
+}
+ else if(activeStep===1){
+
+  command=<ManuscriptData></ManuscriptData>
+  
+}
+ else if(activeStep===2){
+
   command=<AttachFile  
   file={file} setFile={setFile}
   
   ></AttachFile>
- 
-  
-}
- else if(activeStep===2){
-  command=<ReviewPreference></ReviewPreference>
+
+
  
   
 }
@@ -58,8 +65,10 @@ else if(activeStep===3){
 }
 
 else if(activeStep===4){
-  command=<ManuscriptData></ManuscriptData>
  
+  command=<ReviewPreference
+ reviewer={reviewer} setReviewer={setReviewer}
+  ></ReviewPreference>
   
 }
 
@@ -75,9 +84,7 @@ else if(activeStep===4){
     
       const handleNext = (e) => {
         e.preventDefault();
-       
         let newSkipped = skipped;
-        
 
         if (isStepSkipped(activeStep)) {
           newSkipped = new Set(newSkipped.values());

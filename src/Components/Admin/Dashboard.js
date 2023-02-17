@@ -38,7 +38,8 @@ const Dashbord = () => {
        <ul>
         {
             editor.map(service=>(
-                <li key = {service._id}>{service._id}, {service.authorName}</li>
+                <li key = {service._id}>{service._id}, {service.authorName
+                }</li>
             ))
         }
        </ul>

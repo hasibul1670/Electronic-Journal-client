@@ -23,6 +23,7 @@ const currencies = [
 ]
 
 const Selection = ({currency, setCurrency}) => {
+  
     const handleChange = (event) => {
         setCurrency(event.target.value);
      

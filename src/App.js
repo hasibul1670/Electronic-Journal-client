@@ -39,7 +39,7 @@ function App() {
 const [editor, setEditor] = useState([]);    
 useEffect(() => {
   axios
-  .get('http://localhost:4000/author')
+  .get('http://localhost:4000/editor')
   .then(res => {
       setEditor(res.data);
 
