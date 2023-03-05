@@ -24,7 +24,7 @@ export default class Home extends PureComponent {
       <div className="card-body">
       <h5 className="card-title"> International Journal of Computer and Electronics Engineering </h5>
       <p className="card-text">ISSN (print): 0219-46785 | ISSN (online): 1793-6756</p>
-      <a href="/login" className="btn btn-primary">Submit An Article</a>
+      <a href="/submit" className="btn btn-primary">Submit An Article</a>
       </div>
     </div>
   </div>

@@ -4,15 +4,15 @@ import * as React from 'react';
     import Stepper from '@mui/material/Stepper';
     import Step from '@mui/material/Step';
     import StepLabel from '@mui/material/StepLabel';
-
-
-    import Button from '@mui/material/Button';
 import AttachFile from './AttachFile';
 import ReviewPreference from './ReviewPreference.js';
 import Comment from './Comment.js';
 import ManuscriptData from './ManuscriptData.js';
-
+import { useLocation, useNavigate } from 'react-router';
+import { useState } from 'react';
    
+
+
   const steps = [
     'Article Type Selection',
     'Manuscript Data',
@@ -20,47 +20,89 @@ import ManuscriptData from './ManuscriptData.js';
     'Comments',
     'Review Preferences',
 
+  ];
+
+  const onSubmit =async (data) =>{
+
+    const authorInfoInDb ={
+      authorName:data.displayName,
+      authorEmail:data.email,
+      phone:data.phone,
+      postalCode:data.postalCode,
+      authorPosition:data.position,
+      field:data.feild,
+      institutionName:data.institutionName,
+      department:data.department,
+      city:data.city,
+      }
   
 
-  ];
+
+  fetch('http://localhost:4000/submittedData',{
+  method:'POST',
+  headers:{
+    'content-type':'application/json'
+  },
+  body:JSON.stringify(authorInfoInDb)
+  })
+  .then(res=>res.json())
+  .then(data=>{
+  })
+  
+  } 
+
 
 
     
     export default function HorizontalLinearStepper() {
       var [currency, setCurrency] = React.useState("None");
       var [reviewer,setReviewer] = React.useState([]);
-      var [file,setFile] = React.useState();
+      var [comment,setComment] = React.useState({
+        comment:'',
+       });
+
+      var [data,setData] = React.useState({
+       title: '',
+        abstract: '',
+        keywords: '',
+      });
+      const [file,setFile] = useState(null);
+     
+
       const [activeStep, setActiveStep] = React.useState(0);
       const [skipped, setSkipped] = React.useState(new Set());
 
 
 let command;
 if (activeStep===0) {
-  command= <Selection currency={currency}
+
+  command= 
+  <Selection currency={currency}
   setCurrency={setCurrency}            
 ></Selection>
   
 }
  else if(activeStep===1){
 
-  command=<ManuscriptData></ManuscriptData>
+  command=<ManuscriptData
+ data={data} setData={setData}
+  ></ManuscriptData>
   
 }
  else if(activeStep===2){
 
   command=<AttachFile  
   file={file} setFile={setFile}
+ 
   
   ></AttachFile>
-
-
- 
   
 }
 
 else if(activeStep===3){
-  command=<Comment></Comment>
- 
+  command=<Comment
+  comment={comment} setComment={setComment}
+  ></Comment>
   
 }
 
@@ -71,7 +113,6 @@ else if(activeStep===4){
   ></ReviewPreference>
   
 }
-
 
 
       const isStepOptional = (step) => {
@@ -94,6 +135,16 @@ else if(activeStep===4){
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
         setSkipped(newSkipped)
         
+if(activeStep === steps.length - 1){
+  ////////////yay 
+
+
+  navigate("/dashboard");
+
+}
+
+
+
 
       };
 
@@ -107,27 +158,11 @@ else if(activeStep===4){
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
       };
     
-      // const handleSkip = () => {
-      //   if (!isStepOptional(activeStep)) {
-      //     // You probably want to guard against something like this,
-      //     // it should never occur unless someone's actively trying to break something.
-      //     throw new Error("You can't skip a step that isn't optional.");
-      //   }
     
-      //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      //   setSkipped((prevSkipped) => {
-      //     const newSkipped = new Set(prevSkipped.values());
-      //     newSkipped.add(activeStep);
-      //     return newSkipped;
-      //   });
-      // };
-    
-      const handleReset = () => {
-        setActiveStep(0);
-      };
-
  
- 
+      const navigate = useNavigate();
+      let location = useLocation();
+      let from = location.state?.from?.pathname || "/";
 
 
       return (
@@ -164,17 +199,8 @@ else if(activeStep===4){
             })}
           </Stepper>
 
-{/* 
-if (index=0) {
-  
-  <Selection currency={currency}
-  setCurrency={setCurrency}            
-></Selection>
-  
-} */}
 
-         
-
+      
           
           {activeStep === steps.length ? (
             <React.Fragment>
@@ -182,20 +208,11 @@ if (index=0) {
               <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                 <Box sx={{ flex: '1 1 auto' }} />
 
-                <Button onClick={handleReset}>Reset</Button>
+        
               </Box>
             </React.Fragment>
           ) : (
             <React.Fragment>
-              {/* <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
-
-
-              
-       
-{/* 
-
-        <AttachFile></AttachFile> */}
-
    
 <p className='mb-4'></p>
    {command}
@@ -211,21 +228,10 @@ if (index=0) {
                   Back
                 </button>
                 <Box sx={{ flex: '1 1 auto' }} />
-                {/* {isStepOptional(activeStep) && (
-                  <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                    Skip
-                  </Button>
-                )} */}
-    
-
-
-
   
       <button type="button" className="btn btn-primary btn-lg " 
     
       onClick={handleNext}>
-
-  
 
                   {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
                

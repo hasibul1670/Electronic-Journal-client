@@ -15,13 +15,6 @@ const ReviewPreference = ({reviewer,setReviewer}) => {
 
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
-
-
-  
-
-
-
-
     var [text,setText] = React.useState('');
 
 

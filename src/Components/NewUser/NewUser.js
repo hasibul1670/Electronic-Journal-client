@@ -10,6 +10,7 @@ const auth = getAuth(app )
 const NewUser = () => {
 
   const { register, formState: { errors }, handleSubmit } = useForm();
+  
   const [updateProfile] = useUpdateProfile(auth);
   const [signOut] = useSignOut(auth);
   const [
@@ -49,8 +50,6 @@ const onSubmit =async (data) =>{
   await signOut(data.email);
 await updateProfile({displayName:data.displayName});
 
-
-
   const authorInfoInDb ={
     authorName:data.displayName,
     authorEmail:data.email,
@@ -72,10 +71,6 @@ body:JSON.stringify(authorInfoInDb)
 })
 .then(res=>res.json())
 .then(data=>{
-
-  
-
-
 })
 
 } 

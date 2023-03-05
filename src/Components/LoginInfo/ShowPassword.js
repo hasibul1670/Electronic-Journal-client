@@ -3,7 +3,7 @@ import React from 'react';
 import app from './firebase.config';
 import { useLocation, useNavigate } from 'react-router';
 import { useState } from 'react';
-import {toast} from 'react-toastify';
+;
 
 const auth = getAuth(app);
 

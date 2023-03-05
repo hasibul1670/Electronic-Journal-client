@@ -2,12 +2,22 @@ import React from 'react';
 
 
 
+
 const AttachFile = ({file,setFile}) => {
-    const handleChange = (event) => {
-        setFile(event.target.value);
-     
-      };
- 
+
+  const handleFileInput = (event) => {
+
+    const file = event.target.files[0];
+    if (file && file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+
+   setFile(event.target.files[0]);
+    } else {
+      alert("Please select a Word file.");
+    }
+  };
+
+
+  console.log('Hello',file);
 
     return (
         <div className='p-5'>
@@ -18,11 +28,20 @@ const AttachFile = ({file,setFile}) => {
 
                
                <div className="input-group mb-3">
-  <label className="input-group-text" for="inputGroupFile01">Upload</label>
-  <input    onChange={handleChange} type="file" className="form-control" id="inputGroupFile01"/>
+  <label htmlFor='file' className="input-group-text">Upload a Docx File</label>
+
+  <input    type='file' 
+                        id='file' 
+                        name="file"
+                         accept=".docx" 
+                         onChange={ handleFileInput}
+
+  className="form-control"/>
 </div>
 
-
+<div>
+  <h5 className='text-success'>Your Selected File Is: {file?.name}</h5>
+</div>
 
 
 
