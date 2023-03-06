@@ -22,7 +22,7 @@ function Navbar() {
     Navigate("/login"); 
   }
   const [user] = useAuthState(auth);
-  console.log([user]);
+  
 
     return (
         <div className="">  

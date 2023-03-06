@@ -35,7 +35,8 @@ else{
 
     const handleChange = (e) => {
         setReviewer([...reviewer,e]);
-        console.log('Hello',reviewer);
+
+        console.log('Hello',reviewer[0]);
       };
 
     const closeModal = (e) => {

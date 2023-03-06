@@ -31,6 +31,7 @@ import News from './Components/Shared/News';
 import OpenAccess from './Components/Shared/OpenAccess';
 import Copyright from './Components/Shared/Copyright';
 import VerifyEmail from './Components/NewUser/VerifyEmail';
+import SuccessSubmission from './SuccessSubmission/SuccessSubmission';
 
 export const editorContext = createContext();
 
@@ -86,10 +87,17 @@ useEffect(() => {
   <Route path="/editor" element={<PrivateRoute><Editor/></PrivateRoute>}></Route>
 
  <Route path="/about" element={<AboutUs/>}> </Route>
+ 
  <Route path="/help" element={<Help/>}> </Route>
  <Route path="/news" element={<News/>}> </Route>
  <Route path="/openaccess" element={<OpenAccess/> }> </Route>
  <Route path="/copyright" element={<Copyright/>}> </Route>
+
+
+
+ <Route path="/SuccessSubmission" element={<SuccessSubmission/>}> </Route>
+
+
 
  <Route path="/verifyemail" element={<VerifyEmail/>}> </Route>
  verifyemail

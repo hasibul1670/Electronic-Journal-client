@@ -1,8 +1,5 @@
 import React from 'react';
-
-
-
-
+import { Buffer } from 'buffer';
 const AttachFile = ({file,setFile}) => {
 
   const handleFileInput = (event) => {
@@ -10,14 +7,23 @@ const AttachFile = ({file,setFile}) => {
     const file = event.target.files[0];
     if (file && file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
 
-   setFile(event.target.files[0]);
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+
+      reader.onload = () => {
+        const buffer = Buffer.from(reader.result);
+    
+      };
+    
+      setFile(file);
+    
+
     } else {
       alert("Please select a Word file.");
     }
   };
 
 
-  console.log('Hello',file);
 
     return (
         <div className='p-5'>
@@ -30,7 +36,7 @@ const AttachFile = ({file,setFile}) => {
                <div className="input-group mb-3">
   <label htmlFor='file' className="input-group-text">Upload a Docx File</label>
 
-  <input    type='file' 
+  <input    type='file' enctype="multipart/form-data"
                         id='file' 
                         name="file"
                          accept=".docx" 
@@ -40,7 +46,9 @@ const AttachFile = ({file,setFile}) => {
 </div>
 
 <div>
-  <h5 className='text-success'>Your Selected File Is: {file?.name}</h5>
+  <h5 className='text-success'>Your Selected File Is: &nbsp;  <span className='text-danger'>
+  {file?.name}
+      </span></h5>
 </div>
 
 

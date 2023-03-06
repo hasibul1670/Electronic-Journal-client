@@ -7,6 +7,7 @@ import * as React from 'react';
 import AttachFile from './AttachFile';
 import ReviewPreference from './ReviewPreference.js';
 import Comment from './Comment.js';
+
 import ManuscriptData from './ManuscriptData.js';
 import { useLocation, useNavigate } from 'react-router';
 import { useState } from 'react';
@@ -22,46 +23,15 @@ import { useState } from 'react';
 
   ];
 
-  const onSubmit =async (data) =>{
-
-    const authorInfoInDb ={
-      authorName:data.displayName,
-      authorEmail:data.email,
-      phone:data.phone,
-      postalCode:data.postalCode,
-      authorPosition:data.position,
-      field:data.feild,
-      institutionName:data.institutionName,
-      department:data.department,
-      city:data.city,
-      }
-  
-
-
-  fetch('http://localhost:4000/submittedData',{
-  method:'POST',
-  headers:{
-    'content-type':'application/json'
-  },
-  body:JSON.stringify(authorInfoInDb)
-  })
-  .then(res=>res.json())
-  .then(data=>{
-  })
-  
-  } 
-
-
+ 
 
     
     export default function HorizontalLinearStepper() {
-      var [currency, setCurrency] = React.useState("None");
-      var [reviewer,setReviewer] = React.useState([]);
-      var [comment,setComment] = React.useState({
-        comment:'',
-       });
+      var [selectedOption, setSelectedOption] =useState('');
+      var [reviewer,setReviewer] = useState([]);
+      var [comment,setComment] =useState('');
 
-      var [data,setData] = React.useState({
+      var [data,setData] =useState({
        title: '',
         abstract: '',
         keywords: '',
@@ -69,16 +39,16 @@ import { useState } from 'react';
       const [file,setFile] = useState(null);
      
 
-      const [activeStep, setActiveStep] = React.useState(0);
-      const [skipped, setSkipped] = React.useState(new Set());
+      const [activeStep, setActiveStep] =useState(0);
+      const [skipped, setSkipped] =useState(new Set());
 
 
 let command;
 if (activeStep===0) {
-
   command= 
-  <Selection currency={currency}
-  setCurrency={setCurrency}            
+  <Selection selectedOption={selectedOption}
+
+  setSelectedOption={setSelectedOption}            
 ></Selection>
   
 }
@@ -122,9 +92,11 @@ else if(activeStep===4){
       const isStepSkipped = (step) => {
         return skipped.has(step);
       };
-    
+      const isSelectionValid = selectedOption;
       const handleNext = (e) => {
+      
         e.preventDefault();
+
         let newSkipped = skipped;
 
         if (isStepSkipped(activeStep)) {
@@ -136,24 +108,13 @@ else if(activeStep===4){
         setSkipped(newSkipped)
         
 if(activeStep === steps.length - 1){
-  ////////////yay 
-
-
-  navigate("/dashboard");
+  onSubmit();
+  navigate("/SuccessSubmission");
 
 }
-
-
-
-
       };
 
- 
 
- 
-    
-
- 
       const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
       };
@@ -163,6 +124,40 @@ if(activeStep === steps.length - 1){
       const navigate = useNavigate();
       let location = useLocation();
       let from = location.state?.from?.pathname || "/";
+
+
+
+      const onSubmit =async () =>{
+        const submissionInfoInDb ={
+        fileName:file?.name,
+      articleType:selectedOption,
+          title:data.title,
+          abstract:data.abstract,
+          keywords:data.keywords,
+    file:file,
+    comment:comment.comment,
+    reviewPreference:reviewer[0]
+         
+          }
+      
+    
+    
+      fetch('http://localhost:4000/submittedData',{
+      method:'POST',
+      headers:{
+        'content-type':'application/json'
+      },
+      body:JSON.stringify(submissionInfoInDb)
+      })
+      .then(res=>res.json())
+      .then(data=>{
+        console.log(' data submitted succcessfiully');
+      })
+      
+      } 
+    
+    
+
 
 
       return (
@@ -176,32 +171,17 @@ if(activeStep === steps.length - 1){
                         
               }
               if (isStepSkipped(index)) {
-                stepProps.completed = false;
-               
+                stepProps.completed = false;               
               }
-            
-       
 
-             
-              
               return (
                 <Step key={label} {...stepProps}>
 
               <StepLabel {...labelProps}>{label}</StepLabel>
-           
-         
-
-
                 </Step>
-
- 
               );
             })}
           </Stepper>
-
-
-      
-          
           {activeStep === steps.length ? (
             <React.Fragment>
              
@@ -221,7 +201,6 @@ if(activeStep === steps.length - 1){
                 <button
                 type="button" className="btn btn-primary btn-lg "
            
-               
                   onClick={handleBack}
                   sx={{ mr: 1 }}
                 >
@@ -230,7 +209,8 @@ if(activeStep === steps.length - 1){
                 <Box sx={{ flex: '1 1 auto' }} />
   
       <button type="button" className="btn btn-primary btn-lg " 
-    
+      disabled={!isSelectionValid}
+
       onClick={handleNext}>
 
                   {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
