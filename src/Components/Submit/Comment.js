@@ -6,7 +6,7 @@ const Comment = ({comment,setComment}) => {
     const handleChange = (event) => {
         const { name, value } = event.target;
         setComment((prevFormData) => ({ ...prevFormData, [name]: value }));
-     console.log('Hello,',comment.comment);
+     console.log('Hello,',comment);
       };
 
 

@@ -1,54 +1,74 @@
-import React from 'react';
-import { Buffer } from 'buffer';
-const AttachFile = ({file,setFile}) => {
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import axios from 'axios';
+const AttachFile = ({file,setFile,url, setUrl}) => {
+ 
+ 
 
-  const handleFileInput = (event) => {
+  const [message, setMessage] = useState('');
+  const [fileUpload, setFileUpload] = useState(null);
 
-    const file = event.target.files[0];
-    if (file && file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
 
-      const reader = new FileReader();
-      reader.readAsArrayBuffer(file);
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+    setFileUpload(event.target.files[0]);
 
-      reader.onload = () => {
-        const buffer = Buffer.from(reader.result);
-    
-      };
-    
-      setFile(file);
-    
+  };
 
-    } else {
-      alert("Please select a Word file.");
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await axios.post("http://localhost:4000/file", formData);
+
+      setMessage(`File uploaded successfully. Click Next Button For the next steps.`);
+      const fileUrl=response.data;
+      setUrl(fileUrl)
+      console.log('Hello',url);
+
+
+    } catch (error) {
+      console.error(error);
+      setMessage('Error uploading file');
     }
+
+    setFileUpload(null);
   };
 
 
 
     return (
-        <div className='p-5'>
-             <fieldset  className=' border border-primary p-5'>
-<legend className="float-none border border-warning p-2 text-success w-auto"> Attach Files</legend>
+      <div className="container-fluid!important">
+     
+             <fieldset style={{ width: '100%' }} className='border border-primary p-5'>
 
+<legend className="float-none  border border-warning p-2 text-success w-auto"> Attach Files</legend>
+<div className='row'>
+<div class="col-md-6  ">
+  <h1>Upload a File</h1>
+  <form  onSubmit={handleSubmit}>
+    <input type="file" accept='.docx' name="file" onChange={handleFileChange} />
+<br/>
+    {fileUpload &&(
+    <button className='btn mt-4 btn-secondary' type="submit">Upload</button>
+      )}
 
-
-               
-               <div className="input-group mb-3">
-  <label htmlFor='file' className="input-group-text">Upload a Docx File</label>
-
-  <input    type='file' enctype="multipart/form-data"
-                        id='file' 
-                        name="file"
-                         accept=".docx" 
-                         onChange={ handleFileInput}
-
-  className="form-control"/>
+  </form>
+  <p></p>
+  <h6  className='text-primary'>{message}</h6>
 </div>
 
-<div>
-  <h5 className='text-success'>Your Selected File Is: &nbsp;  <span className='text-danger'>
+
+<div class="col-md-6   ">
+
+  <h4 className='text-success'>Your{url? ` Uploaded ` : ` Selected ` }File Is: &nbsp;  <span className='text-danger'>
   {file?.name}
-      </span></h5>
+      </span></h4>
+</div>
+
 </div>
 
 
@@ -56,6 +76,8 @@ const AttachFile = ({file,setFile}) => {
 </fieldset>
   
         </div>
+
+     
     );
 };
 

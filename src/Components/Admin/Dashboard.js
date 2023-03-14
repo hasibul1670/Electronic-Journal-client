@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useContext } from 'react';
-import { editorContext } from '../../App';
+import { dataContext, editorContext} from '../../App';
 import AuthorNav from '../Author/AuthorNav';
 import { Outlet } from 'react-router';
 import { Link } from 'react-router-dom';
 
 const Dashbord = () => {
+    const [fileName,fileType,fileData] = useContext(dataContext);
     const [editor] = useContext(editorContext);
+
+   
+       
+
     return (
         <div>
             <AuthorNav/>
@@ -34,15 +39,29 @@ const Dashbord = () => {
   <Outlet/>
 </div>
        
+<br />
+
+
 
        <ul>
         {
             editor.map(service=>(
-                <li key = {service._id}>{service._id}, {service.authorName
-                }</li>
+                <li key = {service._id}>
+                  {service._id}
+                </li>
             ))
         }
        </ul>
+
+<div>
+        <h2>{fileName}</h2>
+        <p>{fileType}</p>
+        <iframe src={fileData} title={fileName} width="100%" height="500px" />
+      </div>
+       
+
+
+
         </div>
         </div>
     );

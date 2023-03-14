@@ -33,17 +33,15 @@ else{
    
     };
 
-    const handleChange = (e) => {
-        setReviewer([...reviewer,e]);
-
-        console.log('Hello',reviewer[0]);
-      };
+   
 
     const closeModal = (e) => {
       setModalIsOpen(false);
-      handleChange(e);
+      setReviewer([...reviewer,e]);
+      console.log('Hello000',reviewer[0]);
     };
 
+  
 
     return (
         <div className='p-4'>
@@ -73,7 +71,7 @@ else{
 
            <h3 className='border p-2 text-primary'> Your Selected Reviewer :
            <span className='text-success'>
-            { reviewer}
+            {reviewer}
            </span>
         </h3>
            <p></p>

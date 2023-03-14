@@ -18,7 +18,9 @@ import ForgetPass from './Components/NewUser/ForgetPass';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 import Dashbord from './Components/Admin/Dashboard';
 import Editor from './Components/Editor/Editor';
+import Test from './Components/Test/Test';
 import { createContext } from 'react';
+
 import { ToastContainer} from 'react-toastify';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -32,8 +34,10 @@ import OpenAccess from './Components/Shared/OpenAccess';
 import Copyright from './Components/Shared/Copyright';
 import VerifyEmail from './Components/NewUser/VerifyEmail';
 import SuccessSubmission from './SuccessSubmission/SuccessSubmission';
+import JSZip from "jszip";
 
 export const editorContext = createContext();
+export const dataContext = createContext();
 
 
 function App() {
@@ -42,21 +46,52 @@ function App() {
   
 
 const [editor, setEditor] = useState([]);    
+const [submittedFile, setSubmittedFile] = useState([]);    
+const [fileData, setFileData] = useState(null);
+
+
 useEffect(() => {
   axios
   .get('http://localhost:4000/editor')
   .then(res => {
       setEditor(res.data);
 
+     // console.log('Hello01',res.data);
+    })
+  .catch(err=>{
+     
+  })
+}, [])
+
+useEffect(() => {
+  const url = 'http://localhost:4000/submittedData';
+
+  axios
+  .get(url)
+  .then(res => {
+setSubmittedFile(res.data.data);
+
+
+console.log('Hello',submittedFile);
 
     })
   .catch(err=>{
-      console.log(err)
+     
   })
-}, [])
+
+  }, []);
+
+
+
+
+
+
+
+
   return (
 
     <editorContext.Provider value={[editor,setEditor]}>
+      <dataContext.Provider value={[submittedFile]}>
     <Router>
   <Routes>
 
@@ -89,6 +124,9 @@ useEffect(() => {
  <Route path="/about" element={<AboutUs/>}> </Route>
  
  <Route path="/help" element={<Help/>}> </Route>
+ 
+ <Route path="/test" element={<Test/>}> </Route>
+
  <Route path="/news" element={<News/>}> </Route>
  <Route path="/openaccess" element={<OpenAccess/> }> </Route>
  <Route path="/copyright" element={<Copyright/>}> </Route>
@@ -112,6 +150,7 @@ useEffect(() => {
 
     </Router>
     <ToastContainer/>
+    </dataContext.Provider>
     </editorContext.Provider>
 
 

@@ -11,7 +11,12 @@ import Comment from './Comment.js';
 import ManuscriptData from './ManuscriptData.js';
 import { useLocation, useNavigate } from 'react-router';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import axios from 'axios';
    
+
+
+
 
 
   const steps = [
@@ -30,6 +35,7 @@ import { useState } from 'react';
       var [selectedOption, setSelectedOption] =useState('');
       var [reviewer,setReviewer] = useState([]);
       var [comment,setComment] =useState('');
+      const [url, setUrl] = useState(null);
 
       var [data,setData] =useState({
        title: '',
@@ -63,8 +69,7 @@ if (activeStep===0) {
 
   command=<AttachFile  
   file={file} setFile={setFile}
- 
-  
+url={url} setUrl={setUrl}
   ></AttachFile>
   
 }
@@ -128,32 +133,44 @@ if(activeStep === steps.length - 1){
 
 
       const onSubmit =async () =>{
-        const submissionInfoInDb ={
-        fileName:file?.name,
-      articleType:selectedOption,
-          title:data.title,
-          abstract:data.abstract,
-          keywords:data.keywords,
-    file:file,
-    comment:comment.comment,
-    reviewPreference:reviewer[0]
-         
-          }
+
+
       
     
+console.log('Hello rev',reviewer[0]);
+      
+      const formData = new FormData();
     
-      fetch('http://localhost:4000/submittedData',{
-      method:'POST',
-      headers:{
-        'content-type':'application/json'
-      },
-      body:JSON.stringify(submissionInfoInDb)
-      })
-      .then(res=>res.json())
-      .then(data=>{
+   
+      formData.append('articleType', selectedOption);
+      formData.append('title', data.title);
+      formData.append('abstract', data.abstract);
+      formData.append('keyword', data.keywords);
+      formData.append('url', url);
+      formData.append('fileName', file?.name);
+      formData.append('comment', comment.comment);
+      formData.append('reviewer[0]',reviewer);
+
+
+
+
+      try {
+        const response = await axios.post('http://localhost:4000/submittedData', formData, {
+          method:'POST',
+          headers:{
+            'content-type':'application/json'
+          },
+        });
+  
+        console.log(response.data);
         console.log(' data submitted succcessfiully');
-      })
       
+      } catch (error) {
+        console.error(error);
+      }
+
+
+
       } 
     
     
