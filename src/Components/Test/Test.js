@@ -1,47 +1,159 @@
-import { useEffect, useState } from "react";
-import JSZip from "jszip";
-import axios from "axios";
-import * as docx from 'docx';
-import { saveAs } from 'file-saver';
+import React, { useState } from "react";
+import { Steps, Form, Input, Button } from "antd";
+import {
+  CheckCircleFilled,
+  LoginOutlined,
+  ProfileOutlined,
+} from "@ant-design/icons";
 
-function Test(docxFile ) {
- 
+function Test() {
+  const [current, setCurrent] = useState(0);
+  const [loginDetails, setLoginDetails] = useState(null);
+  const [profileDetails, setProfileDetails] = useState(null);
+  const onFinishedLoginForm = (values) => {
+    setLoginDetails(values);
+    setCurrent(1);
+  };
+  const onFinishedProfileForm = (values) => {
+    setProfileDetails(values);
+    setCurrent(2);
+  };
+  const froms = [
+    <LoginForm onFinish={onFinishedLoginForm} initialValues={loginDetails} />,
+    <ProfileForm
+      onFinish={onFinishedProfileForm}
+      initialValues={profileDetails}
+    />,
+    <Finish />,
+  ];
 
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    axios.get('http://localhost:4000/submittedData')
-      .then(response => {
-        setData(response.data);
-        console.log('Hello',response.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }, []);
-
-
+  const isStepDisable = (stepNumber) => {
+    if (stepNumber === 0) {
+      return false;
+    }
+    if (stepNumber === 1) {
+      return loginDetails === null;
+    }
+    if (stepNumber === 2) {
+      return loginDetails === null || profileDetails===null;
+    }
+  };
 
   return (
-    <div>
-    <h1>hello world</h1>
-    <ul>
-      {data.map(item => (
-        <li>
- <p>{item.fileName}</p>
- <p>{item.keyword}</p>
- <p>rev:{item.reviewer}</p>
- <p>{item._id}</p>
-
-<a href={item.url}>download link</a>
-        </li>
-       
-        
-      ))}
-    </ul>
- 
-
+    <div className="App">
+      <h2>Hello form</h2>
+      <Steps
+        style={{ padding: "32px 16px" }}
+        onChange={setCurrent}
+        current={current}
+      >
+        <Steps.Step
+          disabled={isStepDisable(0)}
+          title="Login"
+          icon={<LoginOutlined />}
+        />
+        <Steps.Step
+          disabled={isStepDisable(1)}
+          title="Profile"
+          icon={<ProfileOutlined />}
+        />
+        <Steps.Step
+          disabled={isStepDisable(2)}
+          title="Finished"
+          icon={<CheckCircleFilled />}
+        />
+      </Steps>
+      {froms[current]}
     </div>
   );
-};
-            export default Test;
+}
+function LoginForm({ onFinish, initialValues }) {
+  return (
+    <Form
+      onFinish={onFinish}
+      initialValues={initialValues}
+      className=" container align-items-center w-25"
+    >
+      <Form.Item
+        label="Email"
+        name={"email"}
+        rules={[
+          {
+            required: true,
+            type: "email",
+            message: "Please Enter Your Email Adress",
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="Password"
+        name={"password"}
+        rules={[
+          {
+            required: true,
+
+            message: "Please Enter Your Password Adress",
+          },
+        ]}
+      >
+        <Input.Password />
+      </Form.Item>
+      <Button type="primary" htmlType="submit">
+        Continue
+      </Button>
+    </Form>
+  );
+}
+function ProfileForm({ onFinish, initialValues }) {
+  return (
+    <Form
+      onFinish={onFinish}
+      initialValues={initialValues}
+      className=" container align-items-center w-25"
+    >
+      <Form.Item
+        label="First Name"
+        name={"Last Name"}
+        rules={[
+          {
+            required: true,
+
+            message: "Please Enter Your First Name",
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="Last NAme"
+        name={"lastName"}
+        rules={[
+          {
+            required: true,
+
+            message: "Please Enter Your Last Name",
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+      <Button type="primary" htmlType="submit">
+        Continue
+      </Button>
+    </Form>
+  );
+}
+function Finish() {
+  return (
+    <>
+      <h1>You are all set</h1>
+      <Button type="primary">Submit</Button>
+    </>
+  );
+}
+
+export default Test;

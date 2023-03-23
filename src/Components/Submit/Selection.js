@@ -4,6 +4,10 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 
 const currencies = [
+  {
+    value: 'Null',
+    label: 'None',
+  },
     {
       value: 'Research Paper',
       label: 'Research Paper',
@@ -22,8 +26,6 @@ const Selection = ({selectedOption, setSelectedOption}) => {
   
  let handleChange = (event) => {
       setSelectedOption(event.target.value);
-
-        console.log("hello",selectedOption);
      
       };
       return (
@@ -36,6 +38,7 @@ const Selection = ({selectedOption, setSelectedOption}) => {
 <div className="form-group">
 <label className='font-weight-bold' htmlFor="dropdown">Select Article Type:</label>
       <select className='border font-weight-bold w-75 border-secondary form-control' id="dropdown" value={selectedOption} onChange={handleChange}>
+      <option value="">None</option>
         <option value="Research Paper">Research Paper</option>
         <option value="Review Paper">Review Paper</option>
         <option value="Special Issue">Special Issue</option>
