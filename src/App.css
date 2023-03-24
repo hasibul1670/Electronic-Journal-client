@@ -116,4 +116,14 @@ background-image:url(./logo/banner-journal.jpg)
   opacity: 1;
 
 }
+#myBtn:enabled {
+  background-color: #0926ff; /* Blue */
+  color: #ffffff; /* White */
+}
+
+/* Styles for disabled button */
+#myBtn:disabled {
+  background-color: #b7a2a2; /* Grey */
+  color: #0c0c0c; /* White */
+}
 

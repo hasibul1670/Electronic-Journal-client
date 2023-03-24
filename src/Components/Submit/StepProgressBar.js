@@ -16,6 +16,7 @@ import { getAuth, signOut } from "firebase/auth";
 import axios from "axios";
 import { useAuthState } from "react-firebase-hooks/auth";
 import app from "../LoginInfo/firebase.config";
+import { DisabledByDefault } from "@mui/icons-material";
 const auth = getAuth(app);
 
 const steps = [
@@ -38,66 +39,30 @@ export default function HorizontalLinearStepper() {
     keywords: "",
   });
   const [file, setFile] = useState(null);
-
   const [activeStep, setActiveStep] = useState(0);
-  const [skipped, setSkipped] = useState(new Set());
-
-  let command;
-  if (activeStep === 0) {
-    command = (
-      <Selection
-        selectedOption={selectedOption}
-        setSelectedOption={setSelectedOption}
-      ></Selection>
-    );
-  } else if (activeStep === 1) {
-    command = <ManuscriptData data={data} setData={setData}></ManuscriptData>;
-  } else if (activeStep === 2) {
-    command = (
-      <AttachFile
-        file={file}
-        setFile={setFile}
-        url={url}
-        setUrl={setUrl}
-      ></AttachFile>
-    );
-  } else if (activeStep === 3) {
-    command = <Comment comment={comment} setComment={setComment}></Comment>;
-  } else if (activeStep === 4) {
-    command = (
-      <ReviewPreference
-        reviewer={reviewer}
-        setReviewer={setReviewer}
-      ></ReviewPreference>
-    );
-  }
-
-  const isStepOptional = (step) => {
-    return step === 1;
+const dataCheck= data.title && data.keywords && data.abstract;
+  const isDisabled = () => {
+    switch (activeStep) {
+      case 0:
+        return !selectedOption;
+      case 1:
+        return !dataCheck;
+      case 2:
+        return !url;
+      case 3:
+        return !comment;
+      case 4:
+        return !reviewer[0];
+      default:
+        return true;
+    }
   };
 
-  const isStepSkipped = (step) => {
-    return skipped.has(step);
-  };
-  const isSelectionValid = selectedOption;
-  const isDisabled = !selectedOption ;
-
-  const [formValidated, setFormValidated] = useState(false);
-  
   const handleNext = (e) => {
     e.preventDefault();
-
-    let newSkipped = skipped;
-
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-    }
-
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
 
-    if (activeStep === steps.length - 1) {
+    if(activeStep === steps.length - 1) {
       onSubmit();
       navigate("/SuccessSubmission");
     }
@@ -108,11 +73,7 @@ export default function HorizontalLinearStepper() {
   };
 
   const navigate = useNavigate();
-  let location = useLocation();
-  let from = location.state?.from?.pathname || "/";
-
   const [user] = useAuthState(auth);
-
 
   const onSubmit = async () => {
     const formData = new FormData();
@@ -147,62 +108,108 @@ export default function HorizontalLinearStepper() {
   };
 
   return (
-    <Box className="p-5" sx={{ width: "100%" }}>
-      <Stepper alternativeLabel activeStep={activeStep}>
-        {steps.map((label, index) => {
-          const stepProps = {};
-          const labelProps = {};
-          if (isStepOptional(index)) {
-          }
-          if (isStepSkipped(index)) {
-            stepProps.completed = false;
-          }
+    <div>
+      <Box className="p-5" sx={{ width: "100%" }}>
+        <Stepper alternativeLabel activeStep={activeStep}>
+          {steps.map((label, index) => {
+            const stepProps = {};
+            const labelProps = {};
 
-          return (
-            <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
-      {activeStep === steps.length ? (
-        <React.Fragment>
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Box sx={{ flex: "1 1 auto" }} />
-          </Box>
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-          <p className="mb-4"></p>
-          {command}
+            return (
+              <Step key={label} {...stepProps}>
+                <StepLabel {...labelProps}>{label}</StepLabel>
+              </Step>
+            );
+          })}
+        </Stepper>
 
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <button
-              type="button"
-              className="btn btn-primary btn-lg "
-              onClick={handleBack}
-              sx={{ mr: 1 }}
-            >
-              Back
-            </button>
-            <Box sx={{ flex: "1 1 auto" }} />
+        {activeStep === steps.length ? (
+          <>
+            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+              <Box sx={{ flex: "1 1 auto" }} />
+            </Box>
+          </>
+        ) : (
+          <>
+            {activeStep === 0 && (
+              <div>
+                <Selection
+                  selectedOption={selectedOption}
+                  setSelectedOption={setSelectedOption}
+                ></Selection>
+              </div>
+            )}
 
-            <button
-              type="button"
-              className="btn btn-primary btn-lg "
-              disabled={isDisabled}
-              onClick={handleNext}
-            >
-              {activeStep === steps.length - 1 ? "Submit" :
+            {activeStep === 1 && (
+              <div>
+                <ManuscriptData data={data} setData={setData}></ManuscriptData>;
+              </div>
+            )}
 
-              
-              "Next"
-              
-              }
-            </button>
-          </Box>
-        </React.Fragment>
-      )}
-    </Box>
+            {activeStep === 2 && (
+              <div>
+                <AttachFile
+                  file={file}
+                  setFile={setFile}
+                  url={url}
+                  setUrl={setUrl}
+                ></AttachFile>
+              </div>
+            )}
+            {activeStep === 3 && (
+              <div>
+                <Comment comment={comment} setComment={setComment}></Comment>;
+              </div>
+            )}
+            {activeStep === 4 && (
+              <div>
+                <ReviewPreference
+                  reviewer={reviewer}
+                  setReviewer={setReviewer}
+                ></ReviewPreference>
+              </div>
+            )}
+
+            <p className="mb-4"></p>
+
+            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+              <button
+                
+                className="btn btn-primary btn-lg "
+                onClick={handleBack} disabled={activeStep === 0} 
+                sx={{ mr: 1 }}
+              >
+             Previous
+              </button>
+              <Box sx={{ flex: "1 1 auto" }} />
+
+            
+                   {activeStep < 5 && (
+              <button 
+              className="btn btn-primary btn-lg " id="myBtn" onClick={handleNext} disabled={isDisabled()}>
+                Next
+              </button>
+            )}
+
+            {activeStep === 5 && (
+              <button onClick={onSubmit}  disabled={isDisabled()}>
+                Submit
+              </button>
+            )}
+
+            
+            </Box>
+
+       
+
+
+          </>
+        )}
+      </Box>
+    </div>
   );
 }
+
+
+
+
