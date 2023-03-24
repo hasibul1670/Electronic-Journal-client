@@ -51,7 +51,7 @@ const FullDetails = () => {
             });
           }, [id]);;
 
-          console.log('Hello',item);
+     
 
     return (
         <div className='container-fluid'>

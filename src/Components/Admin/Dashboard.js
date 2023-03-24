@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleInfo, faCoffee, faDownload, faInfo } from '@fortawesome/free-solid-svg-icons'
 import { useParams } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 import { Outlet } from 'react-router';
 import { Link } from 'react-router-dom';
 
@@ -15,17 +17,40 @@ import Test from '../Test/Test';
 import ChartComponent from './ChartComponent';
 
 
+
 const Dashbord = () => {
+
+  
 
   const [data, setData] = useState([]);
 
   useEffect(() => {
     axios.get('http://localhost:4000/submittedData')
-      .then(response => setData(response.data))
+      .then(response =>
+        {
+          setData(response.data)
+          console.log('Hello',response.data._id);
+        } )
       .catch(error => console.error(error));
    
   }, []);
 
+  const [isDeleted, setIsDeleted] = useState(false);
+
+
+  const handleDelete = (id) => {
+    axios
+      .delete(`http://localhost:4000/submittedData/${id}`)
+      .then((response) => {
+        setIsDeleted(response.data); 
+          toast.success('Item deleted successfully!');
+          setData([]);
+      })
+      .catch((error) => {
+        toast.error('An error occurred while deleting this Item.');
+        
+      });
+  };
   
     const [fileName,fileType,fileData] = useContext(dataContext);
     const [editor] = useContext(editorContext);
@@ -68,6 +93,10 @@ const Dashbord = () => {
             <td>{item.reviewer}</td>   
             <td>  <Link to={`/fulldetails/${item._id}`}>
               See Details <FontAwesomeIcon icon={faCircleInfo}/> </Link> </td>
+              <td><button
+              onClick={()=>handleDelete(item._id)}
+               className='btn btn-danger' >Delete</button> </td>   
+                 
           </tr>
         ))}
       </tbody>
@@ -79,9 +108,9 @@ const Dashbord = () => {
           return (
             <Card>
               <Card.Body>
-                <Card.Title>Orders</Card.Title>
+                <Card.Title>Total Publish</Card.Title>
                 <Card.Text>
-                  This is the orders page.
+                  This is the total Publish Page
                 </Card.Text>
               </Card.Body>
             </Card>
@@ -90,9 +119,9 @@ const Dashbord = () => {
           return (
             <Card>
               <Card.Body>
-                <Card.Title>Customers</Card.Title>
+                <Card.Title>Under Review</Card.Title>
                 <Card.Text>
-                  This is the customers page.
+                  This is the Under Review section
                 </Card.Text>
               </Card.Body>
             </Card>

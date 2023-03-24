@@ -16,12 +16,12 @@ const ReviewerList = (props) => {
           {editor.map((service) => (
             <li
               style={styles}
-              className="list-group-item font-weight-bold"
+              className="list-group-item border font-weight-bold"
               key={service._id}
             >
-              {service.name}
-              <br /> {service.email}
-              <p></p>
+              <h5 className="font-weight-bold">{service.name}</h5>
+              <h6 className="font-weight-bold"> {service.email}</h6>
+
               <button
                 className="btn btn-primary"
                 onClick={() => closeModal(service.name, service.email)}
