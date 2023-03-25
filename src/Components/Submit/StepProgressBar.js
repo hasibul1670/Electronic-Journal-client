@@ -40,7 +40,9 @@ export default function HorizontalLinearStepper() {
   });
   const [file, setFile] = useState(null);
   const [activeStep, setActiveStep] = useState(0);
-const dataCheck= data.title && data.keywords && data.abstract;
+
+  const dataCheck = data.title && data.keywords && data.abstract;
+
   const isDisabled = () => {
     switch (activeStep) {
       case 0:
@@ -59,10 +61,9 @@ const dataCheck= data.title && data.keywords && data.abstract;
   };
 
   const handleNext = (e) => {
-    e.preventDefault();
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
-    if(activeStep === steps.length - 1) {
+    if (activeStep === steps.length - 1) {
       onSubmit();
       navigate("/SuccessSubmission");
     }
@@ -174,42 +175,36 @@ const dataCheck= data.title && data.keywords && data.abstract;
 
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               <button
-                
                 className="btn btn-primary btn-lg "
-                onClick={handleBack} disabled={activeStep === 0} 
+                onClick={() => handleBack()}
+                disabled={activeStep === 0}
                 sx={{ mr: 1 }}
               >
-             Previous
+                Previous
               </button>
+
               <Box sx={{ flex: "1 1 auto" }} />
 
-            
-                   {activeStep < 5 && (
-              <button 
-              className="btn btn-primary btn-lg " id="myBtn" onClick={handleNext} disabled={isDisabled()}>
-                Next
-              </button>
-            )}
+              {activeStep < 5 && (
+                <button
+                  className="btn btn-primary btn-lg "
+                  id="myBtn"
+                  onClick={() => handleNext()}
+                  disabled={isDisabled()}
+                >
+                  Next
+                </button>
+              )}
 
-            {activeStep === 5 && (
-              <button onClick={onSubmit}  disabled={isDisabled()}>
-                Submit
-              </button>
-            )}
-
-            
+              {activeStep === 5 && (
+                <button onClick={() => onSubmit()} disabled={isDisabled()}>
+                  Submit
+                </button>
+              )}
             </Box>
-
-       
-
-
           </>
         )}
       </Box>
     </div>
   );
 }
-
-
-
-

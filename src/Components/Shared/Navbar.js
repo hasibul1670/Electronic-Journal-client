@@ -2,27 +2,45 @@ import React from "react";
 import { Link, Navigate } from "react-router-dom";
 
 import app from "../LoginInfo/firebase.config";
-
 import logo from "./../../logo/logo3.png";
 import { getAuth, signOut } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useContext } from "react";
-import { editorContext } from "../../App";
+import { authorContext, editorContext } from "../../App";
+import { useState } from "react";
 
 function Navbar() {
   const [editor] = useContext(editorContext);
-
+  const [author] = useContext(authorContext);
+  const [name, setName] = useState("");
   const auth = getAuth(app);
+
   const signOutFunc = () => {
     signOut(auth);
     Navigate("/login");
   };
+
+
+
+  <ul>
+  {author.map((item, index) => (
+    <li key={index}>{item.email}</li>
+    
+  
+  ))}
+   
+</ul>
+
   const [user] = useAuthState(auth);
+
+
+
+  console.log("Hello", user.email);
 
   return (
     <div className="">
       <div className="d-flex bd-highlight">
-        <div  className="mr-auto p-2 bd-highlight">
+        <div className="mr-auto p-2 bd-highlight">
           <a className="navbar-brand" href="/">
             <img
               style={{ height: "80px", width: "400px" }}
@@ -35,7 +53,11 @@ function Navbar() {
 
         <div className="  p-2">
           {user ? (
-            <a onClick={signOutFunc} className="btn mr-2 btn-danger rounded-pill">
+            <a
+              onClick={signOutFunc}
+              href="/"
+              className="btn mr-2 btn-danger rounded-pill"
+            >
               Sign Out{" "}
             </a>
           ) : (
@@ -45,14 +67,11 @@ function Navbar() {
           )}
 
           <a className="btn  btn-primary rounded-pill mr-2" href="/mainmenu">
-            {user ? user.email : "Guest"}
+            {user ? user.displayName : "Guest"}
           </a>
         </div>
       </div>
 
-
-
-      
       <br />
       <div className="navbar-bg-color d-flex justify-content-center">
         <nav className=" ml-5 mr-5 navbar navbar-expand-lg navbar-light">

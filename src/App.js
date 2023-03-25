@@ -30,26 +30,34 @@ import FullDetails from "./Components/Admin/FullDetails";
 
 export const editorContext = createContext();
 export const dataContext = createContext();
+export const authorContext = createContext();
 
 function App() {
   const [editor, setEditor] = useState([]);
   const [submittedFile, setSubmittedFile] = useState([]);
   const [fileData, setFileData] = useState(null);
+  const [author, setAuthor] = useState([]);
 
   useEffect(() => {
     axios
       .get("http://localhost:4000/reviewer")
       .then((res) => {
         setEditor(res.data);
+      })
+      .catch((err) => {});
+  }, []);
 
-        // console.log('Hello01',res.data);
+  useEffect(() => {
+    axios
+      .get("http://localhost:4000/author")
+      .then((res) => {
+        setAuthor(res.data);
       })
       .catch((err) => {});
   }, []);
 
   useEffect(() => {
     const url = "http://localhost:4000/submittedData";
-
     axios
       .get(url)
       .then((res) => {
@@ -59,7 +67,8 @@ function App() {
   }, []);
 
   return (
-    <editorContext.Provider value={[editor, setEditor]}>
+    <authorContext.Provider value={[author, setAuthor]}  >
+    <editorContext.Provider value={[editor, setEditor]} >
       <dataContext.Provider value={[submittedFile]}>
         <Router>
           <Routes>
@@ -153,6 +162,7 @@ function App() {
         <ToastContainer />
       </dataContext.Provider>
     </editorContext.Provider>
+    </authorContext.Provider>
   );
 }
 

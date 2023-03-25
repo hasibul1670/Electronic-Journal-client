@@ -38,6 +38,17 @@ const AuthorNav = () => {
      <li className="nav-item active">
         <a className="nav-link nav-text" href="/submit">Submit a Manuscript</a>
       </li>
+
+
+      {user && (
+                <li className="nav-item active">
+                  <a className="nav-link nav-text" href="/dashboard">
+                    Dashboard
+                  </a>
+                </li>
+              )}
+
+              
             <li className="nav-right mr-3 ">        
           <a  href="/submit" className="nav-link active nav-text">About</a>
             </li></ul>
@@ -45,7 +56,7 @@ const AuthorNav = () => {
      
 
 
-<a  className="btn  btn-primary rounded-pill mr-2" href="/dashboard" >{user.email} </a>
+<a  className="btn  btn-primary rounded-pill mr-2" href="/dashboard" >{user.displayName} </a>
 
 <a  onClick={signOutFunc} className="btn  btn-danger rounded-pill" href="/login" >Sign Out</a>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../../logo/logo2.jpg';
+import logo from '../../logo/logo3.png';
 
 const Footer = () => {
     return (
@@ -17,7 +17,7 @@ const Footer = () => {
 
       <div class=" d-flex align-items-start flex-column col-lg-6 col-md-6 mb-6 mb-md-0">
          
- <img src={logo} style={{height:"100px",width:"200px"}} alt="" srcset="" /> 
+ <img src={logo} style={{height:"80px",width:"150px"}} alt="" srcset="" /> 
              
     
         </div>

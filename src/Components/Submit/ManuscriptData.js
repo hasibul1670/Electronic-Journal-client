@@ -34,7 +34,9 @@ const ManuscriptData = ({data,setData}) => {
 <div className='p-4'>
     <label className='text-primary' htmlFor="abstract">
 Abstract (required)</label>
-<textarea  required  name="abstract" value={data.abstract} onChange={handleChange} class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+<textarea  required 
+
+name="abstract" value={data.abstract} onChange={handleChange} class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
 </div>
 <div className='p-4'>
     <label className='text-primary' htmlFor="Keywords">Keywords</label>
