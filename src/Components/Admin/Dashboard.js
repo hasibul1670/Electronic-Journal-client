@@ -130,20 +130,20 @@ const Dashbord = () => {
             <Card.Body>
               <Card.Title></Card.Title>
               <Card.Text>
-                <ChartComponent/>
+                <ChartComponent />
               </Card.Text>
             </Card.Body>
           </Card>
         );
-        case "updateProfile":
-          return (
-            <Card>
+      case "updateProfile":
+        return (
+          <Card>
             <Card.Body>
               <Card.Title>Update Profile</Card.Title>
-              <UpdateProfile/>
+              <UpdateProfile />
             </Card.Body>
-            </Card>
-          );
+          </Card>
+        );
       default:
         return null;
     }
@@ -199,14 +199,13 @@ const Dashbord = () => {
                     </Nav.Link>
                   </Nav.Item>
 
-
                   <Nav.Item>
                     <Nav.Link
                       href="#"
                       active={activeMenu === "updateProfile"}
                       onClick={() => handleMenuClick("updateProfile")}
                     >
-                    Update Profile
+                      Update Profile
                     </Nav.Link>
                   </Nav.Item>
                 </Nav>
