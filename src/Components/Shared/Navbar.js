@@ -20,22 +20,13 @@ function Navbar() {
     Navigate("/login");
   };
 
-
-
   <ul>
-  {author.map((item, index) => (
-    <li key={index}>{item.email}</li>
-    
-  
-  ))}
-   
-</ul>
+    {author.map((item, index) => (
+      <li key={index}>{item.email}</li>
+    ))}
+  </ul>;
 
   const [user] = useAuthState(auth);
-
-
-
-  console.log("Hello", user.email);
 
   return (
     <div className="">

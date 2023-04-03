@@ -11,6 +11,7 @@ import {
   faInfo,
 } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
+
 import { Line } from "react-chartjs-2";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

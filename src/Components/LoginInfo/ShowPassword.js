@@ -20,12 +20,10 @@ const ShowPassword = () => {
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
-    console.log(event.target.value);
     event.preventDefault();
   };
 
   const handlePassChange = (event) => {
-    console.log("hello", event.target.value);
     setPassword(event.target.value);
     event.preventDefault();
   };
@@ -35,6 +33,24 @@ const ShowPassword = () => {
     navigate("/login");
   };
 
+  function mapAuthCodeToMessage(authCode) {
+    switch (authCode) {
+      case "auth/wrong-password":
+        return "Wrong Password !!";
+
+      case "auth/user-not-found":
+        return "User not found ! Please Sign Up";
+
+      case "auth/invalid-email":
+        return "Email provided is invalid";
+
+      case "auth/too-many-requests":
+        return "Too many requests ! Please try again later";
+
+      default:
+        return "";
+    }
+  }
   const handleFormSubmit = (event) => {
     signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
@@ -49,7 +65,11 @@ const ShowPassword = () => {
         }
       })
       .catch((error) => {
-        setError(error.message);
+        console.log("Hello", error.code);
+
+        setError(mapAuthCodeToMessage(error.code));
+
+        //setError(error.code);
       });
   };
 
