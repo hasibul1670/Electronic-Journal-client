@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { getAuth} from "firebase/auth";
 import app from '../LoginInfo/firebase.config';
 import {useLocation,useNavigate } from 'react-router-dom';
-import { useCreateUserWithEmailAndPassword,useSendEmailVerification,useUpdateProfile,useSignOut } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword,useSendEmailVerification,
+  useUpdateProfile,useSignOut } from 'react-firebase-hooks/auth';
 import { useForm } from "react-hook-form";
 
 

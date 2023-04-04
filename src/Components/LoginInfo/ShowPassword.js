@@ -2,29 +2,36 @@ import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import React from "react";
 import app from "./firebase.config";
 import { useLocation, useNavigate } from "react-router";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { useState } from "react";
+import { UserContext, editorContext } from "../../App";
+import { useContext } from "react";
+import AuthorContext from "../../contexts/AuthorContext";
 const auth = getAuth(app);
 
-const ShowPassword = () => {
+  const ShowPassword = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
-
+  const [adminLogin, setAdminLogin] = useState("");
+  const [editor] = useContext(editorContext);
+  
   const navigate = useNavigate();
   let location = useLocation();
+
   let from = location.state?.from?.pathname || "/";
 
   // navigate(from, { replace: true });
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
+ 
     event.preventDefault();
   };
 
   const handlePassChange = (event) => {
-    setPassword(event.target.value);
+    setPassword(event.target.value)
     event.preventDefault();
   };
 
@@ -37,6 +44,8 @@ const ShowPassword = () => {
     switch (authCode) {
       case "auth/wrong-password":
         return "Wrong Password !!";
+      case "auth/internal-error":
+        return "Enter Your Password !!";
 
       case "auth/user-not-found":
         return "User not found ! Please Sign Up";
@@ -51,6 +60,21 @@ const ShowPassword = () => {
         return "";
     }
   }
+  let IsMatched=false;
+
+  const handleEditorLogin = () => {
+ 
+      navigate(from, { replace: true });
+      console.log('log in admin');
+
+      toast.error(mapAuthCodeToMessage(error)); 
+
+    //admin@ejournal.com
+    //admin@ejournal
+  };
+
+
+
   const handleFormSubmit = (event) => {
     signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
@@ -64,12 +88,10 @@ const ShowPassword = () => {
           signOutFunc();
         }
       })
+
       .catch((error) => {
-        console.log("Hello", error.code);
-
         setError(mapAuthCodeToMessage(error.code));
-
-        //setError(error.code);
+        console.log("Hello", error.code);
       });
   };
 
@@ -107,8 +129,11 @@ const ShowPassword = () => {
         Author Login
       </button>
 
-      <button type="submit" className="btn ml-2  btn-primary rounded-pill">
-        {" "}
+      <button
+        type="submit"
+        onClick={handleEditorLogin}
+        className="btn ml-2 btn-primary rounded-pill"
+      >
         Editor Login
       </button>
       <button type="submit" className="btn ml-2 btn-primary rounded-pill">

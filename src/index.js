@@ -1,29 +1,34 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-//mport {library} from "@fortawesome/free-solid-svg-core";
-import { faUser ,faEye,faEyeSlash, faLock,faEnvelope} from '@fortawesome/free-solid-svg-icons'
-import { BrowserRouter } from 'react-router-dom';
+
+
 import {
   QueryClient,
   QueryClientProvider,
 } from 'react-query'
+import App from './App';
+import AuthorContext from './contexts/AuthorContext';
 
 const queryClient = new QueryClient()
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  // <BrowserRouter >
+ 
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-    <App />
+      
+<AuthorContext>
+<App />
+</AuthorContext>
+   
+
 </QueryClientProvider>
  
   </React.StrictMode>
-  // </BrowserRouter>
+
   
 );
 

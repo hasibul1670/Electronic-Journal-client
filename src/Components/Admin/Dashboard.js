@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useContext } from "react";
 import { dataContext, editorContext } from "../../App";
-import AuthorNav from "../Author/AuthorNav";
+import AuthorNav from "../Shared/AuthorNav";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleInfo,

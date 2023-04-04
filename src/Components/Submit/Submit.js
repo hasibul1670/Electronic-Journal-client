@@ -1,25 +1,14 @@
-import React from 'react';
-import AuthorNav from '../Author/AuthorNav';
+import React from "react";
+import AuthorNav from "../Shared/AuthorNav";
 
-
-import StepProgressBar from './StepProgressBar';
-
-
+import StepProgressBar from "./StepProgressBar";
 
 const Submit = () => {
-    return (
-        <div>
-            <AuthorNav></AuthorNav>
-            
-    <StepProgressBar></StepProgressBar>
-
- 
-
-
-
-
-        </div>
-    );
+  return (
+    <div>
+      <StepProgressBar></StepProgressBar>
+    </div>
+  );
 };
 
 export default Submit;

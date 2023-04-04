@@ -7,8 +7,7 @@ export default class Header extends PureComponent {
   render() {
     return (
       <div>
-        <Navbar></Navbar>
-
+   
         <Home></Home>
         <Footer></Footer>
       </div>

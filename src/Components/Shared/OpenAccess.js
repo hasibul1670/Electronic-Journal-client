@@ -4,7 +4,7 @@ import Navbar from './Navbar';
 const openAccess = () => {
     return (
         <div>
-        <Navbar/>
+
         <div className=' container p-4 container-fluid '>
         
           <h3> About WorldScientificOpen </h3> 

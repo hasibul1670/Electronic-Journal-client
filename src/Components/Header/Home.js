@@ -31,9 +31,9 @@ export default class Home extends PureComponent {
                 <p className="card-text">
                   ISSN (print): 0219-46785 | ISSN (online): 1793-6756
                 </p>
-                <a href="/submit" className="btn btn-primary">
+                <Link to="/submit" className="btn btn-primary">
                   Submit An Article
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -44,9 +44,9 @@ export default class Home extends PureComponent {
             <div>
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item active">
-                  <a className="nav-link nav-text" href="#About">
+                  <Link to="about" className="nav-link nav-text" >
                     Online Ready
-                  </a>
+                  </Link>
                 </li>
 
                 <li className="nav-right border-left ">
@@ -62,9 +62,9 @@ export default class Home extends PureComponent {
                 </li>
 
                 <li className="nav-right border-left ">
-                  <a className="nav-link active nav-text" href="#About">
+                  <Link to="about" className="nav-link active nav-text">
                     About Our Journal
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

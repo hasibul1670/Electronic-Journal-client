@@ -4,7 +4,7 @@ import Navbar from './Navbar';
 const AboutUs = () => {
     return (
         <div>
-            <Navbar></Navbar>
+          
            <h6 className='p-5'>
            World Scientific Publishing Co Pte Ltd was established in 1981 with only 5 employees in a tiny office. Today, the company employs about 200 staff at its headquarters in Singapore and 450 globally. It has offices in New Jersey, London, Munich, Geneva, Tokyo, Hong Kong, Taipei, Beijing, Shanghai, Tianjin and Chennai. In about 3 decades, it has established itself as one of the leading academic and professional publishers in the world, and the largest international scientific publisher in the Asia-Pacific region.<p></p>
 World Scientific publishes about 600 new titles a year and 160 journals in various fields. World Scientific has published more than 12,000 titles. Many of its books are recommended texts adopted by renowned institutions such as Harvard University, California Institute of Technology, Stanford University and Princeton University.

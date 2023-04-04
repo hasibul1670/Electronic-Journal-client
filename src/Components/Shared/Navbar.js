@@ -6,60 +6,61 @@ import logo from "./../../logo/logo3.png";
 import { getAuth, signOut } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useContext } from "react";
-import { authorContext, editorContext } from "../../App";
+
 import { useState } from "react";
+import UserContext from "../../contexts/AuthorContext";
 
 function Navbar() {
-  const [editor] = useContext(editorContext);
-  const [author] = useContext(authorContext);
-  const [name, setName] = useState("");
+
+
   const auth = getAuth(app);
+  const [user,loading] = useAuthState(auth);
 
   const signOutFunc = () => {
     signOut(auth);
     Navigate("/login");
   };
 
-  <ul>
-    {author.map((item, index) => (
-      <li key={index}>{item.email}</li>
-    ))}
-  </ul>;
+  // <ul>
+  //   {user.map((item, index) => (
+  //     <li key={index}>{item.email}</li>
+  //   ))}
+  // </ul>;
 
-  const [user] = useAuthState(auth);
+ 
 
   return (
     <div className="">
       <div className="d-flex bd-highlight">
         <div className="mr-auto p-2 bd-highlight">
-          <a className="navbar-brand" href="/">
+          <Link to="/" className="navbar-brand">
             <img
               style={{ height: "80px", width: "400px" }}
               src={logo}
               alt=""
               srcet=""
             />{" "}
-          </a>
+          </Link>
         </div>
 
         <div className="  p-2">
           {user ? (
-            <a
+            <Link
+              to="/"
               onClick={signOutFunc}
-              href="/"
               className="btn mr-2 btn-danger rounded-pill"
             >
               Sign Out{" "}
-            </a>
+            </Link>
           ) : (
-            <a className="btn  btn-danger rounded-pill" href="/login">
+            <Link to="/login" className="btn  btn-danger rounded-pill">
               Login{" "}
-            </a>
+            </Link>
           )}
 
-          <a className="btn  btn-primary rounded-pill mr-2" href="/mainmenu">
+          <Link to="/login" className="btn  btn-primary rounded-pill mr-2">
             {user ? user.displayName : "Guest"}
-          </a>
+          </Link>
         </div>
       </div>
 
@@ -94,39 +95,39 @@ function Navbar() {
                   aria-haspopup="true"
                   aria-expanded="false"
                 >
-                  Subjects
+ Subjects
                 </button>
 
                 <div
                   className="dropdown-menu"
                   aria-labelledby="dropdownMenuButton"
                 >
-                  <a className="dropdown-item" href="#">
+                  <Link to=" " className="dropdown-item">
                     Algorithm
-                  </a>
-                  <a className="dropdown-item" href="#">
+                  </Link>
+                  <Link to=" " className="dropdown-item">
                     Image Processing
-                  </a>
-                  <a className="dropdown-item" href="#">
+                  </Link>
+                  <Link to=" " className="dropdown-item">
                     IOT
-                  </a>
-                  <a className="dropdown-item" href="#">
+                  </Link>
+                  <Link to=" " className="dropdown-item">
                     Compiler Design
-                  </a>
-                  <a className="dropdown-item" href="#">
+                  </Link>
+                  <Link to=" " className="dropdown-item">
                     Web Engineering
-                  </a>
-                  <a className="dropdown-item" href="#">
+                  </Link>
+                  <Link to=" " className="dropdown-item">
                     Data Mining
-                  </a>
+                  </Link>
                 </div>
               </div>
 
               {user && (
                 <li className="nav-item active">
-                  <a className="nav-link nav-text" href="/dashboard">
+                  <Link to="/dashboard" className="nav-link nav-text">
                     Dashboard
-                  </a>
+                  </Link>
                 </li>
               )}
 
@@ -137,19 +138,19 @@ function Navbar() {
               </li>
 
               <li className="nav-right ">
-                <a href="/openaccess" className="nav-link active nav-text">
+                <Link to="/openaccess" className="nav-link active nav-text">
                   Open Access
-                </a>
+                </Link>
               </li>
               <li className="nav-right ">
-                <a href="/about" className="nav-link active nav-text">
+                <Link to="/about" className="nav-link active nav-text">
                   About Us
-                </a>
+                </Link>
               </li>
               <li className="nav-right ">
-                <a href="/help" className="nav-link active nav-text">
+                <Link to="/help" className="nav-link active nav-text">
                   Help
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

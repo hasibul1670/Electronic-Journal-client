@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import { Link } from 'react-router-dom'
 
 export default class Nomatch extends PureComponent {
   render() {
@@ -10,7 +11,7 @@ export default class Nomatch extends PureComponent {
           <p class="lead font-weight-bold ">
               The page you’re looking for doesn’t exist.
             </p>
-          <a href="/" class="btn btn-primary">Go Home</a>
+          <Link to="/" class="btn btn-primary">Go Home</Link>
       </div>
   </div>
 

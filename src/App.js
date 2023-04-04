@@ -1,20 +1,18 @@
 import "./App.css";
 import Header from "./Components/Header/Header";
-
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, createBrowserRouter, RouterProvider } from "react-router-dom";
 import Nomatch from "./Components/Shared/Nomatch";
 import Login from "./Components/LoginInfo/Login";
-import AuthorMainMenu from "./Components/Author/AuthorMainMenu";
+import AuthorMainMenu from "./Components/Submit/AuthorMainMenu";
 import Submit from "./Components/Submit/Submit";
 import SubmitHome from "./Components/Submit/SubmitHome";
 import NewUser from "./Components/NewUser/NewUser";
 import ForgetPass from "./Components/NewUser/ForgetPass";
-import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import Dashbord from "./Components/Admin/Dashboard";
 import Editor from "./Components/Editor/Editor";
 import Test from "./Components/Test/Test";
 import { createContext } from "react";
-import { ToastContainer } from "react-toastify";
+
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
@@ -25,22 +23,35 @@ import OpenAccess from "./Components/Shared/OpenAccess";
 import Copyright from "./Components/Shared/Copyright";
 import VerifyEmail from "./Components/NewUser/VerifyEmail";
 import SuccessSubmission from "./SuccessSubmission/SuccessSubmission";
-
 import FullDetails from "./Components/Admin/FullDetails";
+import Main from "./layout/Main";
+import AuthorNavbar from "./layout/AuthorNavbar";
+import PrivateRoute from "./routes/PrivateRoute";
+
 
 export const editorContext = createContext();
+export const reviewerContext = createContext();
 export const dataContext = createContext();
-export const authorContext = createContext();
 
 function App() {
   const [editor, setEditor] = useState([]);
+  const [reviewer, setReviewer] = useState([]);
   const [submittedFile, setSubmittedFile] = useState([]);
-  const [fileData, setFileData] = useState(null);
+  const [userEmail, setUserEmail] = useState("");
   const [author, setAuthor] = useState([]);
 
   useEffect(() => {
     axios
       .get("http://localhost:4000/reviewer")
+      .then((res) => {
+        setReviewer(res.data);
+      })
+      .catch((err) => {});
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:4000/editor")
       .then((res) => {
         setEditor(res.data);
       })
@@ -66,103 +77,59 @@ function App() {
       .catch((err) => {});
   }, []);
 
+const router = createBrowserRouter([
+{path: "/" ,  element: <Main/>,children:[
+  { path:"/" ,element:<Header />},
+  { path:"/openaccess" ,element:<OpenAccess />},
+  { path:"/about" ,element:<AboutUs/>},
+  { path:"/help" ,element:<Help/>},
+  { path:"*" ,element:<Nomatch />}
+]},
+
+{path: "/submit" ,  element: <AuthorNavbar />,children:[
+  { path:"/submit" ,element:<PrivateRoute ><Submit /> </PrivateRoute>},
+  { path:"/submit/submithome" ,element:<Header />},
+  { path:"/submit/mainmenu" ,element:<AuthorMainMenu />},
+ 
+]},
+
+
+{ path:"/login" ,element:<Login />},
+{ path:"/newuser" ,element:<NewUser />},
+{ path:"/forgetPass" ,element:<ForgetPass />},
+{ path:"/mainmenu" ,element:<AuthorMainMenu />},
+{ path:"/dashboard" ,element:<PrivateRoute><Dashbord/></PrivateRoute>},
+
+
+{ path:"/fulldetails" ,element:<FullDetails />},
+{ path:"/fulldetails/:id",element:<FullDetails/>},
+{ path:"/editor/dashboard",element:<Editor/>},
+
+
+{ path:"/test",element:<Test/>},
+{ path:"/news" ,element:<News/>},
+{ path:"/copyright",element:<Copyright/>},
+{ path:"/SuccessSubmission",element:<SuccessSubmission/>},
+{ path:"/verifyemail" ,element:<VerifyEmail/>},
+
+{ path:"*" ,element:<Nomatch />}
+])
   return (
-    <authorContext.Provider value={[author, setAuthor]}  >
-    <editorContext.Provider value={[editor, setEditor]} >
-      <dataContext.Provider value={[submittedFile]}>
-        <Router>
-          <Routes>
-            <Route exact path="/" element={<Header />} />
-            <Route path="/login" element={<Login />}></Route>
-            <Route exact path="/" element={<Header />}>
-              {" "}
-            </Route>
-            <Route path="/newuser" element={<NewUser />}>
-              {" "}
-            </Route>
-            <Route path="/forgetpass" element={<ForgetPass />}>
-              {" "}
-            </Route>
-            {/* private Route */}
-            <Route
-              path="/mainmenu"
-              element={
-                <PrivateRoute>
-                  <AuthorMainMenu />
-                </PrivateRoute>
-              }
-            >
-              {" "}
-            </Route>
-            <Route
-              path="/dashboard"
-              element={
-                <PrivateRoute>
-                  <Dashbord />
-                </PrivateRoute>
-              }
-            ></Route>
-            <Route
-              path="/submithome"
-              element={
-                <PrivateRoute>
-                  <SubmitHome />
-                </PrivateRoute>
-              }
-            ></Route>
-            <Route
-              path="/submit"
-              element={
-                <PrivateRoute>
-                  <Submit />
-                </PrivateRoute>
-              }
-            ></Route>
-            <Route
-              path="/editor"
-              element={
-                <PrivateRoute>
-                  <Editor />
-                </PrivateRoute>
-              }
-            ></Route>
-            <Route path="/about" element={<AboutUs />}>
-              {" "}
-            </Route>
-            {/* usePArams */}
-            <Route path="/fulldetails" element={<FullDetails />} />
-            <Route path="/fulldetails/:id" element={<FullDetails />} />
-            <Route path="/help" element={<Help />}>
-              {" "}
-            </Route>
-            <Route path="/test" element={<Test />}>
-              {" "}
-            </Route>
-            <Route path="/news" element={<News />}>
-              {" "}
-            </Route>
-            <Route path="/openaccess" element={<OpenAccess />}>
-              {" "}
-            </Route>
-            <Route path="/copyright" element={<Copyright />}>
-              {" "}
-            </Route>
-            <Route path="/SuccessSubmission" element={<SuccessSubmission />}>
-              {" "}
-            </Route>
-            <Route path="/verifyemail" element={<VerifyEmail />}>
-              {" "}
-            </Route>
-            verifyemail
-            <Route path="*" element={<Nomatch />}>
-              {" "}
-            </Route>
-          </Routes>
-        </Router>
-        <ToastContainer />
-      </dataContext.Provider>
-    </editorContext.Provider>
-    </authorContext.Provider>
+  
+  
+      <reviewerContext.Provider value={[reviewer, setReviewer]}>
+       
+          <editorContext.Provider value={[editor, setEditor]}>
+            <dataContext.Provider value={[submittedFile]}>
+             
+            <RouterProvider router={router}/>
+
+            </dataContext.Provider>
+          </editorContext.Provider>
+     
+      </reviewerContext.Provider>
+
+  
   );
 }
 

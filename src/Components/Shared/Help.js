@@ -4,7 +4,7 @@ import Navbar from './Navbar';
 const Help = () => {
     return (
         <div>
-            <Navbar/>
+     
   
         <div className='p-5'>
            <h4 >

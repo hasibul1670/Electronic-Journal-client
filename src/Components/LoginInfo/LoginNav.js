@@ -1,19 +1,6 @@
 import React from 'react';
-
-
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import { faCoffee ,faMagnifyingGlass,faShoppingCart,faUser} from '@fortawesome/free-solid-svg-icons'
-
-/// ...
-import logo from './../../logo/logo2.jpg';
-import userEvent from '@testing-library/user-event';
-import useFireBase from '../../hooks/useFireBase';
 const LoginNav = () => {
-
-
-
     return (
         <div>
             <div className="navbar-bg-color d-flex justify-content-center" >
