@@ -51,7 +51,11 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/editor")
+      .get("http://localhost:4000/editor",{
+        headers: {
+          authorization:`Bearer ${localStorage.getItem("e-token")}`,
+        },
+      })
       .then((res) => {
         setEditor(res.data);
       })

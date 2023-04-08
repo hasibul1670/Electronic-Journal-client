@@ -5,10 +5,7 @@ import app from "../LoginInfo/firebase.config";
 import logo from "./../../logo/logo3.png";
 import { getAuth, signOut } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useContext } from "react";
 
-import { useState } from "react";
-import UserContext from "../../contexts/AuthorContext";
 
 function Navbar() {
 

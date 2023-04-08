@@ -7,6 +7,7 @@ import { useState } from "react";
 import { UserContext, editorContext } from "../../App";
 import { useContext } from "react";
 import AuthorContext from "../../contexts/AuthorContext";
+import { Container } from 'react-bootstrap';
 const auth = getAuth(app);
 
   const ShowPassword = () => {
@@ -81,7 +82,26 @@ const auth = getAuth(app);
         const user = result.user;
         if (user.emailVerified === true) {
           setSuccess("Login Successfully");
+//get jwt token is required
+
+const currentUser= {
+  email:user.email
+}
+fetch ('http://localhost:4000/jwt',{
+  method: 'POST',
+  headers: {  
+    'content-type': 'application/json'
+},
+body: JSON.stringify(currentUser)
+        })
+        .then(res=>res.json())
+        .then(data=>{
+          localStorage.setItem('e-token',data.token);
           navigate(from, { replace: true });
+
+                });
+
+       
         } else {
           setSuccess("Please Verify Your Email!!");
           toast.error("Please Verify Your Email!!");

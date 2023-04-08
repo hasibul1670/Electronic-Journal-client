@@ -22,25 +22,48 @@ import { Table, Card, Row, Col, Container, Nav } from "react-bootstrap";
 import Test from "../Test/Test";
 import ChartComponent from "./ChartComponent";
 import UpdateProfile from "./UpdateProfile";
+import { getAuth, signOut } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
+import app from "../LoginInfo/firebase.config";
 
 const Dashbord = () => {
+  const auth = getAuth(app);
+  const [user,loading] = useAuthState(auth);
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:4000/submittedData")
-      .then((response) => {
-        setData(response.data);
-        console.log("Hello", response.data._id);
+ 
+      fetch(`http://localhost:4000/submittedData?email=${user?.email}`,{
+        headers: {
+          authorization:`Bearer ${localStorage.getItem("e-token")}`,
+        },
       })
-      .catch((error) => console.error(error));
-  }, []);
+      .then(res=>{
+            if(res.status ===401 || res.status === 404){
+            signOut(auth);
+          }
+        
+        return res.json()})
+      .then(data => {
+      
+        setData(data);
+       
+ 
+      })
+      .catch((error) => {
+        console.error(error.message)
+      });
+  }, [user?.email]);
 
   const [isDeleted, setIsDeleted] = useState(false);
 
   const handleDelete = (id) => {
     axios
-      .delete(`http://localhost:4000/submittedData/${id}`)
+      .delete(`http://localhost:4000/submittedData/${id}`,{
+        headers: {
+          authorization:`Bearer ${localStorage.getItem("e-token")}`,
+        },
+      })
       .then((response) => {
         setIsDeleted(response.data);
         toast.success("Item deleted successfully!");
@@ -91,6 +114,7 @@ const Dashbord = () => {
                   <td>
                     {" "}
                     <Link to={`/fulldetails/${item._id}`}>
+          
                       See Details <FontAwesomeIcon icon={faCircleInfo} />{" "}
                     </Link>{" "}
                   </td>
