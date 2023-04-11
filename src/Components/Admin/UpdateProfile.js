@@ -4,9 +4,11 @@ import axios from "axios";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getAuth } from "firebase/auth";
 import { useUpdateProfile } from "react-firebase-hooks/auth";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from 'react-toastify';
+
 
 function UpdateProfile() {
+  const notify = () => toast("Wow so easy!");
   const auth = getAuth(app);
   const [user] = useAuthState(auth);
 
@@ -24,7 +26,6 @@ function UpdateProfile() {
   if (updating) {
     return <p>Updating...</p>;
   }
-  console.log("Hello", user);
   return (
     <div className="App">
       <label className="text-primary font-weight-bold mr-4 " htmlFor="">
@@ -51,6 +52,7 @@ function UpdateProfile() {
             const success = await updateProfile({ displayName, photoURL });
             if (success) {
               toast.success("Updated profile successfully!");
+              console.log('Hello success');
             }
           } else {
             toast.error(" Choose a 5 letter Name!");
@@ -58,6 +60,8 @@ function UpdateProfile() {
         }}
       >
         Update profile
+
+        <ToastContainer />
       </button>
     </div>
   );

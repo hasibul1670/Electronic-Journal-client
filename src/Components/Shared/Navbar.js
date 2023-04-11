@@ -18,11 +18,6 @@ function Navbar() {
     Navigate("/login");
   };
 
-  // <ul>
-  //   {user.map((item, index) => (
-  //     <li key={index}>{item.email}</li>
-  //   ))}
-  // </ul>;
 
  
 
@@ -127,12 +122,6 @@ function Navbar() {
                   </Link>
                 </li>
               )}
-
-              <li className="nav-right ">
-                <Link to="/book" className="nav-link nav-text active">
-                  Books
-                </Link>
-              </li>
 
               <li className="nav-right ">
                 <Link to="/openaccess" className="nav-link active nav-text">

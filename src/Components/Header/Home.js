@@ -43,35 +43,7 @@ export default class Home extends PureComponent {
         </div>
 
         <div className="navbar-bg-color d-flex justify-content-center">
-          <div className=" ml-5 mr-5 navbar navbar-expand-lg navbar-light">
-            <div>
-              <ul className="navbar-nav ml-auto">
-                <li className="nav-item active">
-                  <Link to="about" className="nav-link nav-text">
-                    Online Ready
-                  </Link>
-                </li>
-
-                <li className="nav-right border-left ">
-                  <Link to="/Service" className="nav-link nav-text active">
-                    Current Issue
-                  </Link>
-                </li>
-
-                <li className="nav-right border-left ">
-                  <a className="nav-link active nav-text " href="#About">
-                    Available Issues
-                  </a>
-                </li>
-
-                <li className="nav-right border-left ">
-                  <Link to="about" className="nav-link active nav-text">
-                    About Our Journal
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
+        
         </div>
       </div>
     );

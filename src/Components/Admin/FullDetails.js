@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
@@ -16,12 +16,14 @@ import { Outlet } from "react-router";
 import { Link } from "react-router-dom";
 
 import { Table, Card, Row, Col, Container, Nav } from "react-bootstrap";
+import { dataContext } from "../../App";
 
 const FullDetails = () => {
   const { id } = useParams();
   const [item, setItem] = useState(null);
   const [status, setStatus] = useState(null);
 
+  
   const currencies = [
     {
       value: "Research Paper",
@@ -40,11 +42,19 @@ const FullDetails = () => {
     setStatus(event.target.value);
   };
 
+  const [data,setData] = useContext(dataContext);
+
   useEffect(() => {
-    axios.get(`http://localhost:4000/submittedData/${id}`).then((response) => {
-      setItem(response.data);
+    fetch(`http://localhost:4000/submittedData/${id}`)
+    .then((response) => response.json())
+    .then((data) => {
+  
+      setItem(data);
+    })
+    .catch((error) => {
+      console.log(error);
     });
-  }, [id]);
+}, [id]);
 
   return (
     <div className="container-fluid">

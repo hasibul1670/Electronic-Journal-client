@@ -32,6 +32,11 @@ import Aim from "./Explore/Aim";
 import ExploreNav from "./Explore/ExploreNav";
 import ExploreNavbar from './layout/ExploreNavbar';
 import GuidLine from "./Explore/GuidLine";
+import ContactUs from './Explore/ContactUs';
+import ReviewPolicy from './Explore/ReviewPolicy';
+import app from "./Components/LoginInfo/firebase.config";
+import { getAuth } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 
 export const editorContext = createContext();
@@ -39,6 +44,9 @@ export const reviewerContext = createContext();
 export const dataContext = createContext();
 
 function App() {
+  const auth = getAuth(app);
+  const [user, loading] = useAuthState(auth);
+  const [data, setData] = useState([]);
   const [editor, setEditor] = useState([]);
   const [reviewer, setReviewer] = useState([]);
   const [submittedFile, setSubmittedFile] = useState([]);
@@ -76,15 +84,38 @@ function App() {
       .catch((err) => {});
   }, []);
 
+  const token = localStorage.getItem("e-token");
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+  
+
   useEffect(() => {
-    const url = "http://localhost:4000/submittedData";
-    axios
-      .get(url)
-      .then((res) => {
-        setSubmittedFile(res.data.data);
-      })
-      .catch((err) => {});
-  }, []);
+    fetch(`http://localhost:4000/submittedData?email=${user?.email}`, {
+
+    method: "GET",
+    headers: headers,
+  })
+  .then((response) => {
+    // Handle the response
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error("Network response was not ok");
+    }
+  })
+  .then((data) => {
+    // Handle the data
+  
+    setData(data);
+  })
+      .catch((error) => {
+        console.error(error.message);
+   
+      });
+  }, [user?.email]);
 
 const router = createBrowserRouter([
 
@@ -108,7 +139,8 @@ const router = createBrowserRouter([
   { path:"/explore",element:<Aim />},
   { path:"/explore/aim" ,element:< Aim /> },
    { path:"/explore/guideline" ,element:<GuidLine />},
-  // { path:"/submit/mainmenu" ,element:<AuthorMainMenu />},
+   { path:"/explore/contactus" ,element:<ContactUs />},
+   { path:"/explore/review-policy" ,element:<ReviewPolicy/>},
  
 ]},
 
@@ -140,7 +172,7 @@ const router = createBrowserRouter([
       <reviewerContext.Provider value={[reviewer, setReviewer]}>
        
           <editorContext.Provider value={[editor, setEditor]}>
-            <dataContext.Provider value={[submittedFile]}>
+            <dataContext.Provider value={[data,setData]}>
              
             <RouterProvider router={router}/>
 

@@ -31,11 +31,12 @@ const ExploreNav = () => {
         <Link to="/explore/guideline"  className="nav-link font-weight-bold " >Submission Guidelines</Link>
       </li>
       <li className="nav-item ">
-        <Link to=" "  className="nav-link font-weight-bold " >Pricing</Link>
+        <Link to="/explore/review-policy"  className="nav-link font-weight-bold " >Review Policy </Link>
       </li>
       <li className="nav-item">
-        <Link to=" "  className="nav-link font-weight-bold ">Disabled</Link>
+        <Link to="/explore/contactus" className="nav-link font-weight-bold ">Contact Us</Link>
       </li>
+  
     </ul>
   </div>
 </nav>

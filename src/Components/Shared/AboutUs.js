@@ -3,7 +3,7 @@ import Navbar from './Navbar';
 
 const AboutUs = () => {
     return (
-        <div>
+        <div className=' container p-4 container-fluid '>
           
            <h5 className='p-5'>
            The International Journal of Computer and Electronics Engineering (IJCEE) is a peer-reviewed journal that publishes high-quality research articles, review articles, and technical notes related to computer and electronics engineering. The journal aims to provide a platform for researchers, academicians, and practitioners from around the world to share their research, knowledge, and experiences in the field of computer and electronics engineering.<p></p>

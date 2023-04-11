@@ -11,7 +11,7 @@ const Copyright = () => {
                 </h4> 
                 <hr />
 
-All material published by World Scientific Publishing and Imperial College Press is protected under International copyright and intellectual property laws.
+All material published by International Journal of Computer and Electronics Engineering (IJCEE) Publishing and Imperial College Press is protected under International copyright and intellectual property laws.
 
 Written permission is required if you wish to reproduce any of our material. In some cases, permission fees may be charged when our copyrighted material is to be reproduced.
 <h6 className='text-danger'> Please note:</h6>

@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import AuthorNav from "../Shared/AuthorNav";
 import logo from "./../../logo/home.jpg";
+import { Link } from "react-router-dom";
+import { dataContext } from "../../App";
+
 
 const AuthorMainMenu = () => {
+  const [data,setData] = useContext(dataContext) ;
+
+
   return (
     <div>
-    
+
 
       <div className=" mt-5 card mb-3 mx-auto w-75">
         <div className="row no-gutters">
@@ -17,24 +23,32 @@ const AuthorMainMenu = () => {
             <div className="card-body">
               <h5 className="line-height card-title">New Submissions</h5>
               <div className="ml-5">
-                <h6>Submit New Manuscript</h6>
-                <h6>Submissions Sent Back to Author (0)</h6>
-                <h6>Incomplete Submissions (0)</h6>
-                <h6>Submissions Waiting for Author's Approval (0)</h6>
-                <h6>Submissions Being Processed (0)</h6>
+                <Link to="/submit">Submit New Manuscript</Link>
+                <br />
+                <Link to="">Submissions Sent Back to Author (0) </Link>
+                <br />
+
+                <Link to="/dashboard">Submissions Being Processed ({data.length})</Link>
+                <br />
               </div>
               <h5 className="line-height card-title">Revisions</h5>
               <div className="ml-5">
-                <h6>Submissions Needing Revision (0)</h6>
-                <h6>Revisions Sent Back to Author (0)</h6>
-                <h6>Incomplete Submissions (0)</h6>
-                <h6>Submissions Waiting for Author's Approval (0)</h6>
-                <h6>Submissions Being Processed (0)</h6>
+                <Link>Submissions Needing Revision (0)</Link>
+                <br />
+                <Link>Revisions Sent Back to Author (0)</Link>
+                <br />
+
+                <Link>Submissions Being Processed (0)</Link>
+                <br />
+
+                <Link>Declined Revisions  (0)</Link>
+                <br />
               </div>
 
               <h5 className="line-height card-title">Completed</h5>
               <div className="ml-5">
-                <h6>Submissions with a Decision (0)</h6>
+                <Link>Submissions with a Decision (0)</Link>
+                <br />
               </div>
             </div>
           </div>

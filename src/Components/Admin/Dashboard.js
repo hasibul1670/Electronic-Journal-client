@@ -28,46 +28,55 @@ import app from "../LoginInfo/firebase.config";
 
 const Dashbord = () => {
   const auth = getAuth(app);
-  const [user,loading] = useAuthState(auth);
-  const [data, setData] = useState([]);
+  const [user, loading] = useAuthState(auth);
+  //const [data, setData] = useState([]);
+  const [data,setData] = useContext(dataContext);
+  // const token = localStorage.getItem("e-token");
+  // console.log('Hello token', token);
 
-  useEffect(() => {
- 
-      fetch(`http://localhost:4000/submittedData?email=${user?.email}`,{
-        headers: {
-          authorization:`Bearer ${localStorage.getItem("e-token")}`,
-        },
-      })
-      .then(res=>{
-            if(res.status ===401 || res.status === 404){
-            signOut(auth);
-          }
-        
-        return res.json()})
-      .then(data => {
-      
-        setData(data);
-       
- 
-      })
-      .catch((error) => {
-        console.error(error.message)
-      });
-  }, [user?.email]);
+  // const headers = {
+  //   "Content-Type": "application/json",
+  //   Authorization: `Bearer ${token}`,
+  // };
+  
+
+  // useEffect(() => {
+  //   fetch(`http://localhost:4000/submittedData?email=${user?.email}`, {
+
+  //   method: "GET",
+  //   headers: headers,
+  // })
+  // .then((response) => {
+  //   // Handle the response
+  //   if (response.ok) {
+  //     return response.json();
+  //   } else {
+  //     throw new Error("Network response was not ok");
+  //   }
+  // })
+  // .then((data) => {
+  //   // Handle the data
+  //   console.log(data);
+  //   setData(data);
+  // })
+  //     .catch((error) => {
+  //       console.error(error.message);
+   
+  //     });
+  // }, [user?.email]);
 
   const [isDeleted, setIsDeleted] = useState(false);
 
   const handleDelete = (id) => {
     axios
-      .delete(`http://localhost:4000/submittedData/${id}`,{
+      .delete(`http://localhost:4000/submittedData/${id}`, {
         headers: {
-          authorization:`Bearer ${localStorage.getItem("e-token")}`,
+          authorization: `Bearer ${localStorage.getItem("e-token")}`,
         },
       })
       .then((response) => {
         setIsDeleted(response.data);
         toast.success("Item deleted successfully!");
-
         setData(data.filter((data) => data._id !== id));
       })
       .catch((error) => {
@@ -75,7 +84,7 @@ const Dashbord = () => {
       });
   };
 
-  const [fileName, fileType, fileData] = useContext(dataContext);
+
   const [editor] = useContext(editorContext);
 
   const [activeMenu, setActiveMenu] = useState("dashboard");
@@ -114,7 +123,6 @@ const Dashbord = () => {
                   <td>
                     {" "}
                     <Link to={`/fulldetails/${item._id}`}>
-          
                       See Details <FontAwesomeIcon icon={faCircleInfo} />{" "}
                     </Link>{" "}
                   </td>
@@ -247,6 +255,7 @@ const Dashbord = () => {
           </Col>
         </Row>
       </Container>
+      <ToastContainer />
     </div>
   );
 };

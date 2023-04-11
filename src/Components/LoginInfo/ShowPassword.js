@@ -81,12 +81,13 @@ const auth = getAuth(app);
       .then((result) => {
         const user = result.user;
         if (user.emailVerified === true) {
-          setSuccess("Login Successfully");
+         // setSuccess("Login Successfully");
 //get jwt token is required
 
 const currentUser= {
   email:user.email
 }
+
 fetch ('http://localhost:4000/jwt',{
   method: 'POST',
   headers: {  
@@ -96,6 +97,7 @@ body: JSON.stringify(currentUser)
         })
         .then(res=>res.json())
         .then(data=>{
+          console.log('Hello token',data);
           localStorage.setItem('e-token',data.token);
           navigate(from, { replace: true });
 
