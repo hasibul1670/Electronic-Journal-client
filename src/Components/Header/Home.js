@@ -9,11 +9,10 @@ export default class Home extends PureComponent {
     return (
       <div className="home-bg">
         <br />
-        <br />
 
-        <div className="card opacity p-5 mb-3 w-75 mx-auto">
+        <div className="card opacity  p-5 mb-3 w-75 mx-auto">
           <div className=" row no-gutters">
-            <div className="col-md-4">
+            <div className="col-md-8 d-flex">
               <img
                 className="image-fluid"
                 style={{ height: "225px", width: "165px" }}
@@ -21,18 +20,22 @@ export default class Home extends PureComponent {
                 alt=""
                 srcet=""
               />
-            </div>
-            <div className="col-md-8">
               <div className="card-body">
-                <h5 className="card-title">
-                  {" "}
-                  International Journal of Computer and Electronics Engineering{" "}
-                </h5>
-                <p className="card-text">
-                  ISSN (print): 0219-46785 | ISSN (online): 1793-6756
-                </p>
-                <Link to="/submit" className="btn btn-primary">
+                <h4 className="card-title font-weight-bold ">
+                  International Journal of Computer and Electronics Engineering
+                </h4>
+                <h6 className="card-text">ISSN (online) || 1793-6756</h6>
+              </div>
+            </div>
+            
+            <div className="col-md-4">
+              <div className="card-body">
+                <Link to="/submit" className=" font-weight-bold btn-lg btn btn-outline-primary btn-block">
                   Submit An Article
+                </Link>
+                <p />
+                <Link to="/explore" className="btn  font-weight-bold btn-outline-info btn-lg btn-block">
+                  Explore Our Journal
                 </Link>
               </div>
             </div>
@@ -44,7 +47,7 @@ export default class Home extends PureComponent {
             <div>
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item active">
-                  <Link to="about" className="nav-link nav-text" >
+                  <Link to="about" className="nav-link nav-text">
                     Online Ready
                   </Link>
                 </li>

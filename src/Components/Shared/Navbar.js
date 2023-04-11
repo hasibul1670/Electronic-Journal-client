@@ -32,7 +32,7 @@ function Navbar() {
         <div className="mr-auto p-2 bd-highlight">
           <Link to="/" className="navbar-brand">
             <img
-              style={{ height: "80px", width: "400px" }}
+              style={{ height: "120px", width: "350px" }}
               src={logo}
               alt=""
               srcet=""

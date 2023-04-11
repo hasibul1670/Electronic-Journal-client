@@ -27,6 +27,11 @@ import FullDetails from "./Components/Admin/FullDetails";
 import Main from "./layout/Main";
 import AuthorNavbar from "./layout/AuthorNavbar";
 import PrivateRoute from "./routes/PrivateRoute";
+import Explore from "./Explore/Explore";
+import Aim from "./Explore/Aim";
+import ExploreNav from "./Explore/ExploreNav";
+import ExploreNavbar from './layout/ExploreNavbar';
+import GuidLine from "./Explore/GuidLine";
 
 
 export const editorContext = createContext();
@@ -82,6 +87,7 @@ function App() {
   }, []);
 
 const router = createBrowserRouter([
+
 {path: "/" ,  element: <Main/>,children:[
   { path:"/" ,element:<Header />},
   { path:"/openaccess" ,element:<OpenAccess />},
@@ -96,6 +102,16 @@ const router = createBrowserRouter([
   { path:"/submit/mainmenu" ,element:<AuthorMainMenu />},
  
 ]},
+
+
+{path: "/explore" ,  element: <ExploreNavbar/>,children:[
+  { path:"/explore",element:<Aim />},
+  { path:"/explore/aim" ,element:< Aim /> },
+   { path:"/explore/guideline" ,element:<GuidLine />},
+  // { path:"/submit/mainmenu" ,element:<AuthorMainMenu />},
+ 
+]},
+
 
 
 { path:"/login" ,element:<Login />},
