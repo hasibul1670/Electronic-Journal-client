@@ -52,7 +52,7 @@ function UpdateProfile() {
             const success = await updateProfile({ displayName, photoURL });
             if (success) {
               toast.success("Updated profile successfully!");
-              console.log('Hello success');
+           
             }
           } else {
             toast.error(" Choose a 5 letter Name!");

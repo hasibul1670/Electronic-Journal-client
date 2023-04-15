@@ -25,6 +25,7 @@ import UpdateProfile from "./UpdateProfile";
 import { getAuth, signOut } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import app from "../LoginInfo/firebase.config";
+import AllUsers from "./AllUsers";
 
 const Dashbord = () => {
   const auth = getAuth(app);
@@ -143,7 +144,7 @@ const Dashbord = () => {
         return (
           <Card>
             <Card.Body>
-              <Card.Title>Total Publish</Card.Title>
+            
               <Card.Text>This is the total Publish Page</Card.Text>
             </Card.Body>
           </Card>
@@ -152,11 +153,22 @@ const Dashbord = () => {
         return (
           <Card>
             <Card.Body>
-              <Card.Title>Under Review</Card.Title>
+         
               <Card.Text>This is the Under Review section</Card.Text>
             </Card.Body>
           </Card>
         );
+
+      case "All Users":
+        return (
+          <Card>
+            <Card.Body>
+            
+              <Card.Text>  <AllUsers /></Card.Text>
+            </Card.Body>
+          </Card>
+        );
+      
       case "chart":
         return (
           <Card>
@@ -172,7 +184,7 @@ const Dashbord = () => {
         return (
           <Card>
             <Card.Body>
-              <Card.Title>Update Profile</Card.Title>
+      
               <UpdateProfile />
             </Card.Body>
           </Card>
@@ -184,8 +196,6 @@ const Dashbord = () => {
 
   return (
     <div>
-      <AuthorNav />
-
       <Container fluid className="mt-5 p-4">
         <Row>
           <Col md={3}>
@@ -219,6 +229,16 @@ const Dashbord = () => {
                       onClick={() => handleMenuClick("customers")}
                     >
                       Under Review
+                    </Nav.Link>
+                  </Nav.Item>
+
+                  <Nav.Item>
+                    <Nav.Link
+                      href="#"
+                      active={activeMenu === "All Users"}
+                      onClick={() => handleMenuClick("All Users")}
+                    >
+                      All Users
                     </Nav.Link>
                   </Nav.Item>
 

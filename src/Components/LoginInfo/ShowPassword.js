@@ -7,17 +7,17 @@ import { useState } from "react";
 import { UserContext, editorContext } from "../../App";
 import { useContext } from "react";
 import AuthorContext from "../../contexts/AuthorContext";
-import { Container } from 'react-bootstrap';
+import { Container } from "react-bootstrap";
 const auth = getAuth(app);
 
-  const ShowPassword = () => {
+const ShowPassword = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
   const [adminLogin, setAdminLogin] = useState("");
   const [editor] = useContext(editorContext);
-  
+
   const navigate = useNavigate();
   let location = useLocation();
 
@@ -27,12 +27,12 @@ const auth = getAuth(app);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
- 
+
     event.preventDefault();
   };
 
   const handlePassChange = (event) => {
-    setPassword(event.target.value)
+    setPassword(event.target.value);
     event.preventDefault();
   };
 
@@ -61,49 +61,41 @@ const auth = getAuth(app);
         return "";
     }
   }
-  let IsMatched=false;
+  let IsMatched = false;
 
   const handleEditorLogin = () => {
- 
-      navigate(from, { replace: true });
-      console.log('log in admin');
+    navigate(from, { replace: true });
+    console.log("log in admin");
 
-      toast.error(mapAuthCodeToMessage(error)); 
+    toast.error(mapAuthCodeToMessage(error));
 
     //admin@ejournal.com
     //admin@ejournal
   };
-
-
 
   const handleFormSubmit = (event) => {
     signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
         const user = result.user;
         if (user.emailVerified === true) {
-         // setSuccess("Login Successfully");
-//get jwt token is required
+      
 
-const currentUser= {
-  email:user.email
-}
+          const currentUser = {
+            email: user.email,
+          };
 
-fetch ('http://localhost:4000/jwt',{
-  method: 'POST',
-  headers: {  
-    'content-type': 'application/json'
-},
-body: JSON.stringify(currentUser)
-        })
-        .then(res=>res.json())
-        .then(data=>{
-          console.log('Hello token',data);
-          localStorage.setItem('e-token',data.token);
-          navigate(from, { replace: true });
-
-                });
-
-       
+          fetch("http://localhost:4000/jwt", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(currentUser),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              localStorage.setItem("e-token", data.token);
+              navigate(from, { replace: true });
+            });
         } else {
           setSuccess("Please Verify Your Email!!");
           toast.error("Please Verify Your Email!!");

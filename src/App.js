@@ -1,6 +1,12 @@
 import "./App.css";
 import Header from "./Components/Header/Header";
-import { BrowserRouter as Router, Routes, Route, createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 import Nomatch from "./Components/Shared/Nomatch";
 import Login from "./Components/LoginInfo/Login";
 import AuthorMainMenu from "./Components/Submit/AuthorMainMenu";
@@ -30,14 +36,14 @@ import PrivateRoute from "./routes/PrivateRoute";
 import Explore from "./Explore/Explore";
 import Aim from "./Explore/Aim";
 import ExploreNav from "./Explore/ExploreNav";
-import ExploreNavbar from './layout/ExploreNavbar';
+import ExploreNavbar from "./layout/ExploreNavbar";
 import GuidLine from "./Explore/GuidLine";
-import ContactUs from './Explore/ContactUs';
-import ReviewPolicy from './Explore/ReviewPolicy';
+import ContactUs from "./Explore/ContactUs";
+import ReviewPolicy from "./Explore/ReviewPolicy";
 import app from "./Components/LoginInfo/firebase.config";
 import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
-
+import DashboardLayout from "./layout/DashboardLayout";
 
 export const editorContext = createContext();
 export const reviewerContext = createContext();
@@ -64,9 +70,9 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/editor",{
+      .get("http://localhost:4000/editor", {
         headers: {
-          authorization:`Bearer ${localStorage.getItem("e-token")}`,
+          authorization: `Bearer ${localStorage.getItem("e-token")}`,
         },
       })
       .then((res) => {
@@ -90,98 +96,110 @@ function App() {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
   };
-  
 
   useEffect(() => {
     fetch(`http://localhost:4000/submittedData?email=${user?.email}`, {
+      method: "GET",
+      headers: headers,
+    })
+      .then((response) => {
+        // Handle the response
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Network response was not ok");
+        }
+      })
+      .then((data) => {
+        // Handle the data
 
-    method: "GET",
-    headers: headers,
-  })
-  .then((response) => {
-    // Handle the response
-    if (response.ok) {
-      return response.json();
-    } else {
-      throw new Error("Network response was not ok");
-    }
-  })
-  .then((data) => {
-    // Handle the data
-  
-    setData(data);
-  })
+        setData(data);
+      })
       .catch((error) => {
         console.error(error.message);
-   
       });
   }, [user?.email]);
 
-const router = createBrowserRouter([
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Main />,
+      children: [
+        { path: "/", element: <Header /> },
+        { path: "/openaccess", element: <OpenAccess /> },
+        { path: "/about", element: <AboutUs /> },
+        { path: "/help", element: <Help /> },
+        { path: "*", element: <Nomatch /> },
+      ],
+    },
 
-{path: "/" ,  element: <Main/>,children:[
-  { path:"/" ,element:<Header />},
-  { path:"/openaccess" ,element:<OpenAccess />},
-  { path:"/about" ,element:<AboutUs/>},
-  { path:"/help" ,element:<Help/>},
-  { path:"*" ,element:<Nomatch />}
-]},
+    {
+      path: "/submit",
+      element: <AuthorNavbar />,
+      children: [
+        {
+          path: "/submit",
+          element: (
+            <PrivateRoute>
+              <Submit />{" "}
+            </PrivateRoute>
+          ),
+        },
+        { path: "/submit/submithome", element: <Header /> },
+        { path: "/submit/mainmenu", element: <AuthorMainMenu /> },
+      ],
+    },
 
-{path: "/submit" ,  element: <AuthorNavbar />,children:[
-  { path:"/submit" ,element:<PrivateRoute ><Submit /> </PrivateRoute>},
-  { path:"/submit/submithome" ,element:<Header />},
-  { path:"/submit/mainmenu" ,element:<AuthorMainMenu />},
- 
-]},
+    {
+      path: "/explore",
+      element: <ExploreNavbar />,
+      children: [
+        { path: "/explore", element: <Aim /> },
+        { path: "/explore/aim", element: <Aim /> },
+        { path: "/explore/guideline", element: <GuidLine /> },
+        { path: "/explore/contactus", element: <ContactUs /> },
+        { path: "/explore/review-policy", element: <ReviewPolicy /> },
+      ],
+    },
 
+    {
+      path: "/dashboard",
+      element: <DashboardLayout />,
+      children: [
+        {
+          path: "/dashboard",
+          element: ( <PrivateRoute> <Dashbord /></PrivateRoute>
+          ),
+        },
+        
+      ],
+    },
 
-{path: "/explore" ,  element: <ExploreNavbar/>,children:[
-  { path:"/explore",element:<Aim />},
-  { path:"/explore/aim" ,element:< Aim /> },
-   { path:"/explore/guideline" ,element:<GuidLine />},
-   { path:"/explore/contactus" ,element:<ContactUs />},
-   { path:"/explore/review-policy" ,element:<ReviewPolicy/>},
- 
-]},
+    { path: "/login", element: <Login /> },
+    { path: "/newuser", element: <NewUser /> },
+    { path: "/forgetPass", element: <ForgetPass /> },
+    { path: "/mainmenu", element: <AuthorMainMenu /> },
 
+    { path: "/fulldetails", element: <FullDetails /> },
+    { path: "/fulldetails/:id", element: <FullDetails /> },
+    { path: "/editor/dashboard", element: <Editor /> },
 
+    { path: "/test", element: <Test /> },
+    { path: "/news", element: <News /> },
+    { path: "/copyright", element: <Copyright /> },
+    { path: "/SuccessSubmission", element: <SuccessSubmission /> },
+    { path: "/verifyemail", element: <VerifyEmail /> },
 
-{ path:"/login" ,element:<Login />},
-{ path:"/newuser" ,element:<NewUser />},
-{ path:"/forgetPass" ,element:<ForgetPass />},
-{ path:"/mainmenu" ,element:<AuthorMainMenu />},
-{ path:"/dashboard" ,element:<PrivateRoute><Dashbord/></PrivateRoute>},
-
-
-{ path:"/fulldetails" ,element:<FullDetails />},
-{ path:"/fulldetails/:id",element:<FullDetails/>},
-{ path:"/editor/dashboard",element:<Editor/>},
-
-
-{ path:"/test",element:<Test/>},
-{ path:"/news" ,element:<News/>},
-{ path:"/copyright",element:<Copyright/>},
-{ path:"/SuccessSubmission",element:<SuccessSubmission/>},
-{ path:"/verifyemail" ,element:<VerifyEmail/>},
-
-{ path:"*" ,element:<Nomatch />}
-])
+    { path: "*", element: <Nomatch /> },
+  ]);
   return (
-  
-  
-      <reviewerContext.Provider value={[reviewer, setReviewer]}>
-       
-          <editorContext.Provider value={[editor, setEditor]}>
-            <dataContext.Provider value={[data,setData]}>
-             
-            <RouterProvider router={router}/>
-
-            </dataContext.Provider>
-          </editorContext.Provider>
-     
-      </reviewerContext.Provider>
-
-  
+    <reviewerContext.Provider value={[reviewer, setReviewer]}>
+      <editorContext.Provider value={[editor, setEditor]}>
+        <dataContext.Provider value={[data, setData]}>
+          <RouterProvider router={router} />
+        </dataContext.Provider>
+      </editorContext.Provider>
+    </reviewerContext.Provider>
   );
 }
 
