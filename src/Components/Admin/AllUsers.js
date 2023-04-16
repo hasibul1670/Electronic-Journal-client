@@ -1,28 +1,23 @@
 import { useQuery } from "react-query";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useContext } from "react";
-import { dataContext, editorContext } from "../../App";
-import AuthorNav from "../Shared/AuthorNav";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCircleInfo,
-  faCoffee,
-  faDownload,
-  faInfo,
-} from "@fortawesome/free-solid-svg-icons";
 import "react-toastify/dist/ReactToastify.css";
-
-import { Link } from "react-router-dom";
-
 import { Table, Card, Row, Col, Container, Nav } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { getAuth } from 'firebase/auth';
+import app from './../LoginInfo/firebase.config';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import useAdmin from "../../Hooks/useAdmin";
 
 const AllUsers = () => {
+
+   const auth = getAuth(app);
+   const [user, loading] = useAuthState(auth);
+  const [isAdmin] = useAdmin(user?.email);
+  
   const { data: users = [],refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:4000/users");
+      const response = await fetch("http://localhost:4000/users/admin");
       const data = await response.json();
       return data;
     },
@@ -30,12 +25,19 @@ const AllUsers = () => {
     
     const handleAdmin = id => {
        fetch(`http://localhost:4000/users/admin/${id}`, {
-           method:'PUT'
+         method: 'PUT',
+         headers: {
+           authorization: `bearer ${localStorage.getItem("token")}`,
+         }
           })
            .then(res => res.json())
-           .then(data => {
-                   toast.success("Make Admin Successfully");
-                   refetch();  
+         .then(data => {
+           if (data.modifiedCount > 0) {
+              toast.success("Make Admin Successfully");
+                   refetch();      
+           }
+           toast.error("Make Admin Error");
+                  
            })
     };
   return (
@@ -58,7 +60,7 @@ const AllUsers = () => {
               <td>{item.institutionName}</td>
               <td>
               {item?.role!=='admin' && <button
-                   onClick={() => handleAdmin(item._id)}
+                   onClick={()=>handleAdmin(item._id)}
                   className="btn btn-primary"
                 >
                   Make Admin

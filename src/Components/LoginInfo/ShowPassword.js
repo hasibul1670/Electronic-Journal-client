@@ -78,8 +78,7 @@ const ShowPassword = () => {
       .then((result) => {
         const user = result.user;
         if (user.emailVerified === true) {
-      
-
+            navigate(from, { replace: true });
           const currentUser = {
             email: user.email,
           };
@@ -93,8 +92,8 @@ const ShowPassword = () => {
           })
             .then((res) => res.json())
             .then((data) => {
+            
               localStorage.setItem("e-token", data.token);
-              navigate(from, { replace: true });
             });
         } else {
           setSuccess("Please Verify Your Email!!");

@@ -26,45 +26,14 @@ import { getAuth, signOut } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import app from "../LoginInfo/firebase.config";
 import AllUsers from "./AllUsers";
+import useAdmin from "../../Hooks/useAdmin";
 
 const Dashbord = () => {
   const auth = getAuth(app);
   const [user, loading] = useAuthState(auth);
-  //const [data, setData] = useState([]);
-  const [data,setData] = useContext(dataContext);
-  // const token = localStorage.getItem("e-token");
-  // console.log('Hello token', token);
+  const [isAdmin] = useAdmin(user?.email);
 
-  // const headers = {
-  //   "Content-Type": "application/json",
-  //   Authorization: `Bearer ${token}`,
-  // };
-  
-
-  // useEffect(() => {
-  //   fetch(`http://localhost:4000/submittedData?email=${user?.email}`, {
-
-  //   method: "GET",
-  //   headers: headers,
-  // })
-  // .then((response) => {
-  //   // Handle the response
-  //   if (response.ok) {
-  //     return response.json();
-  //   } else {
-  //     throw new Error("Network response was not ok");
-  //   }
-  // })
-  // .then((data) => {
-  //   // Handle the data
-  //   console.log(data);
-  //   setData(data);
-  // })
-  //     .catch((error) => {
-  //       console.error(error.message);
-   
-  //     });
-  // }, [user?.email]);
+  const [data, setData] = useContext(dataContext);
 
   const [isDeleted, setIsDeleted] = useState(false);
 
@@ -84,9 +53,6 @@ const Dashbord = () => {
         toast.error("An error occurred while deleting this Item.");
       });
   };
-
-
-  const [editor] = useContext(editorContext);
 
   const [activeMenu, setActiveMenu] = useState("dashboard");
 
@@ -144,7 +110,6 @@ const Dashbord = () => {
         return (
           <Card>
             <Card.Body>
-            
               <Card.Text>This is the total Publish Page</Card.Text>
             </Card.Body>
           </Card>
@@ -153,7 +118,6 @@ const Dashbord = () => {
         return (
           <Card>
             <Card.Body>
-         
               <Card.Text>This is the Under Review section</Card.Text>
             </Card.Body>
           </Card>
@@ -163,12 +127,14 @@ const Dashbord = () => {
         return (
           <Card>
             <Card.Body>
-            
-              <Card.Text>  <AllUsers /></Card.Text>
+              <Card.Text>
+                {" "}
+                <AllUsers />
+              </Card.Text>
             </Card.Body>
           </Card>
         );
-      
+
       case "chart":
         return (
           <Card>
@@ -184,7 +150,6 @@ const Dashbord = () => {
         return (
           <Card>
             <Card.Body>
-      
               <UpdateProfile />
             </Card.Body>
           </Card>
@@ -232,15 +197,18 @@ const Dashbord = () => {
                     </Nav.Link>
                   </Nav.Item>
 
-                  <Nav.Item>
-                    <Nav.Link
-                      href="#"
-                      active={activeMenu === "All Users"}
-                      onClick={() => handleMenuClick("All Users")}
-                    >
-                      All Users
-                    </Nav.Link>
-                  </Nav.Item>
+                  {isAdmin && 
+                      <Nav.Item>
+                        <Nav.Link
+                          href="#"
+                          active={activeMenu === "All Users"}
+                          onClick={() => handleMenuClick("All Users")}
+                        >
+                          All Users
+                        </Nav.Link>
+                      </Nav.Item>
+                 
+                  }
 
                   <Nav.Item>
                     <Nav.Link
