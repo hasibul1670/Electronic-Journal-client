@@ -103,7 +103,6 @@ function App() {
       headers: headers,
     })
       .then((response) => {
-        // Handle the response
         if (response.ok) {
           return response.json();
         } else {
@@ -111,8 +110,6 @@ function App() {
         }
       })
       .then((data) => {
-        // Handle the data
-
         setData(data);
       })
       .catch((error) => {
