@@ -29,7 +29,7 @@ const steps = [
 
 export default function HorizontalLinearStepper() {
   var [selectedOption, setSelectedOption] = useState("");
-  var [reviewer, setReviewer] = useState([]);
+ const [selectedReviewer, setSelectedReviewer] = useState([]);
   var [comment, setComment] = useState("");
   const [url, setUrl] = useState(null);
 
@@ -42,7 +42,7 @@ export default function HorizontalLinearStepper() {
   const [activeStep, setActiveStep] = useState(0);
 
   const dataCheck = data.title && data.keywords && data.abstract;
-
+console.log("revierwr", selectedReviewer);
   const isDisabled = () => {
     switch (activeStep) {
       case 0:
@@ -54,7 +54,7 @@ export default function HorizontalLinearStepper() {
       case 3:
         return !comment;
       case 4:
-        return !reviewer[0];
+        return selectedReviewer.length === 0;
       default:
         return true;
     }
@@ -87,7 +87,10 @@ export default function HorizontalLinearStepper() {
     formData.append("url", url);
     formData.append("fileName", file?.name);
     formData.append("comment", comment.comment);
-    formData.append("reviewer[0]", reviewer);
+    for (let i = 0; i < selectedReviewer.length; i++) {
+      formData.append("reviewer[]", JSON.stringify(selectedReviewer[i]?.name));
+    }
+
 
     try {
       const response = await axios.post(
@@ -165,8 +168,8 @@ export default function HorizontalLinearStepper() {
             {activeStep === 4 && (
               <div>
                 <ReviewPreference
-                  reviewer={reviewer}
-                  setReviewer={setReviewer}
+                  selectedReviewer={selectedReviewer}
+                  setSelectedReviewer={setSelectedReviewer}
                 ></ReviewPreference>
               </div>
             )}

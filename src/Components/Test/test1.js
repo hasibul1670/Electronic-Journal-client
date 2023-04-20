@@ -3,10 +3,10 @@ import { useContext } from "react";
 import { reviewerContext } from "../../App";
 import { useState } from "react";
 
-const ReviewerList = (props) => {
-  const closeModal = props.closeModal;
-  const setSelectedReviewer = props.setSelectedReviewer;
-  const selectedReviewer = props.selectedReviewer;
+const Test1 = (props) => {
+    const closeModal = props.closeModal;
+    const setSelectedReviewer = props.setSelectedReviewer;
+    const selectedReviewer= props.selectedReviewer;
   const styles = {
     backgroundColor: "lightgray",
   };
@@ -51,7 +51,7 @@ const ReviewerList = (props) => {
           <div key={index}>
             <h4 className="text-danger">
               {" "}
-              {index + 1}. {item?.name}
+              {index + 1}. {item.name}
             </h4>
           </div>
         ))}
@@ -65,4 +65,4 @@ const ReviewerList = (props) => {
   );
 };
 
-export default ReviewerList;
+export default Test1;

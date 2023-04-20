@@ -86,6 +86,9 @@ const Dashbord = () => {
                   <td>{item.email}</td>
                   <td>{item.articleType}</td>
                   <td>{item.title}</td>
+                  
+
+
                   <td>{item.reviewer}</td>
                   <td>
                     {" "}
