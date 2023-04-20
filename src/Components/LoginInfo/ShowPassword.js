@@ -110,7 +110,8 @@ const ShowPassword = () => {
             
               localStorage.setItem("e-token", data.token);
             });
-        } else {
+        }
+        else {
           setSuccess("Please Verify Your Email!!");
           toast.error("Please Verify Your Email!!");
          

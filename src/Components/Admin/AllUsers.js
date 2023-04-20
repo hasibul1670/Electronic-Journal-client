@@ -1,20 +1,23 @@
 import { useQuery } from "react-query";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { Table, Card, Row, Col, Container, Nav } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { getAuth } from 'firebase/auth';
-import app from './../LoginInfo/firebase.config';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { getAuth } from "firebase/auth";
+import app from "./../LoginInfo/firebase.config";
+import { useAuthState, useDeleteUser } from "react-firebase-hooks/auth";
 import useAdmin from "../../Hooks/useAdmin";
 
-const AllUsers = () => {
+import axios from "axios";
+import { dataContext } from "../../App";
 
-   const auth = getAuth(app);
-   const [user, loading] = useAuthState(auth);
+const AllUsers = () => {
+  const auth = getAuth(app);
+  const [user,deleteUser,loading] = useAuthState(auth);
   const [isAdmin] = useAdmin(user?.email);
-  
-  const { data: users = [],refetch } = useQuery({
+  const [data, setData] = useContext(dataContext);
+  const [isDeleted, setIsDeleted] = useState(false);
+  const { data: users = [], refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const response = await fetch("http://localhost:4000/users/admin");
@@ -22,24 +25,27 @@ const AllUsers = () => {
       return data;
     },
   });
-    
-    const handleAdmin = id => {
-       fetch(`http://localhost:4000/users/admin/${id}`, {
-         method: 'PUT',
-         headers: {
-           authorization: `bearer ${localStorage.getItem("token")}`,
-         }
-          })
-           .then(res => res.json())
-         .then(data => {
-           if (data.modifiedCount > 0) {
-              toast.success("Make Admin Successfully");
-                   refetch();      
-           }
-           toast.error("Make Admin Error");
-                  
-           })
-    };
+
+  
+
+  const handleAdmin = (id) => {
+        
+    fetch(`http://localhost:4000/users/admin/${id}`, {
+      method: "PUT",
+      headers: {
+        authorization: `bearer ${localStorage.getItem("e-token")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.modifiedCount > 0) {
+          toast.success("Make Admin Successfully");
+          refetch();
+        }
+
+        toast.error("Make Admin Error");
+      });
+  };
   return (
     <div>
       <Table striped bordered hover>
@@ -49,30 +55,34 @@ const AllUsers = () => {
             <th>Email</th>
             <th>Institution Name</th>
             <th>Admin</th>
-            <th>Delete</th>
+            <th>Delete User</th>
           </tr>
         </thead>
         <tbody>
           {users.map((item) => (
             <tr key={item._id}>
               <td>{item.authorName}</td>
-              <td>{item.authorEmail}</td>
+              <td>{item.email}</td>
               <td>{item.institutionName}</td>
               <td>
-              {item?.role!=='admin' && <button
-                   onClick={()=>handleAdmin(item._id)}
-                  className="btn btn-primary"
-                >
-                  Make Admin
-                </button>}
+                {item?.role !== "admin" && (
+                  <button
+                    onClick={() => handleAdmin(item._id)}
+                    className="btn btn-primary"
+                  >
+                    Make Admin
+                  </button>
+                )}
               </td>
               <td>
-                <button
-                  // onClick={() => handleDelete(item._id)}
-                  className="btn btn-danger"
-                >
-                  Delete
-                </button>
+                {item?.role !== "admin" && (
+                  <button
+                 //   onClick={() => handleDelete(item._id)}
+                    className="btn btn-danger"
+                  >
+                    Delete
+                  </button>
+                )}
               </td>
             </tr>
           ))}
