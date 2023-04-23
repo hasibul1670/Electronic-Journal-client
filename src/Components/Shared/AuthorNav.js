@@ -6,10 +6,12 @@ import { Navigate } from "react-router";
 import { editorContext } from "../../App";
 import app from "../LoginInfo/firebase.config";
 import { Link } from "react-router-dom";
+import useAdmin from "../../Hooks/useAdmin";
 const auth = getAuth(app);
 
 const AuthorNav = () => {
   const [user] = useAuthState(auth);
+  const [isAdmin] = useAdmin(user?.email);
 
   const signOutFunc = () => {
     signOut(auth);
@@ -58,12 +60,21 @@ const AuthorNav = () => {
             )}
 
             <li className="nav-right mr-3 ">
-              <Link to="/about"  className="nav-link active nav-text">
+              <Link to="/about" className="nav-link active nav-text">
                 About
               </Link>
             </li>
           </ul>
           <div className="form-inline my-2 my-lg-0">
+            {isAdmin && (
+              <Link
+                to="/dashboard"
+                className="btn  btn-secondary rounded-pill mr-2"
+              >
+                <h5>Admin</h5>
+              </Link>
+            )}
+            
             <Link
               to="/dashboard"
               className="btn  btn-primary rounded-pill mr-2"

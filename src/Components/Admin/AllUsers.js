@@ -17,6 +17,7 @@ const AllUsers = () => {
   const [isAdmin] = useAdmin(user?.email);
   const [data, setData] = useContext(dataContext);
   const [isDeleted, setIsDeleted] = useState(false);
+  
   const { data: users = [], refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {

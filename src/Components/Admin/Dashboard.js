@@ -27,42 +27,53 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import app from "../LoginInfo/firebase.config";
 import AllUsers from "./AllUsers";
 import useAdmin from "../../Hooks/useAdmin";
+import { useQuery } from "react-query";
 
 const Dashbord = () => {
   const auth = getAuth(app);
   const [user, loading] = useAuthState(auth);
   const [isAdmin] = useAdmin(user?.email);
-  console.log('Hello', isAdmin);
-  
+  console.log("Hello", isAdmin);
+
   const [data, setData] = useContext(dataContext);
 
-    const headers = {
-      "Content-Type": "application/json",
-      authorization: `bearer ${localStorage.getItem("accessToken")}`,
-    };
+  const headers = {
+    "Content-Type": "application/json",
+    authorization: `bearer ${localStorage.getItem("accessToken")}`,
+  };
 
-    const url = `http://localhost:4000/submittedData?email=${user?.email}`;
+  const url = `http://localhost:4000/submittedData?email=${user?.email}`;
 
-    useEffect(() => {
-      fetch(url, {
-        method: "GET",
-        headers: headers,
+  useEffect(() => {
+    fetch(url, {
+      method: "GET",
+      headers: headers,
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Network response was not ok");
+        }
       })
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error("Network response was not ok");
-          }
-        })
-        .then((data) => {
-          setData(data);
-          console.log("Hello", data);
-        })
-        .catch((error) => {
-          console.error(error.message);
-        });
-    }, [user?.email]);
+      .then((data) => {
+        setData(data);
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
+  }, [user?.email]);
+
+  const { data: users = [], refetch } = useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+      const response = await fetch("http://localhost:4000/adminData");
+      const data = await response.json();
+      return data;
+    },
+  });
+
+  console.log("Hello", users);
 
   const [isDeleted, setIsDeleted] = useState(false);
 
@@ -105,36 +116,63 @@ const Dashbord = () => {
               </tr>
             </thead>
             <tbody>
-              {data?.map((item) => (
-                <tr key={item._id}>
-                  <td>
-                    <a href={item.url}>
-                      Docx <FontAwesomeIcon icon={faDownload} />
-                    </a>
-                  </td>
-                  <td>{item.email}</td>
-                  <td>{item.articleType}</td>
-                  <td>{item.title}</td>
-                  
+              {isAdmin
+                ? users?.map((item) => (
+                    <tr key={item._id}>
+                      <td>
+                        <a href={item.url}>
+                          Docx <FontAwesomeIcon icon={faDownload} />
+                        </a>
+                      </td>
+                      <td>{item.email}</td>
+                      <td>{item.articleType}</td>
+                      <td>{item.title}</td>
 
+                      <td>{item.reviewer}</td>
+                      <td>
+                        {" "}
+                        <Link to={`/fulldetails/${item._id}`}>
+                          See Details <FontAwesomeIcon icon={faCircleInfo} />{" "}
+                        </Link>{" "}
+                      </td>
+                      <td>
+                        <button
+                          onClick={() => handleDelete(item._id)}
+                          className="btn btn-danger"
+                        >
+                          Delete
+                        </button>{" "}
+                      </td>
+                    </tr>
+                  ))
+                : data?.map((item) => (
+                    <tr key={item._id}>
+                      <td>
+                        <a href={item.url}>
+                          Docx <FontAwesomeIcon icon={faDownload} />
+                        </a>
+                      </td>
+                      <td>{item.email}</td>
+                      <td>{item.articleType}</td>
+                      <td>{item.title}</td>
 
-                  <td>{item.reviewer}</td>
-                  <td>
-                    {" "}
-                    <Link to={`/fulldetails/${item._id}`}>
-                      See Details <FontAwesomeIcon icon={faCircleInfo} />{" "}
-                    </Link>{" "}
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => handleDelete(item._id)}
-                      className="btn btn-danger"
-                    >
-                      Delete
-                    </button>{" "}
-                  </td>
-                </tr>
-              ))}
+                      <td>{item.reviewer}</td>
+                      <td>
+                        {" "}
+                        <Link to={`/fulldetails/${item._id}`}>
+                          See Details <FontAwesomeIcon icon={faCircleInfo} />{" "}
+                        </Link>{" "}
+                      </td>
+                      <td>
+                        <button
+                          onClick={() => handleDelete(item._id)}
+                          className="btn btn-danger"
+                        >
+                          Delete
+                        </button>{" "}
+                      </td>
+                    </tr>
+                  ))}
             </tbody>
           </Table>
         );
