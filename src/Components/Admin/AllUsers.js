@@ -13,7 +13,7 @@ import { dataContext } from "../../App";
 
 const AllUsers = () => {
   const auth = getAuth(app);
-  const [user,deleteUser,loading] = useAuthState(auth);
+  const [user, deleteUser, loading] = useAuthState(auth);
   const [isAdmin] = useAdmin(user?.email);
   const [data, setData] = useContext(dataContext);
   const [isDeleted, setIsDeleted] = useState(false);
@@ -26,24 +26,23 @@ const AllUsers = () => {
     },
   });
 
-  
-
   const handleAdmin = (id) => {
-        
     fetch(`http://localhost:4000/users/admin/${id}`, {
       method: "PUT",
       headers: {
-        authorization: `bearer ${localStorage.getItem("e-token")}`,
+        authorization: `bearer ${localStorage.getItem("accessToken")}`,
       },
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.modifiedCount > 0) {
+       // console.log("Hello", data.lastErrorObject.updatedExisting);
+
+        if (data?.lastErrorObject?.updatedExisting === true) {
           toast.success("Make Admin Successfully");
           refetch();
+        } else {
+          toast.error("Make Admin Error");
         }
-
-        toast.error("Make Admin Error");
       });
   };
   return (
@@ -77,7 +76,7 @@ const AllUsers = () => {
               <td>
                 {item?.role !== "admin" && (
                   <button
-                 //   onClick={() => handleDelete(item._id)}
+                    //   onClick={() => handleDelete(item._id)}
                     className="btn btn-danger"
                   >
                     Delete
@@ -86,6 +85,7 @@ const AllUsers = () => {
               </td>
             </tr>
           ))}
+          
         </tbody>
       </Table>
     </div>

@@ -32,8 +32,37 @@ const Dashbord = () => {
   const auth = getAuth(app);
   const [user, loading] = useAuthState(auth);
   const [isAdmin] = useAdmin(user?.email);
-
+  console.log('Hello', isAdmin);
+  
   const [data, setData] = useContext(dataContext);
+
+    const headers = {
+      "Content-Type": "application/json",
+      authorization: `bearer ${localStorage.getItem("accessToken")}`,
+    };
+
+    const url = `http://localhost:4000/submittedData?email=${user?.email}`;
+
+    useEffect(() => {
+      fetch(url, {
+        method: "GET",
+        headers: headers,
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Network response was not ok");
+          }
+        })
+        .then((data) => {
+          setData(data);
+          console.log("Hello", data);
+        })
+        .catch((error) => {
+          console.error(error.message);
+        });
+    }, [user?.email]);
 
   const [isDeleted, setIsDeleted] = useState(false);
 
@@ -41,7 +70,7 @@ const Dashbord = () => {
     axios
       .delete(`http://localhost:4000/submittedData/${id}`, {
         headers: {
-          authorization: `Bearer ${localStorage.getItem("e-token")}`,
+          authorization: `bearer ${localStorage.getItem("accessToken")}`,
         },
       })
       .then((response) => {
@@ -76,7 +105,7 @@ const Dashbord = () => {
               </tr>
             </thead>
             <tbody>
-              {data.map((item) => (
+              {data?.map((item) => (
                 <tr key={item._id}>
                   <td>
                     <a href={item.url}>
@@ -177,7 +206,7 @@ const Dashbord = () => {
                       active={activeMenu === "dashboard"}
                       onClick={() => handleMenuClick("dashboard")}
                     >
-                      Total Sumission
+                      {isAdmin ? "Total Submission" : "Your Submission"}
                     </Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
@@ -186,7 +215,7 @@ const Dashbord = () => {
                       active={activeMenu === "orders"}
                       onClick={() => handleMenuClick("orders")}
                     >
-                      Total Published
+                      {isAdmin ? "Total Published" : "Your Published"}
                     </Nav.Link>
                   </Nav.Item>
 
@@ -200,18 +229,17 @@ const Dashbord = () => {
                     </Nav.Link>
                   </Nav.Item>
 
-                  {isAdmin && 
-                      <Nav.Item>
-                        <Nav.Link
-                          href="#"
-                          active={activeMenu === "All Users"}
-                          onClick={() => handleMenuClick("All Users")}
-                        >
-                          All Users
-                        </Nav.Link>
-                      </Nav.Item>
-                 
-                  }
+                  {isAdmin && (
+                    <Nav.Item>
+                      <Nav.Link
+                        href="#"
+                        active={activeMenu === "All Users"}
+                        onClick={() => handleMenuClick("All Users")}
+                      >
+                        All Users
+                      </Nav.Link>
+                    </Nav.Item>
+                  )}
 
                   <Nav.Item>
                     <Nav.Link
@@ -229,7 +257,7 @@ const Dashbord = () => {
                       active={activeMenu === "updateProfile"}
                       onClick={() => handleMenuClick("updateProfile")}
                     >
-                      Update Profile
+                      Update Your Profile
                     </Nav.Link>
                   </Nav.Item>
                 </Nav>

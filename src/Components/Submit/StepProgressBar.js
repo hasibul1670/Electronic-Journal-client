@@ -42,7 +42,7 @@ export default function HorizontalLinearStepper() {
   const [activeStep, setActiveStep] = useState(0);
 
   const dataCheck = data.title && data.keywords && data.abstract;
-console.log("revierwr", selectedReviewer);
+
   const isDisabled = () => {
     switch (activeStep) {
       case 0:

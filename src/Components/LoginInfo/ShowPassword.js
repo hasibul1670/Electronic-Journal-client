@@ -1,5 +1,5 @@
 import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import React from "react";
+import React, { useEffect } from "react";
 import app from "./firebase.config";
 import { useLocation, useNavigate } from "react-router";
 
@@ -8,9 +8,11 @@ import { editorContext } from "../../App";
 import { useContext } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Button,Form,Space,Input } from "antd";
+import { Button, Form, Space, Input } from "antd";
 import { Link } from "react-router-dom";
-const auth = getAuth(app);
+import useToken from "../../Hooks/useToken";
+import { useAuthState } from "react-firebase-hooks/auth";
+import useAdmin from "../../Hooks/useAdmin";
 
 const ShowPassword = () => {
   const [email, setEmail] = useState("");
@@ -19,19 +21,27 @@ const ShowPassword = () => {
   const [error, setError] = useState("");
   const [adminLogin, setAdminLogin] = useState("");
   const [editor] = useContext(editorContext);
-    const [size, setSize] = useState("large"); 
+  const [size, setSize] = useState("large");
+  const auth = getAuth(app);
+  const [user, loading] = useAuthState(auth);
+
+  const [loginUserEmail, setLoginUserEmail] = useState("");
+  const [token] = useToken(loginUserEmail);
+
 
   const navigate = useNavigate();
   let location = useLocation();
 
   let from = location.state?.from?.pathname || "/";
 
-  // navigate(from, { replace: true });
+  if (token) {
+    navigate(from, { replace: true });
+  }
 
+  // navigate(from, { replace: true });
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
-
     event.preventDefault();
   };
 
@@ -40,15 +50,10 @@ const ShowPassword = () => {
     event.preventDefault();
   };
 
-
   const signOutFunc = () => {
     signOut(auth);
     navigate("/login");
   };
-
-
-
-
 
   function mapAuthCodeToMessage(errorCode) {
     switch (errorCode) {
@@ -73,48 +78,23 @@ const ShowPassword = () => {
   let IsMatched = false;
 
   const handleEditorLogin = () => {
-   // navigate(from, { replace: true });
-  const errorMessage = mapAuthCodeToMessage(error.code);
+    const errorMessage = mapAuthCodeToMessage(error.code);
     toast.error(mapAuthCodeToMessage(error));
-
-    //admin@ejournal.com
-    //admin@ejournal
   };
 
-  
-
-
-
-
   const handleFormSubmit = (event) => {
-    console.log('Hello',email,password);
     signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
         const user = result.user;
-        if (user.emailVerified === true) {
-            navigate(from, { replace: true });
-          const currentUser = {
-            email: user.email,
-            
-          };
 
-          fetch("http://localhost:4000/jwt", {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify(currentUser),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-            
-              localStorage.setItem("e-token", data.token);
-            });
-        }
-        else {
+        if (user.emailVerified === true) {
+          setLoginUserEmail(email);
+
+          // navigate(from, { replace: true });
+        } else {
           setSuccess("Please Verify Your Email!!");
           toast.error("Please Verify Your Email!!");
-         
+
           signOutFunc();
         }
       })
@@ -124,7 +104,6 @@ const ShowPassword = () => {
         const errorMessage = mapAuthCodeToMessage(error.code);
         setError(errorMessage);
         toast.error(errorMessage);
-       
       });
   };
 
@@ -195,7 +174,7 @@ const ShowPassword = () => {
             <Button type="primary" size={size}>
               Reviewer Login
             </Button>
-     
+
             <Link to="/newuser">
               <Button type="primary" size={size}>
                 New User ? Register

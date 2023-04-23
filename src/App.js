@@ -44,6 +44,7 @@ import app from "./Components/LoginInfo/firebase.config";
 import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import DashboardLayout from "./layout/DashboardLayout";
+import useAdmin from "./Hooks/useAdmin";
 
 export const editorContext = createContext();
 export const reviewerContext = createContext();
@@ -90,32 +91,11 @@ function App() {
       .catch((err) => {});
   }, []);
 
-  const token = localStorage.getItem("e-token");
 
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  };
 
-  useEffect(() => {
-    fetch(`http://localhost:4000/submittedData?email=${user?.email}`, {
-      method: "GET",
-      headers: headers,
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Network response was not ok");
-        }
-      })
-      .then((data) => {
-        setData(data);
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
-  }, [user?.email]);
+
+
+
 
   const router = createBrowserRouter([
     {
