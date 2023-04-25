@@ -6,8 +6,7 @@ import { dataContext } from "../../App";
 
 
 const AuthorMainMenu = () => {
-  const [data,setData] = useContext(dataContext) ;
-
+  const [data, setData] = useContext(dataContext);
 
   return (
     <div>
@@ -33,7 +32,8 @@ const AuthorMainMenu = () => {
               </div>
               <h5 className="line-height card-title">Revisions</h5>
               <div className="ml-5">
-                <Link>Submissions Needing Revision (0)</Link>
+                {data.assignReviewer}
+                <Link>Assign Reviewer (0)</Link>
                 <br />
                 <Link>Revisions Sent Back to Author (0)</Link>
                 <br />
