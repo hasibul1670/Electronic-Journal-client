@@ -28,19 +28,28 @@ import app from "../LoginInfo/firebase.config";
 import AllUsers from "./AllUsers";
 import useAdmin from "../../Hooks/useAdmin";
 import { useQuery } from "react-query";
+import Loading from './../Shared/Loading';
 
 const Dashbord = () => {
   const auth = getAuth(app);
   const [user, loading] = useAuthState(auth);
-  const [isAdmin] = useAdmin(user?.email);
-  console.log("Hello", isAdmin);
-
-  const [data, setData] = useContext(dataContext);
+  const [isAdmin, isAdminLoading] = useAdmin(user?.email);
+  
+  const [data, setData] = useState([]);
 
   const headers = {
     "Content-Type": "application/json",
     authorization: `bearer ${localStorage.getItem("accessToken")}`,
   };
+
+  const { data: users = [], refetch } = useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+      const response = await fetch("http://localhost:4000/adminData");
+      const data = await response.json();
+      return data;
+    },
+  });
 
   const url = `http://localhost:4000/submittedData?email=${user?.email}`;
 
@@ -64,16 +73,8 @@ const Dashbord = () => {
       });
   }, [user?.email]);
 
-  const { data: users = [], refetch } = useQuery({
-    queryKey: ["users"],
-    queryFn: async () => {
-      const response = await fetch("http://localhost:4000/adminData");
-      const data = await response.json();
-      return data;
-    },
-  });
 
-  console.log("Hello", users);
+
 
   const [isDeleted, setIsDeleted] = useState(false);
 
@@ -88,6 +89,7 @@ const Dashbord = () => {
         setIsDeleted(response.data);
         toast.success("Item deleted successfully!");
         setData(data.filter((data) => data._id !== id));
+          refetch();
       })
       .catch((error) => {
         toast.error("An error occurred while deleting this Item.");
@@ -99,6 +101,11 @@ const Dashbord = () => {
   const handleMenuClick = (menu) => {
     setActiveMenu(menu);
   };
+  if (isAdminLoading) {
+    <p>
+      <Loading />
+    </p>;
+  }
 
   const renderContent = () => {
     switch (activeMenu) {
@@ -131,7 +138,7 @@ const Dashbord = () => {
                       <td>{item.reviewer}</td>
                       <td>
                         {" "}
-                        <Link to={`/fulldetails/${item._id}`}>
+                        <Link to={`/dashboard/fulldetails/${item._id}`}>
                           See Details <FontAwesomeIcon icon={faCircleInfo} />{" "}
                         </Link>{" "}
                       </td>
@@ -159,7 +166,7 @@ const Dashbord = () => {
                       <td>{item.reviewer}</td>
                       <td>
                         {" "}
-                        <Link to={`/fulldetails/${item._id}`}>
+                        <Link to={`/dashboard/fulldetails/${item._id}`}>
                           See Details <FontAwesomeIcon icon={faCircleInfo} />{" "}
                         </Link>{" "}
                       </td>

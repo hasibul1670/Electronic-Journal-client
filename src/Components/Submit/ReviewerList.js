@@ -11,11 +11,18 @@ const ReviewerList = (props) => {
     backgroundColor: "lightgray",
   };
   const [reviewer] = useContext(reviewerContext);
+  const [disabledButtons, setDisabledButtons] = useState({});
 
-  const handleReviewer = (name, email) => {
+  const handleReviewer = (name, email, id) => {
     setSelectedReviewer([...selectedReviewer, { name, email }]);
+    setDisabledButtons((prevState) => ({
+      ...prevState,
+      [id]: true, // set the value for the clicked button's id to true
+    }));
+
     //length ===  2
   };
+
   return (
     <div className="d-flex">
       <div className="w-50 border  border-primary p-3 ">
@@ -32,7 +39,10 @@ const ReviewerList = (props) => {
               {selectedReviewer.length != 3 && (
                 <button
                   className="btn btn-primary"
-                  onClick={() => handleReviewer(service.name, service.email)}
+                  onClick={() =>
+                    handleReviewer(service.name, service.email, service._id)
+                  }
+                  disabled={disabledButtons[service._id]}
                 >
                   Add As Reviewer
                 </button>
@@ -44,12 +54,14 @@ const ReviewerList = (props) => {
       <br />
       <div className="border  border-primary p-5 ">
         <u>
-          <h5 className="text-primary ">Your Selected Reviewers:</h5>{" "}
+          <h5 className=" font-weight-bold text-primary ">
+            Your Selected Reviewers:
+          </h5>{" "}
         </u>
 
         {selectedReviewer.map((item, index) => (
           <div key={index}>
-            <h4 className="text-danger">
+            <h4 className="text-danger font-weight-bold">
               {" "}
               {index + 1}. {item?.name}
             </h4>

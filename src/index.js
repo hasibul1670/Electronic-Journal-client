@@ -11,27 +11,22 @@ import {
 import App from './App';
 import AuthorContext from './contexts/AuthorContext';
 import useAdmin from './Hooks/useAdmin';
+import { ToastContainer } from 'react-toastify';
 
 const queryClient = new QueryClient()
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  
- 
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      
-<AuthorContext>
-<App />
-</AuthorContext>
-   
-
-</QueryClientProvider>
- 
+      <AuthorContext>
+    
+          <App />
+       
+      </AuthorContext>
+    </QueryClientProvider>
   </React.StrictMode>
-
-  
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -45,6 +45,7 @@ import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import DashboardLayout from "./layout/DashboardLayout";
 import useAdmin from "./Hooks/useAdmin";
+import { Toaster } from "react-hot-toast";
 
 export const editorContext = createContext();
 export const reviewerContext = createContext();
@@ -91,6 +92,32 @@ function App() {
       .catch((err) => {});
   }, []);
 
+  
+  const url = `http://localhost:4000/submittedData?email=${user?.email}`;
+
+  const headers = {
+    "Content-Type": "application/json",
+    authorization: `bearer ${localStorage.getItem("accessToken")}`,
+  };
+  useEffect(() => {
+    fetch(url, {
+      method: "GET",
+      headers: headers,
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Network response was not ok");
+        }
+      })
+      .then((data) => {
+        setData(data);
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
+  }, [user?.email]);
 
 
 
@@ -145,10 +172,15 @@ function App() {
       children: [
         {
           path: "/dashboard",
-          element: ( <PrivateRoute> <Dashbord /></PrivateRoute>
+          element: (
+            <PrivateRoute>
+              {" "}
+              <Dashbord />
+            </PrivateRoute>
           ),
         },
-        
+       
+        { path: "/dashboard/fulldetails/:id", element: <FullDetails /> },
       ],
     },
 
@@ -157,8 +189,6 @@ function App() {
     { path: "/forgetPass", element: <ForgetPass /> },
     { path: "/mainmenu", element: <AuthorMainMenu /> },
 
-    { path: "/fulldetails", element: <FullDetails /> },
-    { path: "/fulldetails/:id", element: <FullDetails /> },
     { path: "/editor/dashboard", element: <Editor /> },
 
     { path: "/test", element: <Test /> },
@@ -170,13 +200,15 @@ function App() {
     { path: "*", element: <Nomatch /> },
   ]);
   return (
-    <reviewerContext.Provider value={[reviewer, setReviewer]}>
-      <editorContext.Provider value={[editor, setEditor]}>
-        <dataContext.Provider value={[data, setData]}>
-          <RouterProvider router={router} />
-        </dataContext.Provider>
-      </editorContext.Provider>
-    </reviewerContext.Provider>
+   
+      <reviewerContext.Provider value={[reviewer, setReviewer]}>
+        <editorContext.Provider value={[editor, setEditor]}>
+          <dataContext.Provider value={[data, setData]}>
+            <RouterProvider router={router} />
+          </dataContext.Provider>
+        </editorContext.Provider>
+      </reviewerContext.Provider>
+   
   );
 }
 

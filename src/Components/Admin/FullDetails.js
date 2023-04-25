@@ -10,56 +10,51 @@ import {
   faDownload,
   faInfo,
 } from "@fortawesome/free-solid-svg-icons";
-
-import { Line } from "react-chartjs-2";
-import { Outlet } from "react-router";
-import { Link } from "react-router-dom";
-
-import { Table, Card, Row, Col, Container, Nav } from "react-bootstrap";
-import { dataContext } from "../../App";
+import { Table} from "react-bootstrap";
+import { useQuery } from "react-query";
+import { Toaster, toast } from "react-hot-toast";
 
 const FullDetails = () => {
   const { id } = useParams();
-  const [item, setItem] = useState(null);
-  const [status, setStatus] = useState(null);
 
-  
-  const currencies = [
-    {
-      value: "Research Paper",
-      label: "Research Paper",
-    },
-    {
-      value: "Review Paper",
-      label: "Review Paper",
-    },
-    {
-      value: "Special Issue",
-      label: "Special Issue",
-    },
-  ];
   let handleChange = (event) => {
     setStatus(event.target.value);
   };
 
-  const [data,setData] = useContext(dataContext);
+  const { data: users = [], refetch } = useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+      const response = await fetch(`http://localhost:4000/submittedData/${id}`);
+      const data = await response.json();
+      return data;
+    },
+  });
 
-  useEffect(() => {
-    fetch(`http://localhost:4000/submittedData/${id}`)
-    .then((response) => response.json())
-    .then((data) => {
-  
-      setItem(data);
+  const [status, setStatus] = useState("");
+
+  const handleAssignReviewer = (id) => {
+    fetch(`http://localhost:4000/assign/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status }),
     })
-    .catch((error) => {
-      console.log(error);
-    });
-}, [id]);
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.lastErrorObject?.updatedExisting === true) {
+          toast.success("Assign Reviewer Successfully");
+          refetch();
+        } else {
+          toast.error("Assign Reviewer Error");
+        }
+      });
+  };
 
   return (
-    <div className="container-fluid">
-      <h1>Hello world</h1>
-
+    <div className="container-fluid p-1">
+ 
+      <h1>Full Details Page</h1>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -67,25 +62,21 @@ const FullDetails = () => {
             <th>Username</th>
             <th>Article Type</th>
             <th>Title of Article</th>
-            <th>Reviewer Preference</th>
-            <th>Keyword</th>
-            <th>Abstract</th>
-            <th>Status</th>
+            <th>Assign Reviewer</th>
+            <th>Action</th>
+            <th>Assign</th>
           </tr>
         </thead>
         <tbody>
-          <tr key={item?._id}>
+          <tr key={users?._id}>
             <td>
-              <a href={item?.url}>
+              <a href={users?.url}>
                 Docx <FontAwesomeIcon icon={faDownload} />
               </a>
             </td>
-            <td className="font-weight-bold">{item?.email}</td>
-            <td className="font-weight-bold">{item?.articleType}</td>
-            <td className="font-weight-bold">{item?.title}</td>
-            <td className="font-weight-bold">{item?.reviewer}</td>
-            <td className="font-weight-bold">{item?.keyword}</td>
-            <td className="font-weight-bold">{item?.abstract}</td>
+            <td className="font-weight-bold">{users?.email}</td>
+            <td className="font-weight-bold">{users?.articleType}</td>
+            <td className="font-weight-bold">{users?.title}</td>
             <td>
               <select
                 className="border font-weight-bold w-75 border-secondary form-control"
@@ -93,14 +84,28 @@ const FullDetails = () => {
                 value={status}
                 onChange={handleChange}
               >
-                <option value="Special Issue">Pending</option>
-                <option value="Research Paper">Published</option>
-                <option value="Review Paper">Under Review</option>
+                <option value="">None</option>
+                {users?.reviewer?.map((reviewer, index) => (
+                  <option key={index} value={reviewer}>
+                    {reviewer}
+                  </option>
+                ))}
               </select>
             </td>
+
+            <td>
+              <button
+                onClick={() => handleAssignReviewer(users._id)}
+                className="btn btn-danger"
+              >
+                Done
+              </button>
+            </td>
+            <td className="font-weight-bold">{users?.assignReviewer}</td>
           </tr>
         </tbody>
       </Table>
+      <Toaster />
     </div>
   );
 };
