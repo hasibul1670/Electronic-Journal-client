@@ -29,6 +29,8 @@ import AllUsers from "./AllUsers";
 import useAdmin from "../../Hooks/useAdmin";
 import { useQuery } from "react-query";
 import Loading from './../Shared/Loading';
+import useReviewer from "../../Hooks/useReviewer";
+import AssignedReview from "../Reviewer/AssignedReview";
 
 const Dashbord = () => {
   const auth = getAuth(app);
@@ -36,6 +38,7 @@ const Dashbord = () => {
   const [isAdmin, isAdminLoading] = useAdmin(user?.email);
   
   const [data, setData] = useState([]);
+    const [isReviewer,isReviewerLoading] = useReviewer(user?.email);
 
   const headers = {
     "Content-Type": "application/json",
@@ -75,7 +78,6 @@ const Dashbord = () => {
 
 
 
-
   const [isDeleted, setIsDeleted] = useState(false);
 
   const handleDelete = (id) => {
@@ -101,7 +103,10 @@ const Dashbord = () => {
   const handleMenuClick = (menu) => {
     setActiveMenu(menu);
   };
-  if (isAdminLoading) {
+
+  console.log("Hello", isReviewer);
+  
+  if (isAdminLoading||isReviewerLoading) {
     <p>
       <Loading />
     </p>;
@@ -123,8 +128,8 @@ const Dashbord = () => {
               </tr>
             </thead>
             <tbody>
-              {isAdmin
-                ? users?.map((item) => (
+              {isAdmin ?
+                 users?.map((item) => (
                     <tr key={item._id}>
                       <td>
                         <a href={item.url}>
@@ -218,7 +223,7 @@ const Dashbord = () => {
             <Card.Body>
               <Card.Title></Card.Title>
               <Card.Text>
-                <ChartComponent />
+                <AssignedReview />
               </Card.Text>
             </Card.Body>
           </Card>
@@ -263,7 +268,6 @@ const Dashbord = () => {
                       {isAdmin ? "Total Published" : "Your Published"}
                     </Nav.Link>
                   </Nav.Item>
-
                   <Nav.Item>
                     <Nav.Link
                       href="#"
@@ -273,7 +277,6 @@ const Dashbord = () => {
                       Under Review
                     </Nav.Link>
                   </Nav.Item>
-
                   {isAdmin && (
                     <Nav.Item>
                       <Nav.Link
@@ -285,8 +288,7 @@ const Dashbord = () => {
                       </Nav.Link>
                     </Nav.Item>
                   )}
-
-                  <Nav.Item>
+                  {/* <Nav.Item>
                     <Nav.Link
                       href="#"
                       active={activeMenu === "chart"}
@@ -294,7 +296,18 @@ const Dashbord = () => {
                     >
                       Data sheet
                     </Nav.Link>
-                  </Nav.Item>
+                  </Nav.Item> */}
+                  {isReviewer && (
+                    <Nav.Item>
+                      <Nav.Link
+                        href="#"
+                        active={activeMenu === "chart"}
+                        onClick={() => handleMenuClick("chart")}
+                      >
+                        Assigned Review
+                      </Nav.Link>
+                    </Nav.Item>
+                  )}
 
                   <Nav.Item>
                     <Nav.Link

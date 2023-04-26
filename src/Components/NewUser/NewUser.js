@@ -53,7 +53,7 @@ const NewUser = () => {
 
     const authorInfoInDb = {
       authorName: data.displayName,
-      authorEmail: data.email,
+      email: data.email,
       phone: data.phone,
       postalCode: data.postalCode,
       authorPosition: data.position,

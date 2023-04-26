@@ -3,15 +3,28 @@ import AuthorNav from "../Shared/AuthorNav";
 import logo from "./../../logo/home.jpg";
 import { Link } from "react-router-dom";
 import { dataContext } from "../../App";
+import { useStateManager } from "react-select";
+import { useState } from "react";
 
 
 const AuthorMainMenu = () => {
   const [data, setData] = useContext(dataContext);
+  
+  const [assignReviewer, setAssignReviewer] = useState(0);
+  
+  let assign=0;
+
+  for (let i = 0; i < data.length; i++) {
+    const object = data[i].assignReviewer;
+    if (object.length > 1) {
+      assign++;
+    }
+
+  }
+
 
   return (
     <div>
-
-
       <div className=" mt-5 card mb-3 mx-auto w-75">
         <div className="row no-gutters">
           <div className="col-md-4  ">
@@ -27,13 +40,15 @@ const AuthorMainMenu = () => {
                 <Link to="">Submissions Sent Back to Author (0) </Link>
                 <br />
 
-                <Link to="/dashboard">Submissions Being Processed ({data.length})</Link>
+                <Link to="/dashboard">
+                  Submissions Being Processed ({data.length})
+                </Link>
                 <br />
               </div>
               <h5 className="line-height card-title">Revisions</h5>
               <div className="ml-5">
                 {data.assignReviewer}
-                <Link>Assign Reviewer (0)</Link>
+                <Link>Assign Reviewer ({assign})</Link>
                 <br />
                 <Link>Revisions Sent Back to Author (0)</Link>
                 <br />
@@ -41,7 +56,7 @@ const AuthorMainMenu = () => {
                 <Link>Submissions Being Processed (0)</Link>
                 <br />
 
-                <Link>Declined Revisions  (0)</Link>
+                <Link>Declined Revisions (0)</Link>
                 <br />
               </div>
 

@@ -12,9 +12,12 @@ import { Button, Form, Space, Input } from "antd";
 import { Link } from "react-router-dom";
 import useToken from "../../Hooks/useToken";
 import { useAuthState } from "react-firebase-hooks/auth";
-import useAdmin from "../../Hooks/useAdmin";
+import useReviewer from "../../Hooks/useReviewer";
+
 
 const ShowPassword = () => {
+
+ 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState("");
@@ -82,29 +85,33 @@ const ShowPassword = () => {
     toast.error(mapAuthCodeToMessage(error));
   };
 
-  const handleFormSubmit = (event) => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((result) => {
-        const user = result.user;
+  const handleFormSubmit = (userType) => {
+   if (userType === "author") {
+        signInWithEmailAndPassword(auth, email, password)
+          .then((result) => {
+            const user = result.user;
+            if (user.emailVerified === true) {
+              setLoginUserEmail(email);
+              // navigate(from, { replace: true });
+            } else {
+              setSuccess("Please Verify Your Email!!");
+              toast.error("Please Verify Your Email!!");
+              signOutFunc();
+            }
+          })
 
-        if (user.emailVerified === true) {
-          setLoginUserEmail(email);
-
-          // navigate(from, { replace: true });
-        } else {
-          setSuccess("Please Verify Your Email!!");
-          toast.error("Please Verify Your Email!!");
-
-          signOutFunc();
-        }
-      })
-
-      .catch((error) => {
-        setError(mapAuthCodeToMessage(error.code));
-        const errorMessage = mapAuthCodeToMessage(error.code);
-        setError(errorMessage);
-        toast.error(errorMessage);
-      });
+          .catch((error) => {
+            setError(mapAuthCodeToMessage(error.code));
+            const errorMessage = mapAuthCodeToMessage(error.code);
+            setError(errorMessage);
+            toast.error(errorMessage);
+          });
+   } else if (userType === "editor") {
+     console.log('Helloeditor',email,password);
+   } else if (userType === "reviewer") {
+          console.log("hello reviewer", email, password);
+   }
+ 
   };
 
   return (
@@ -162,16 +169,24 @@ const ShowPassword = () => {
           <Space wrap>
             <Button
               type="primary"
-              onClick={handleFormSubmit}
+              onClick={() => handleFormSubmit("author")}
               htmlType="submit"
               size={size}
             >
               Author Login
             </Button>
-            <Button type="primary" onClick={handleEditorLogin} size={size}>
+            <Button
+              type="primary"
+              onClick={() => handleFormSubmit("editor")}
+              size={size}
+            >
               Editor Login
             </Button>
-            <Button type="primary" size={size}>
+            <Button
+              type="primary"
+              onClick={() => handleFormSubmit("reviewer")}
+              size={size}
+            >
               Reviewer Login
             </Button>
 

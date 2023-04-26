@@ -46,6 +46,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import DashboardLayout from "./layout/DashboardLayout";
 import useAdmin from "./Hooks/useAdmin";
 import { Toaster } from "react-hot-toast";
+import { authorContext } from './contexts/AuthorContext';
 
 export const editorContext = createContext();
 export const reviewerContext = createContext();
@@ -107,9 +108,7 @@ function App() {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          throw new Error("Network response was not ok");
-        }
+        } 
       })
       .then((data) => {
         setData(data);
@@ -200,7 +199,7 @@ function App() {
     { path: "*", element: <Nomatch /> },
   ]);
   return (
-   
+    <authorContext.Provider value={[author,setAuthor]}>
       <reviewerContext.Provider value={[reviewer, setReviewer]}>
         <editorContext.Provider value={[editor, setEditor]}>
           <dataContext.Provider value={[data, setData]}>
@@ -208,7 +207,7 @@ function App() {
           </dataContext.Provider>
         </editorContext.Provider>
       </reviewerContext.Provider>
-   
+    </authorContext.Provider>
   );
 }
 

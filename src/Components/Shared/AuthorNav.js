@@ -1,17 +1,35 @@
 import { getAuth, signOut } from "firebase/auth";
-import React from "react";
+import React, { useState } from "react";
 import { useContext } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Navigate } from "react-router";
-import { editorContext } from "../../App";
+import { dataContext, editorContext } from "../../App";
 import app from "../LoginInfo/firebase.config";
 import { Link } from "react-router-dom";
 import useAdmin from "../../Hooks/useAdmin";
+import { authorContext } from "../../contexts/AuthorContext";
 const auth = getAuth(app);
 
 const AuthorNav = () => {
   const [user] = useAuthState(auth);
   const [isAdmin] = useAdmin(user?.email);
+
+  
+    const [loginUser, setLoginuser] = useState('');
+
+  const [author] = useContext(authorContext);
+ const userEmail = user?.email;
+
+  let name ;
+
+for (let i = 0; i < author.length; i++) {
+  if (author[i].email === userEmail) {
+    const matchingObject = author[i];
+ name = matchingObject?.authorName;
+    break; // Stop searching once a match is found
+  }
+}
+
 
   const signOutFunc = () => {
     signOut(auth);
@@ -74,12 +92,12 @@ const AuthorNav = () => {
                 <h5>Admin</h5>
               </Link>
             )}
-            
+
             <Link
               to="/dashboard"
               className="btn  btn-primary rounded-pill mr-2"
             >
-              {user?.displayName}{" "}
+              {name}
             </Link>
 
             <Link

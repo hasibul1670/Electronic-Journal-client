@@ -1,25 +1,35 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 
 import app from "../LoginInfo/firebase.config";
 import logo from "./../../logo/logo3.png";
 import { getAuth, signOut } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
-
+import { authorContext } from "../../contexts/AuthorContext";
 
 function Navbar() {
-
-
   const auth = getAuth(app);
-  const [user,loading] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
+
+  const [loginUser, setLoginuser] = useState("");
+
+  const [author] = useContext(authorContext);
+  const userEmail = user?.email;
+
+  let name;
+
+  for (let i = 0; i < author.length; i++) {
+    if (author[i]?.email === userEmail) {
+      const matchingObject = author[i];
+      name = matchingObject?.authorName;
+      break;
+    }
+  }
 
   const signOutFunc = () => {
     signOut(auth);
     Navigate("/login");
   };
-
-
- 
 
   return (
     <div className="">
@@ -50,9 +60,18 @@ function Navbar() {
             </Link>
           )}
 
-          <Link to="/login" className="btn  btn-primary rounded-pill mr-2">
-            {user ? user.displayName : "Guest"}
-          </Link>
+          {user ? (
+            <Link
+              to="/submit/mainmenu"
+              className="btn  btn-primary rounded-pill mr-2"
+            >
+              {name}
+            </Link>
+          ) : (
+            <Link to="/login" className="btn  btn-primary rounded-pill mr-2">
+              Guest
+            </Link>
+          )}
         </div>
       </div>
 
@@ -87,7 +106,7 @@ function Navbar() {
                   aria-haspopup="true"
                   aria-expanded="false"
                 >
- Subjects
+                  Subjects
                 </button>
 
                 <div
