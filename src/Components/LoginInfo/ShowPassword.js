@@ -153,13 +153,13 @@ const ShowPassword = () => {
       <Form
         name="basic"
         labelCol={{
-          span: 8,
+          span: 6,
         }}
         wrapperCol={{
           span: 16,
         }}
         style={{
-          maxWidth: 600,
+          maxWidth: 800,
         }}
         initialValues={{
           remember: true,
@@ -167,7 +167,8 @@ const ShowPassword = () => {
         autoComplete="off"
       >
         <Form.Item
-          label=" Enter Email"
+          className="font-weight-bold"
+          label=" Enter Your Email"
           name="email"
           onChange={handleEmailChange}
           rules={[
@@ -176,12 +177,14 @@ const ShowPassword = () => {
               message: "Please input your Email Address!",
             },
           ]}
+         
         >
-          <Input />
+          <Input style={{ height: "40px" }} />
         </Form.Item>
 
         <Form.Item
-          label="Password"
+          className="font-weight-bold"
+          label="Enter Your Password"
           name="password"
           onChange={handlePassChange}
           rules={[
@@ -191,17 +194,18 @@ const ShowPassword = () => {
             },
           ]}
         >
-          <Input.Password />
+          <Input.Password style={{ height: "40px" }} />
         </Form.Item>
 
         <Form.Item
           wrapperCol={{
-            offset: 8,
+            offset: 6,
             span: 16,
           }}
         >
           <Space wrap>
             <Button
+              className="font-weight-bold"
               type="primary"
               onClick={() => handleFormSubmit("author")}
               htmlType="submit"
@@ -211,6 +215,7 @@ const ShowPassword = () => {
             </Button>
             <Button
               type="primary"
+              className="font-weight-bold"
               onClick={() => handleFormSubmit("editor")}
               size={size}
             >
@@ -218,6 +223,7 @@ const ShowPassword = () => {
             </Button>
             <Button
               type="primary"
+              className="font-weight-bold"
               onClick={() => handleFormSubmit("reviewer")}
               size={size}
             >
@@ -225,14 +231,21 @@ const ShowPassword = () => {
             </Button>
 
             <Link to="/newuser">
-              <Button type="primary" size={size}>
+              <Button
+                className="register-button font-weight-bold"
+                type="primary"
+                size={size}
+              >
                 New User ? Register
               </Button>
             </Link>
 
             <Link to="/forgetpass">
-            
-              <Button type="primary" size={size}>
+              <Button
+                className="secondary-button font-weight-bold"
+                type="primary"
+                size={size}
+              >
                 Forget Password
               </Button>
             </Link>
@@ -241,9 +254,12 @@ const ShowPassword = () => {
           </Space>
         </Form.Item>
       </Form>
+     
       <Toaster />
+     
     </div>
   );
 };
 
 export default ShowPassword;
+

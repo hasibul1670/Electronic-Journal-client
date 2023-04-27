@@ -128,4 +128,21 @@ background-image:url(./logo/banner-journal.jpg)
 }
 
 
+.primary-button {
+  background-color: #1E90FF; /* or #006400 for green */
+  color: #FFFFFF;
+}
 
+.secondary-button {
+  background-color: #CCCCCC;
+  color: #000000;
+}
+
+.register-button {
+  background-color: #FFA500; /* or #FF4500 for orange */
+  color: #FFFFFF;
+}
+
+.font-weight-bold label {
+  font-size: 17px!important;
+}

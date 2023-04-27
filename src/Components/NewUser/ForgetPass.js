@@ -53,7 +53,7 @@ const ForgetPass = () => {
 <div className="col-md-6 mb-3">
     <label className='ml-2' htmlFor="exampleInputEmail1">Enter Your Email Address : </label>
     <input
-    type="email"  className="form-control mx-sm-3"
+    type="email"  className="form-control mx-sm-3 "
      {...register("email", {
       required:
       {
