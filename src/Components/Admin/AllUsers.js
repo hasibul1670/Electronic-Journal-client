@@ -7,8 +7,6 @@ import { getAuth } from "firebase/auth";
 import app from "./../LoginInfo/firebase.config";
 import { useAuthState, useDeleteUser } from "react-firebase-hooks/auth";
 import useAdmin from "../../Hooks/useAdmin";
-
-import axios from "axios";
 import { dataContext } from "../../App";
 
 const AllUsers = () => {

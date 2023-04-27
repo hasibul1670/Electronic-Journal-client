@@ -6,18 +6,17 @@ import { useLocation, useNavigate } from "react-router";
 import { useState } from "react";
 import { editorContext } from "../../App";
 import { useContext } from "react";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Button, Form, Space, Input } from "antd";
 import { Link } from "react-router-dom";
 import useToken from "../../Hooks/useToken";
 import { useAuthState } from "react-firebase-hooks/auth";
 import useReviewer from "../../Hooks/useReviewer";
-
+import Loading from "../Shared/Loading";
+import useAdmin from "../../Hooks/useAdmin";
+import { Toaster, toast } from "react-hot-toast";
 
 const ShowPassword = () => {
-
- 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState("");
@@ -30,7 +29,6 @@ const ShowPassword = () => {
 
   const [loginUserEmail, setLoginUserEmail] = useState("");
   const [token] = useToken(loginUserEmail);
-
 
   const navigate = useNavigate();
   let location = useLocation();
@@ -79,40 +77,76 @@ const ShowPassword = () => {
     }
   }
   let IsMatched = false;
-
-  const handleEditorLogin = () => {
-    const errorMessage = mapAuthCodeToMessage(error.code);
-    toast.error(mapAuthCodeToMessage(error));
-  };
+  const [isReviewer, isReviewerLoading] = useReviewer(email);
+  const [isAdmin, isAdminLoading] = useAdmin(email);
+ 
+  setTimeout(() => {
+    setError("");
+  }, 8000);
 
   const handleFormSubmit = (userType) => {
-   if (userType === "author") {
-        signInWithEmailAndPassword(auth, email, password)
-          .then((result) => {
-            const user = result.user;
-            if (user.emailVerified === true) {
-              setLoginUserEmail(email);
-              // navigate(from, { replace: true });
-            } else {
-              setSuccess("Please Verify Your Email!!");
-              toast.error("Please Verify Your Email!!");
-              signOutFunc();
-            }
-          })
-
-          .catch((error) => {
-            setError(mapAuthCodeToMessage(error.code));
-            const errorMessage = mapAuthCodeToMessage(error.code);
-            setError(errorMessage);
-            toast.error(errorMessage);
-          });
-   } else if (userType === "editor") {
-     console.log('Helloeditor',email,password);
-   } else if (userType === "reviewer") {
-          console.log("hello reviewer", email, password);
-   }
- 
+    if (userType === "author") {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((result) => {
+          const user = result.user;
+          if (user.emailVerified === true) {
+            setLoginUserEmail(email);
+          } else {
+            setSuccess("Please Verify Your Email!!");
+            toast.error("Please Verify Your Email!!");
+            signOutFunc();
+          }
+        })
+        .catch((error) => {
+          setError(mapAuthCodeToMessage(error.code));
+          const errorMessage = mapAuthCodeToMessage(error.code);
+          setError(errorMessage);
+          toast.error(errorMessage);
+        });
+    } else if (userType === "editor") {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((result) => {
+          const user = result.user;
+          if (isAdmin) {
+            setLoginUserEmail(user?.email);
+          } else {
+            toast.error("Your are not an Editor");
+            setError("Your are not an Editor");
+            signOutFunc();
+          }
+        })
+        .catch((error) => {
+          setError(mapAuthCodeToMessage(error.code));
+          const errorMessage = mapAuthCodeToMessage(error.code);
+          setError(errorMessage);
+          toast.error(errorMessage);
+        });
+    } else if (userType === "reviewer") {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((result) => {
+          const user = result.user;
+          if (isReviewer) {
+            setLoginUserEmail(user?.email);
+          } else {
+            toast.error("Your are not a Reviewer");
+            setError("Your are not a Reviewer");
+            signOutFunc();
+          }
+        })
+        .catch((error) => {
+          setError(mapAuthCodeToMessage(error.code));
+          const errorMessage = mapAuthCodeToMessage(error.code);
+          setError(errorMessage);
+          toast.error(errorMessage);
+        });
+    }
   };
+
+  if (isAdminLoading || isReviewerLoading) {
+    <p>
+      <Loading />
+    </p>;
+  }
 
   return (
     <div>
@@ -197,7 +231,7 @@ const ShowPassword = () => {
             </Link>
 
             <Link to="/forgetpass">
-              {" "}
+            
               <Button type="primary" size={size}>
                 Forget Password
               </Button>
@@ -207,7 +241,7 @@ const ShowPassword = () => {
           </Space>
         </Form.Item>
       </Form>
-      <ToastContainer />
+      <Toaster />
     </div>
   );
 };

@@ -104,7 +104,6 @@ const Dashbord = () => {
     setActiveMenu(menu);
   };
 
-  console.log("Hello", isReviewer);
   
   if (isAdminLoading||isReviewerLoading) {
     <p>
