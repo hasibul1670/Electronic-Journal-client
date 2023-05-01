@@ -31,7 +31,7 @@ const FullDetails = () => {
       setAssignReviewerEmail(email.slice(0, -1));
     }
   };
-  console.log("name:", assignReviewer, "email:", assignReviewerEmail);
+  //console.log("name:", assignReviewer, "email:", assignReviewerEmail);
   const { data: users = [], refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
@@ -109,7 +109,7 @@ const FullDetails = () => {
 
             <td>
               <button
-                onClick={() => handleAssignReviewer(users._id)}
+                onClick={() => handleAssignReviewer(users?._id)}
                 className="btn btn-danger"
               >
                 Done

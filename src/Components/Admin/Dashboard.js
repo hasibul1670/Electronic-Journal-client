@@ -127,8 +127,8 @@ const Dashbord = () => {
               </tr>
             </thead>
             <tbody>
-              {isAdmin ?
-                 users?.map((item) => (
+              {isAdmin
+                ? users?.map((item) => (
                     <tr key={item._id}>
                       <td>
                         <a href={item.url}>
@@ -139,7 +139,17 @@ const Dashbord = () => {
                       <td>{item.articleType}</td>
                       <td>{item.title}</td>
 
-                      <td>{item.reviewer}</td>
+                      <td>
+                        {item?.reviewer?.map((reviewer, index) => {
+                          const { name, email } = JSON.parse(reviewer);
+                          const value = `${name} (${email})`;
+                          return (
+                            <option key={index} value={value}>
+                              {name}
+                            </option>
+                          );
+                        })}
+                      </td>
                       <td>
                         {" "}
                         <Link to={`/dashboard/fulldetails/${item._id}`}>
@@ -167,7 +177,18 @@ const Dashbord = () => {
                       <td>{item.articleType}</td>
                       <td>{item.title}</td>
 
-                      <td>{item.reviewer}</td>
+                      <td>
+                        {" "}
+                        {item?.reviewer?.map((reviewer, index) => {
+                          const { name, email } = JSON.parse(reviewer);
+                          const value = `${name} (${email})`;
+                          return (
+                            <option key={index} value={value}>
+                              {name}
+                            </option>
+                          );
+                        })}
+                      </td>
                       <td>
                         {" "}
                         <Link to={`/dashboard/fulldetails/${item._id}`}>
