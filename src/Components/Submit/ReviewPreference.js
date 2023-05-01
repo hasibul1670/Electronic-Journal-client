@@ -58,17 +58,18 @@ const ReviewPreference = ({ selectedReviewer, setSelectedReviewer }) => {
         <h4 className="border p-2">
           {" "}
           <u>
-            <span>Your Selected Reviewer :</span>
+            <span className="font-weight-bold">Your Selected Reviewer :</span>
           </u>
           <p></p>
           <span className="text-success">
             {" "}
             {selectedReviewer.map((item, index) => (
               <div key={index}>
-                <h4 className="text-danger">
+                <h5 className="border p-2 font-weight-bold text-primary">
                   {" "}
-                  {index + 1}. {item?.name}
-                </h4>
+                  {index + 1}. {item?.name} <br />
+                  {item?.email}
+                </h5>
               </div>
             ))}
           </span>

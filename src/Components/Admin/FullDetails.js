@@ -10,17 +10,28 @@ import {
   faDownload,
   faInfo,
 } from "@fortawesome/free-solid-svg-icons";
-import { Table} from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { useQuery } from "react-query";
 import { Toaster, toast } from "react-hot-toast";
 
 const FullDetails = () => {
   const { id } = useParams();
+  const [assignReviewer, setAssignReviewer] = useState("");
+  const [assignReviewerEmail, setAssignReviewerEmail] = useState("");
+  const [status, setStatus] = useState("");
 
-  let handleChange = (event) => {
-    setStatus(event.target.value);
+  const handleChange = (event) => {
+    const selectedValue = event.target.value;
+    if (selectedValue === "") {
+      setAssignReviewer("");
+      setAssignReviewerEmail("");
+    } else {
+      const [name, email] = selectedValue.split(" (");
+      setAssignReviewer(name);
+      setAssignReviewerEmail(email.slice(0, -1));
+    }
   };
-
+  console.log("name:", assignReviewer, "email:", assignReviewerEmail);
   const { data: users = [], refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
@@ -30,15 +41,16 @@ const FullDetails = () => {
     },
   });
 
-  const [status, setStatus] = useState("");
-
   const handleAssignReviewer = (id) => {
     fetch(`http://localhost:4000/assign/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ status }),
+      body: JSON.stringify({
+        assignReviewer,
+        assignReviewerEmail,
+      }),
     })
       .then((res) => res.json())
       .then((data) => {
@@ -53,7 +65,6 @@ const FullDetails = () => {
 
   return (
     <div className="container-fluid p-1">
- 
       <h1>Full Details Page</h1>
       <Table striped bordered hover>
         <thead>
@@ -81,15 +92,18 @@ const FullDetails = () => {
               <select
                 className="border font-weight-bold w-75 border-secondary form-control"
                 id="dropdown"
-                value={status}
                 onChange={handleChange}
               >
                 <option value="">None</option>
-                {users?.reviewer?.map((reviewer, index) => (
-                  <option key={index} value={reviewer}>
-                    {reviewer}
-                  </option>
-                ))}
+                {users?.reviewer?.map((reviewer, index) => {
+                  const { name, email } = JSON.parse(reviewer);
+                  const value = `${name} (${email})`;
+                  return (
+                    <option key={index} value={value}>
+                      {name}
+                    </option>
+                  );
+                })}
               </select>
             </td>
 
@@ -101,7 +115,10 @@ const FullDetails = () => {
                 Done
               </button>
             </td>
-            <td className="font-weight-bold">{users?.assignReviewer}</td>
+            <td className="font-weight-bold">
+              {users?.assignReviewer} <br />
+              ({users?.assignReviewerEmail})
+            </td>
           </tr>
         </tbody>
       </Table>

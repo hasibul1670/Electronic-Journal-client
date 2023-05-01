@@ -14,7 +14,7 @@ const AuthorMainMenu = () => {
   
   let assign=0;
 
-  for (let i = 0; i < data.length; i++) {
+  for (let i = 0; i < data?.length; i++) {
     const object = data[i].assignReviewer;
     if (object.length > 1) {
       assign++;
@@ -41,13 +41,13 @@ const AuthorMainMenu = () => {
                 <br />
 
                 <Link to="/dashboard">
-                  Submissions Being Processed ({data.length})
+                  Submissions Being Processed ({data?.length})
                 </Link>
                 <br />
               </div>
               <h5 className="line-height card-title">Revisions</h5>
               <div className="ml-5">
-                {data.assignReviewer}
+                {data?.assignReviewer}
                 <Link>Assign Reviewer ({assign})</Link>
                 <br />
                 <Link>Revisions Sent Back to Author (0)</Link>

@@ -101,8 +101,6 @@ const AssignedReview = () => {
         setActiveMenu(menu);
       };
 
-      console.log("Hello", isReviewer);
-
       if (isAdminLoading || isReviewerLoading) {
         <p>
           <Loading />
@@ -116,12 +114,12 @@ const AssignedReview = () => {
           <th>Username</th>
           <th>Article Type</th>
           <th>Title of Article</th>
-          <th>Review Preference</th>
+          <th>Assigned Reviewer </th>
           <th>Details</th>
         </tr>
       </thead>
       <tbody>
-        {isAdmin
+        {isReviewer
           ? users?.map((item) => (
               <tr key={item._id}>
                 <td>
@@ -132,15 +130,15 @@ const AssignedReview = () => {
                 <td>{item.email}</td>
                 <td>{item.articleType}</td>
                 <td>{item.title}</td>
-
-                <td>{item.reviewer}</td>
+                <td>{item.assignReviewer}</td>
                 <td>
                   {" "}
                   <Link to={`/dashboard/fulldetails/${item._id}`}>
                     See Details <FontAwesomeIcon icon={faCircleInfo} />{" "}
                   </Link>{" "}
                 </td>
-                <td>
+              <td>
+                
                   <button
                     onClick={() => handleDelete(item._id)}
                     className="btn btn-danger"

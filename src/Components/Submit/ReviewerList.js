@@ -15,6 +15,7 @@ const ReviewerList = (props) => {
 
   const handleReviewer = (name, email, id) => {
     setSelectedReviewer([...selectedReviewer, { name, email }]);
+        console.log("Hello", selectedReviewer);
     setDisabledButtons((prevState) => ({
       ...prevState,
       [id]: true, // set the value for the clicked button's id to true
@@ -54,17 +55,18 @@ const ReviewerList = (props) => {
       <br />
       <div className="border  border-primary p-5 ">
         <u>
-          <h5 className=" font-weight-bold text-primary ">
+          <h5 className=" font-weight-bold text-secondary ">
             Your Selected Reviewers:
           </h5>{" "}
         </u>
 
         {selectedReviewer.map((item, index) => (
           <div key={index}>
-            <h4 className="text-danger font-weight-bold">
+            <h5 className="border p-2 font-weight-bold text-primary">
               {" "}
-              {index + 1}. {item?.name}
-            </h4>
+              {index + 1}. {item?.name} <br />
+              {item?.email}
+            </h5>
           </div>
         ))}
         {selectedReviewer.length === 3 && (

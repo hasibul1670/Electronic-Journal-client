@@ -4,7 +4,6 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-modal";
 import Test1 from "./test1";
 
-
 const ReviewPreference = ({ reviewer, setReviewer }) => {
   const [clicked, setClicked] = useState(false);
 
@@ -16,20 +15,15 @@ const ReviewPreference = ({ reviewer, setReviewer }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const [selectedReviewer, setSelectedReviewer] = useState([]);
-  
+
   const openModal = () => {
-  
-      setModalIsOpen(true);
-      handleClick();
-    
+    setModalIsOpen(true);
+    handleClick();
   };
 
   const closeModal = (e) => {
-   
-      setModalIsOpen(false);
-      setReviewer([...reviewer, e]);
-
-    
+    setModalIsOpen(false);
+    setReviewer([...reviewer, e]);
   };
 
   return (
@@ -49,9 +43,7 @@ const ReviewPreference = ({ reviewer, setReviewer }) => {
         <h4
           className="font-weight-bold text-danger"
           style={{ animation: clicked ? "blink 1s linear infinite" : "" }}
-        >
-        
-        </h4>
+        ></h4>
         <style>{`
         @keyframes blink {
           0% {
@@ -69,18 +61,16 @@ const ReviewPreference = ({ reviewer, setReviewer }) => {
         <h4 className="border p-2">
           {" "}
           <u>
-        
             <span>Your Selected Reviewer :</span>
           </u>
           <p></p>
           <span className="text-success">
-            {" "}
             {selectedReviewer.map((item, index) => (
               <div key={index}>
-                <h4 className="text-danger">
-                  {" "}
-                  {index + 1}. {item.name}
-                </h4>
+                <h5 className=" border border-2 p-2 font-weight-bold text-primary">
+                  {index + 1}. {item.name} <br />
+                  {item.email}
+                </h5>
               </div>
             ))}
           </span>

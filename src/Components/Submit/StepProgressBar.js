@@ -88,7 +88,7 @@ export default function HorizontalLinearStepper() {
     formData.append("fileName", file?.name);
     formData.append("comment", comment.comment);
     for (let i = 0; i < selectedReviewer.length; i++) {
-      formData.append("reviewer[]", JSON.stringify(selectedReviewer[i]?.name));
+      formData.append("reviewer[]", JSON.stringify(selectedReviewer[i]));
     }
 
 
