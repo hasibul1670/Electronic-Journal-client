@@ -1,17 +1,17 @@
 import { useQuery } from "react-query";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
-import { Table, Card, Row, Col, Container, Nav } from "react-bootstrap";
+import { Table,} from "react-bootstrap";
 import { toast } from "react-toastify";
 import { getAuth } from "firebase/auth";
 import app from "./../LoginInfo/firebase.config";
-import { useAuthState, useDeleteUser } from "react-firebase-hooks/auth";
+import { useAuthState} from "react-firebase-hooks/auth";
 import useAdmin from "../../Hooks/useAdmin";
 import { dataContext } from "../../App";
 
 const AllUsers = () => {
   const auth = getAuth(app);
-  const [user, deleteUser, loading] = useAuthState(auth);
+  const [user,  loading] = useAuthState(auth);
   const [isAdmin] = useAdmin(user?.email);
   const [data, setData] = useContext(dataContext);
   const [isDeleted, setIsDeleted] = useState(false);

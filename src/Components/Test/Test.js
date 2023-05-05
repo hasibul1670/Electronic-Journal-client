@@ -1,110 +1,135 @@
-import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import Modal from "react-modal";
-import Test1 from "./test1";
+import { Button, Form, Input } from "antd";
+import { useState } from "react";
+import { Toaster, toast } from "react-hot-toast";
+import { useQuery } from "react-query";
+import AuthorNav from "../Shared/AuthorNav";
+import Loading from "../Shared/Loading";
 
-const ReviewPreference = ({ reviewer, setReviewer }) => {
-  const [clicked, setClicked] = useState(false);
+const Test = ({ user }) => {
+  const [form] = Form.useForm();
+  const [formData, setFormData] = useState('');
 
-  const handleClick = () => {
-    setClicked(true);
-    setTimeout(() => setClicked(false), 1000); // Blink for 1 second
+  const {
+    data: users,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["users", user?.email],
+    queryFn: async () => {
+      const response = await fetch(`http://localhost:4000/author/?email=${user?.email}`);
+      const data = await response.json();
+      return data;
+    },
+  });
+
+  const handleValuesChange = (changedValues, allValues) => {
+     setFormData(allValues,changedValues);
+ //   console.log("Hello", formData);
   };
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-
-  const [selectedReviewer, setSelectedReviewer] = useState([]);
-
-  const openModal = () => {
-    setModalIsOpen(true);
-    handleClick();
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch(
+       `http://localhost:4000/authorData/${user?.email}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(formData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      console.log(data.modifiedCount);
+      if (data.modifiedCount>0){
+        toast.success("Update Data Successfully");
+        refetch();
+      }else{
+        toast.error("Nothing To Update");
+      }
+   
+   
+    } catch (error) {
+      console.error(error);
+      toast.error("Update Data Error");
+    }
   };
 
-  const closeModal = (e) => {
-    setModalIsOpen(false);
-    setReviewer([...reviewer, e]);
-  };
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
-    <div className="p-4">
-      <fieldset className=" border border-primary p-5">
-        <legend className="float-none font-weight-bold border border-warning p-2 text-primary w-auto">
-          Review Preference
-        </legend>
+    <div className="container-fluid">
+      <AuthorNav />
+      <h1>hello</h1>
+      {users&&users?.map((user) => (
+        <div key={user?._id} className="mt-5">
+       
+                <Form
+                  name="basic"
+                  labelCol={{ span: 8 }}
+                  wrapperCol={{ span: 8 }}
+                  initialValues={{ remember: true }}
+                  onValuesChange={handleValuesChange}
+                >
+                  <Form.Item
+                    label="Name"
+                    name="Name"
+                    initialValue={user?.authorName}
+                  >
+                    <Input />
+                  </Form.Item>
 
-        <hr></hr>
-        <h5 className="text-info">
-          Please suggest potential reviewers for this submission and provide
-          specific reasons for your suggestion in the comments box for each
-          person.
-        </h5>
-        <br />
-        <h4
-          className="font-weight-bold text-danger"
-          style={{ animation: clicked ? "blink 1s linear infinite" : "" }}
-        ></h4>
-        <style>{`
-        @keyframes blink {
-          0% {
-            opacity: 1;
-          }
-          50% {
-            opacity: 0;
-          }
-          100% {
-            opacity: 1;
-          }
-        }
-      `}</style>
+                  <Form.Item
+                    label="Phone"
+                    name="phone"
+                    initialValue={user?.phone}
+                  >
+                    <Input />
+                  </Form.Item>
 
-        <h4 className="border p-2">
-          {" "}
-          <u>
-            <span>Your Selected Reviewer :</span>
-          </u>
-          <p></p>
-          <span className="text-success">
-            {selectedReviewer.map((item, index) => (
-              <div key={index}>
-                <h5 className=" border border-2 p-2 font-weight-bold text-primary">
-                  {index + 1}. {item.name} <br />
-                  {item.email}
-                </h5>
-              </div>
-            ))}
-          </span>
-        </h4>
-        <p></p>
+                  <Form.Item
+                    label="Institution Name"
+                    name="institutionName"
+                    initialValue={user?.institutionName}
+                  >
+                    <Input />
+                  </Form.Item>
 
-        <button
-          className="btn btn-secondary font-weight-bold"
-          onClick={openModal}
-        >
-          <FontAwesomeIcon icon={faPlus} />
-          Add Suggested Reviewer
-        </button>
+                  <Form.Item
+                    label="Department"
+                    name="department"
+                    initialValue={user?.department}
+                  >
+                    <Input />
+                  </Form.Item>
 
-        <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={closeModal}
-          contentLabel="Example Modal"
-        >
-          <h2>Select Your desirable Reviewer</h2>
+                  <Form.Item label="City" name="city" initialValue={user?.city}>
+                    <Input />
+                  </Form.Item>
 
-          <p></p>
+                  <Form.Item
+                    label="Postal Code"
+                    name="postalCode"
+                    initialValue={user?.postalCode}
+                  >
+                    <Input />
+                  </Form.Item>
 
-          <div>
-            <Test1
-              closeModal={closeModal}
-              selectedReviewer={selectedReviewer}
-              setSelectedReviewer={setSelectedReviewer}
-            />
-          </div>
-        </Modal>
-      </fieldset>
+                  <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
+                    <Button type="primary" onClick={handleSubmit}>
+                      Save
+                    </Button>
+                  </Form.Item>
+                </Form>
+            
+        </div>
+      ))}
+
+      <Toaster />
     </div>
   );
 };
 
-export default ReviewPreference;
+export default Test;

@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 
 const auth = getAuth(app);
 const NewUser = () => {
+  
   const {
     register,
     formState: { errors },

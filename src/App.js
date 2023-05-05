@@ -94,30 +94,31 @@ function App() {
   }, []);
 
   
-  const url = `http://localhost:4000/submittedData?email=${user?.email}`;
+
 
   const headers = {
     "Content-Type": "application/json",
     authorization: `bearer ${localStorage.getItem("accessToken")}`,
   };
   useEffect(() => {
-    fetch(url, {
-      method: "GET",
-      headers: headers,
-    })
-      .then((response) => {
+    async function fetchData() {
+      try {
+        const response = await fetch(`http://localhost:4000/submittedData?email=${user?.email}`, {
+          method: "GET",
+          headers: headers,
+        });
+  
         if (response.ok) {
-          return response.json();
-        } 
-      })
-      .then((data) => {
-        setData(data);
-      })
-      .catch((error) => {
+          const data = await response.json();
+          setData(data);
+        }
+      } catch (error) {
         console.error(error.message);
-      });
+      }
+    }
+  
+    fetchData();
   }, [user?.email]);
-
 
 
 
@@ -190,7 +191,7 @@ function App() {
 
     { path: "/editor/dashboard", element: <Editor /> },
 
-    { path: "/test", element: <Test /> },
+    { path: "/test", element: <Test user={user} /> },
     { path: "/news", element: <News /> },
     { path: "/copyright", element: <Copyright /> },
     { path: "/SuccessSubmission", element: <SuccessSubmission /> },

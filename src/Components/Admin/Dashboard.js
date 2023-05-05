@@ -251,7 +251,7 @@ const Dashbord = () => {
         return (
           <Card>
             <Card.Body>
-              <UpdateProfile />
+              <UpdateProfile user={user} />
             </Card.Body>
           </Card>
         );
