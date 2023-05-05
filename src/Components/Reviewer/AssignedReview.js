@@ -1,35 +1,22 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useContext } from "react";
-import { dataContext, editorContext } from "../../App";
-import AuthorNav from "../Shared/AuthorNav";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleInfo,
-  faCoffee,
-  faDownload,
-  faInfo,
+  faDownload
 } from "@fortawesome/free-solid-svg-icons";
-import { useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from "react";
 
-import { Line } from "react-chartjs-2";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { Outlet } from "react-router";
 import { Link } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
 
-import { Table, Card, Row, Col, Container, Nav } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import app from "../LoginInfo/firebase.config";
 
 import useAdmin from "../../Hooks/useAdmin";
-import { useQuery } from "react-query";
-import Loading from "./../Shared/Loading";
 import useReviewer from "../../Hooks/useReviewer";
-import ReviewerList from "./../Submit/ReviewerList";
-import { clear } from "@testing-library/user-event/dist/clear";
+import Loading from "./../Shared/Loading";
 
 const AssignedReview = () => {
   const auth = getAuth(app);
