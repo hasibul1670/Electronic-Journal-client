@@ -48,7 +48,7 @@ const AssignedReview = () => {
       .then((data) => {
      
         setData(data);
-           console.log("Hello", data);
+          // console.log("Hello", data);
       })
       .catch((error) => {
         console.error(error.message);
@@ -79,7 +79,7 @@ const AssignedReview = () => {
           <th>Article Type</th>
           <th>Title of Article</th>
           <th>Assigned Reviewer </th>
-          <th>Details</th>
+          <th>Edit</th>
         </tr>
       </thead>
       <tbody>
@@ -97,12 +97,7 @@ const AssignedReview = () => {
               {item.assignReviewer} <br />
               {item.assignReviewerEmail}
             </td>
-            <td>
-              {" "}
-              <Link to={`/dashboard/fulldetails/${item._id}`}>
-                See Details <FontAwesomeIcon icon={faCircleInfo} />{" "}
-              </Link>{" "}
-            </td>
+           
             <td>
               <button
                 onClick={() => handleDelete(item._id)}

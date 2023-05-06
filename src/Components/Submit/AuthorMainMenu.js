@@ -16,7 +16,7 @@ const AuthorMainMenu = () => {
 
   for (let i = 0; i < data?.length; i++) {
     const object = data[i].assignReviewer;
-    if (object.length > 1) {
+    if (object?.length > 1) {
       assign++;
     }
 

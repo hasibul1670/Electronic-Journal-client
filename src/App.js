@@ -86,12 +86,13 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/author")
+      .get(`http://localhost:4000/author/?email=${user?.email}`)
       .then((res) => {
         setAuthor(res.data);
+        //console.log('Hello',author);
       })
       .catch((err) => {});
-  }, []);
+  }, [user?.email,author]);
 
   
 

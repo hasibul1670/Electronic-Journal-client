@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import axios from "axios";
 import { useContext } from "react";
 import { dataContext, editorContext } from "../../App";
@@ -10,7 +10,6 @@ import {
   faDownload,
   faInfo,
 } from "@fortawesome/free-solid-svg-icons";
-import { useParams } from "react-router-dom";
 
 import { Line } from "react-chartjs-2";
 import { toast, ToastContainer } from "react-toastify";
@@ -35,17 +34,17 @@ import AssignedReview from "../Reviewer/AssignedReview";
 const Dashbord = () => {
   const auth = getAuth(app);
   const [user, loading] = useAuthState(auth);
-  const [isAdmin, isAdminLoading] = useAdmin(user?.email);
-  
   const [data, setData] = useState([]);
-    const [isReviewer,isReviewerLoading] = useReviewer(user?.email);
+
+  const [isAdmin, isAdminLoading] = useAdmin(user?.email);
+  const [isReviewer, isReviewerLoading] = useReviewer(user?.email);
 
   const headers = {
     "Content-Type": "application/json",
     authorization: `bearer ${localStorage.getItem("accessToken")}`,
   };
 
-  const { data: users = [], refetch } = useQuery({
+  const { data: users = [],isLoading, refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const response = await fetch("http://localhost:4000/adminData");
@@ -53,7 +52,6 @@ const Dashbord = () => {
       return data;
     },
   });
-
   const url = `http://localhost:4000/submittedData?email=${user?.email}`;
 
   useEffect(() => {
@@ -98,21 +96,37 @@ const Dashbord = () => {
       });
   };
 
-  const [activeMenu, setActiveMenu] = useState("dashboard");
+  const [activeMenu, setActiveMenu] = useState("");
+  
+  const [allLoading, setallLoading] = useState(true);
+  
+  useEffect(() => {
+    async function waitAndSetMenu() {
+      await new Promise(resolve => setTimeout(resolve, 1)); 
+      setActiveMenu((isReviewer ? "AssignedReviewer" : "dashboard"));
+      setallLoading(false);
+    }
+  
+    waitAndSetMenu();
+  }, [isReviewer]);
+  
+
+
 
   const handleMenuClick = (menu) => {
     setActiveMenu(menu);
   };
 
-  if (isAdminLoading||isReviewerLoading) {
-    <p>
-      <Loading />
-    </p>;
-  }
+
+
 
   const renderContent = () => {
     switch (activeMenu) {
       case "dashboard":
+
+      // eslint-disable-next-line no-lone-blocks
+      {refetch()}
+    
         return (
           <Table striped bordered hover>
             <thead>
@@ -127,7 +141,7 @@ const Dashbord = () => {
             </thead>
             <tbody>
               {isAdmin
-                ? users?.map((item) => (
+                ? users && users?.map((item) => (
                     <tr key={item._id}>
                       <td>
                         <a href={item.url}>
@@ -207,36 +221,47 @@ const Dashbord = () => {
             </tbody>
           </Table>
         );
-      case "orders":
+      case "Published":
+         // eslint-disable-next-line no-lone-blocks
+    
+    
         return (
           <Card>
             <Card.Body>
-              <Card.Text>This is the total Publish Page</Card.Text>
+    <h2 className="text-danger">nothing to published</h2>
             </Card.Body>
           </Card>
         );
-      case "customers":
+      case "UnderReview":
+           // eslint-disable-next-line no-lone-blocks
+
+    
         return (
           <Card>
             <Card.Body>
-              <Card.Text>This is the Under Review section</Card.Text>
+          
             </Card.Body>
           </Card>
         );
 
       case "All Users":
+           // eslint-disable-next-line no-lone-blocks
+    
         return (
           <Card>
             <Card.Body>
               <Card.Text>
-                {" "}
+             
                 <AllUsers />
               </Card.Text>
             </Card.Body>
           </Card>
         );
 
-      case "chart":
+      case "AssignedReviewer":
+           // eslint-disable-next-line no-lone-blocks
+   
+    
         return (
           <Card>
             <Card.Body>
@@ -248,6 +273,9 @@ const Dashbord = () => {
           </Card>
         );
       case "updateProfile":
+           // eslint-disable-next-line no-lone-blocks
+     
+    
         return (
           <Card>
             <Card.Body>
@@ -260,8 +288,17 @@ const Dashbord = () => {
     }
   };
 
+  if (isLoading) {
+    return <Loading />;
+  }
+  if (isAdminLoading||isReviewerLoading||loading) {
+    <p>
+      <Loading />
+    </p>;
+  }
   return (
-    <div>
+    <>
+    {allLoading ? <h3 >loading .....</h3>:  <div>
       <Container fluid className="mt-5 p-4">
         <Row>
           <Col md={3}>
@@ -269,7 +306,10 @@ const Dashbord = () => {
               <Card.Body>
                 <Card.Title>Electronic Journal</Card.Title>
                 <Nav variant="pills" className="flex-column">
-                  <Nav.Item>
+                  
+                {isReviewer ? null :
+                <>
+                 <Nav.Item>
                     <Nav.Link
                       href="#"
                       active={activeMenu === "dashboard"}
@@ -281,8 +321,8 @@ const Dashbord = () => {
                   <Nav.Item>
                     <Nav.Link
                       href="#"
-                      active={activeMenu === "orders"}
-                      onClick={() => handleMenuClick("orders")}
+                      active={activeMenu === "Published"}
+                      onClick={() => handleMenuClick("Published")}
                     >
                       {isAdmin ? "Total Published" : "Your Published"}
                     </Nav.Link>
@@ -290,12 +330,15 @@ const Dashbord = () => {
                   <Nav.Item>
                     <Nav.Link
                       href="#"
-                      active={activeMenu === "customers"}
-                      onClick={() => handleMenuClick("customers")}
+                      active={activeMenu === "UnderReview"}
+                      onClick={() => handleMenuClick("UnderReview")}
                     >
                       Under Review
                     </Nav.Link>
                   </Nav.Item>
+                </>
+                 
+}
                   {isAdmin && (
                     <Nav.Item>
                       <Nav.Link
@@ -307,21 +350,12 @@ const Dashbord = () => {
                       </Nav.Link>
                     </Nav.Item>
                   )}
-                  {/* <Nav.Item>
-                    <Nav.Link
-                      href="#"
-                      active={activeMenu === "chart"}
-                      onClick={() => handleMenuClick("chart")}
-                    >
-                      Data sheet
-                    </Nav.Link>
-                  </Nav.Item> */}
                   {isReviewer && (
                     <Nav.Item>
                       <Nav.Link
                         href="#"
-                        active={activeMenu === "chart"}
-                        onClick={() => handleMenuClick("chart")}
+                        active={activeMenu === "AssignedReviewer"}
+                        onClick={() => handleMenuClick("AssignedReviewer")}
                       >
                         Assigned Review
                       </Nav.Link>
@@ -337,6 +371,7 @@ const Dashbord = () => {
                       Update Your Profile
                     </Nav.Link>
                   </Nav.Item>
+                  
                 </Nav>
               </Card.Body>
             </Card>
@@ -353,6 +388,10 @@ const Dashbord = () => {
       </Container>
       <ToastContainer />
     </div>
+    
+    }
+    </>
+   
   );
 };
 

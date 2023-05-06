@@ -8,25 +8,27 @@ import app from "../LoginInfo/firebase.config";
 import { Link } from "react-router-dom";
 import useAdmin from "../../Hooks/useAdmin";
 import { authorContext } from "../../contexts/AuthorContext";
+import useReviewer from "../../Hooks/useReviewer";
 const auth = getAuth(app);
 
 const AuthorNav = () => {
   const [user] = useAuthState(auth);
   const [isAdmin] = useAdmin(user?.email);
+  const [isReviewer,isReviewerLoading] = useReviewer(user?.email);
 
   
     const [loginUser, setLoginuser] = useState('');
 
   const [author] = useContext(authorContext);
  const userEmail = user?.email;
-
+// console.log('Hello',author);
   let name ;
 
 for (let i = 0; i < author.length; i++) {
   if (author[i].email === userEmail) {
     const matchingObject = author[i];
  name = matchingObject?.authorName;
-    break; // Stop searching once a match is found
+    break; 
   }
 }
 
@@ -83,6 +85,7 @@ for (let i = 0; i < author.length; i++) {
               </Link>
             </li>
           </ul>
+
           <div className="form-inline my-2 my-lg-0">
             {isAdmin && (
               <Link
@@ -90,6 +93,14 @@ for (let i = 0; i < author.length; i++) {
                 className="btn  btn-secondary rounded-pill mr-2"
               >
                 <h5>Admin</h5>
+              </Link>
+            )}
+             {isReviewer && (
+              <Link
+                to="/dashboard"
+                className="btn  btn-secondary rounded-pill mr-2"
+              >
+                <h5>Reviewer</h5>
               </Link>
             )}
 

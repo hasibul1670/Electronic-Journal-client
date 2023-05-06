@@ -3,28 +3,19 @@ import React, { useContext, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { Table,} from "react-bootstrap";
 import { toast } from "react-toastify";
-import { getAuth } from "firebase/auth";
-import app from "./../LoginInfo/firebase.config";
-import { useAuthState} from "react-firebase-hooks/auth";
-import useAdmin from "../../Hooks/useAdmin";
-import { dataContext } from "../../App";
 
 const AllUsers = () => {
-  const auth = getAuth(app);
-  const [user,  loading] = useAuthState(auth);
-  const [isAdmin] = useAdmin(user?.email);
-  const [data, setData] = useContext(dataContext);
-  const [isDeleted, setIsDeleted] = useState(false);
-  
-  const { data: users = [], refetch } = useQuery({
+  const { data: users = [],refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:4000/users/admin");
+      const response = await fetch("http://localhost:4000/allUserData");
       const data = await response.json();
       return data;
     },
   });
 
+  console.log('Hello',users);
+  
   const handleAdmin = (id) => {
     fetch(`http://localhost:4000/users/admin/${id}`, {
       method: "PUT",
@@ -34,8 +25,6 @@ const AllUsers = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-       // console.log("Hello", data.lastErrorObject.updatedExisting);
-
         if (data?.lastErrorObject?.updatedExisting === true) {
           toast.success("Make Admin Successfully");
           refetch();
@@ -44,7 +33,9 @@ const AllUsers = () => {
         }
       });
   };
-  return (
+  
+
+return (
     <div>
       <Table striped bordered hover>
         <thead>
@@ -57,11 +48,11 @@ const AllUsers = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((item) => (
+          {users && users?.map((item) => (
             <tr key={item._id}>
-              <td>{item.authorName}</td>
-              <td>{item.email}</td>
-              <td>{item.institutionName}</td>
+              <td>{item?.authorName}</td>
+              <td>{item?.email}</td>
+              <td>{item?.institutionName}</td>
               <td>
                 {item?.role !== "admin" && (
                   <button

@@ -1,135 +1,85 @@
-import { Button, Form, Input } from "antd";
-import { useState } from "react";
-import { Toaster, toast } from "react-hot-toast";
 import { useQuery } from "react-query";
-import AuthorNav from "../Shared/AuthorNav";
-import Loading from "../Shared/Loading";
+import React, { useContext, useState } from "react";
+import "react-toastify/dist/ReactToastify.css";
+import { Table,} from "react-bootstrap";
+import { toast } from "react-toastify";
 
-const Test = ({ user }) => {
-  const [form] = Form.useForm();
-  const [formData, setFormData] = useState('');
-
-  const {
-    data: users,
-    isLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ["users", user?.email],
+const AllUsers = () => {
+  const { data: users = [],refetch } = useQuery({
+    queryKey: ["users"],
     queryFn: async () => {
-      const response = await fetch(`http://localhost:4000/author/?email=${user?.email}`);
+      const response = await fetch("http://localhost:4000/allUserData");
       const data = await response.json();
       return data;
     },
   });
 
-  const handleValuesChange = (changedValues, allValues) => {
-     setFormData(allValues,changedValues);
- //   console.log("Hello", formData);
-  };
-
-  const handleSubmit = async () => {
-    try {
-      const response = await fetch(
-       `http://localhost:4000/authorData/${user?.email}`,
-        {
-          method: "PUT",
-          body: JSON.stringify(formData),
-          headers: {
-            "Content-Type": "application/json",
-          },
+  console.log('Hello',users);
+  
+  const handleAdmin = (id) => {
+    fetch(`http://localhost:4000/users/admin/${id}`, {
+      method: "PUT",
+      headers: {
+        authorization: `bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.lastErrorObject?.updatedExisting === true) {
+          toast.success("Make Admin Successfully");
+          refetch();
+        } else {
+          toast.error("Make Admin Error");
         }
-      );
-      const data = await response.json();
-      console.log(data.modifiedCount);
-      if (data.modifiedCount>0){
-        toast.success("Update Data Successfully");
-        refetch();
-      }else{
-        toast.error("Nothing To Update");
-      }
-   
-   
-    } catch (error) {
-      console.error(error);
-      toast.error("Update Data Error");
-    }
+      });
   };
+  
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  return (
-    <div className="container-fluid">
-      <AuthorNav />
-      <h1>hello</h1>
-      {users&&users?.map((user) => (
-        <div key={user?._id} className="mt-5">
-       
-                <Form
-                  name="basic"
-                  labelCol={{ span: 8 }}
-                  wrapperCol={{ span: 8 }}
-                  initialValues={{ remember: true }}
-                  onValuesChange={handleValuesChange}
-                >
-                  <Form.Item
-                    label="Name"
-                    name="Name"
-                    initialValue={user?.authorName}
+return (
+    <div>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Institution Name</th>
+            <th>Admin</th>
+            <th>Delete User</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users && users?.map((item) => (
+            <tr key={item._id}>
+              <td>{item?.authorName}</td>
+              <td>{item?.email}</td>
+              <td>{item?.institutionName}</td>
+              <td>
+                {item?.role !== "admin" && (
+                  <button
+                    onClick={() => handleAdmin(item._id)}
+                    className="btn btn-primary"
                   >
-                    <Input />
-                  </Form.Item>
-
-                  <Form.Item
-                    label="Phone"
-                    name="phone"
-                    initialValue={user?.phone}
+                    Make Admin
+                  </button>
+                )}
+              </td>
+              <td>
+                {item?.role !== "admin" && (
+                  <button
+                    //   onClick={() => handleDelete(item._id)}
+                    className="btn btn-danger"
                   >
-                    <Input />
-                  </Form.Item>
-
-                  <Form.Item
-                    label="Institution Name"
-                    name="institutionName"
-                    initialValue={user?.institutionName}
-                  >
-                    <Input />
-                  </Form.Item>
-
-                  <Form.Item
-                    label="Department"
-                    name="department"
-                    initialValue={user?.department}
-                  >
-                    <Input />
-                  </Form.Item>
-
-                  <Form.Item label="City" name="city" initialValue={user?.city}>
-                    <Input />
-                  </Form.Item>
-
-                  <Form.Item
-                    label="Postal Code"
-                    name="postalCode"
-                    initialValue={user?.postalCode}
-                  >
-                    <Input />
-                  </Form.Item>
-
-                  <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
-                    <Button type="primary" onClick={handleSubmit}>
-                      Save
-                    </Button>
-                  </Form.Item>
-                </Form>
-            
-        </div>
-      ))}
-
-      <Toaster />
+                    Delete
+                  </button>
+                )}
+              </td>
+            </tr>
+          ))}
+          
+        </tbody>
+      </Table>
     </div>
   );
 };
 
-export default Test;
+export default AllUsers;

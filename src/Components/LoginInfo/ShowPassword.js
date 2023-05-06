@@ -53,6 +53,15 @@ const ShowPassword = () => {
     navigate("/login");
   };
 
+  const [timerId, setTimerId] = useState(null);
+  function handleClick() {
+    clearTimeout(timerId);
+    const newTimerId = setTimeout(() => {
+      setError('');
+    }, 3000);
+
+    setTimerId(newTimerId);
+  }
 
   function mapAuthCodeToMessage(errorCode) {
     switch (errorCode) {
@@ -78,11 +87,13 @@ const ShowPassword = () => {
   const [isReviewer, isReviewerLoading] = useReviewer(email);
   const [isAdmin, isAdminLoading] = useAdmin(email);
  
-  setTimeout(() => {
-    setError("");
-  }, 8000);
+ 
+
+  
+
 
   const handleFormSubmit = (userType) => {
+
       signInWithEmailAndPassword(auth, email, password)
         .then((result) => {
           const user = result.user;
@@ -159,13 +170,18 @@ const ShowPassword = () => {
           setError(errorMessage);
           toast.error(errorMessage);
         }); 
+
+        handleClick();
   };
+  
 
   if (isAdminLoading || isReviewerLoading) {
     <p>
       <Loading />
     </p>;
   }
+ 
+
 
   return (
     <div>
