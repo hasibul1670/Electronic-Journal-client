@@ -6,7 +6,7 @@ const AboutUs = () => {
         <div className=' container p-4 container-fluid '>
           
            <h5 className='p-5'>
-           The International Journal of Computer and Electronics Engineering (IJCEE) is a peer-reviewed journal that publishes high-quality research articles, review articles, and technical notes related to computer and electronics engineering. The journal aims to provide a platform for researchers, academicians, and practitioners from around the world to share their research, knowledge, and experiences in the field of computer and electronics engineering.<p></p>
+    <span className='font-weight-bold'>The International Journal of Computer and Electronics Engineering (IJCEE) </span> is a peer-reviewed journal that publishes high-quality research articles, review articles, and technical notes related to computer and electronics engineering. The journal aims to provide a platform for researchers, academicians, and practitioners from around the world to share their research, knowledge, and experiences in the field of computer and electronics engineering.<p></p>
     
 
 <span className='text-danger'>The scope of The International Journal of Computer and Electronics Engineering (IJCEE) includes but is not limited to the following areas:</span>

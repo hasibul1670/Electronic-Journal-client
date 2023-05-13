@@ -1,85 +1,52 @@
-import { useQuery } from "react-query";
-import React, { useContext, useState } from "react";
-import "react-toastify/dist/ReactToastify.css";
-import { Table,} from "react-bootstrap";
-import { toast } from "react-toastify";
+import React from 'react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
-const AllUsers = () => {
-  const { data: users = [],refetch } = useQuery({
-    queryKey: ["users"],
-    queryFn: async () => {
-      const response = await fetch("http://localhost:4000/allUserData");
-      const data = await response.json();
-      return data;
-    },
-  });
+const Test = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const imageHostKey = process.env.REACT_APP_imgbb_key;
+  const [imageUrl, setImageUrl] = useState(null);
 
-  console.log('Hello',users);
+
+  const uploadImage = (event) => {
+    const selectedFile = event.target.files[0];
+    if (!selectedFile) {
+      return;
+    }
+    const formData = new FormData();
+    formData.append("image", selectedFile);
+    const url = `https://api.imgbb.com/1/upload?key=${imageHostKey}`;
   
-  const handleAdmin = (id) => {
-    fetch(`http://localhost:4000/users/admin/${id}`, {
-      method: "PUT",
-      headers: {
-        authorization: `bearer ${localStorage.getItem("accessToken")}`,
-      },
+    fetch(url, {
+      method: 'POST',
+      body: formData
     })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.lastErrorObject?.updatedExisting === true) {
-          toast.success("Make Admin Successfully");
-          refetch();
-        } else {
-          toast.error("Make Admin Error");
-        }
-      });
-  };
-  
+    .then(res => res.json())
+    .then(iData => {
+      console.log(iData.data.display_url);
+      setImageUrl(iData.data.url);
+    })
+  }
 
-return (
+  return (
     <div>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>User Name</th>
-            <th>Email</th>
-            <th>Institution Name</th>
-            <th>Admin</th>
-            <th>Delete User</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users && users?.map((item) => (
-            <tr key={item._id}>
-              <td>{item?.authorName}</td>
-              <td>{item?.email}</td>
-              <td>{item?.institutionName}</td>
-              <td>
-                {item?.role !== "admin" && (
-                  <button
-                    onClick={() => handleAdmin(item._id)}
-                    className="btn btn-primary"
-                  >
-                    Make Admin
-                  </button>
-                )}
-              </td>
-              <td>
-                {item?.role !== "admin" && (
-                  <button
-                    //   onClick={() => handleDelete(item._id)}
-                    className="btn btn-danger"
-                  >
-                    Delete
-                  </button>
-                )}
-              </td>
-            </tr>
-          ))}
-          
-        </tbody>
-      </Table>
+      <form className="form-control w-full max-w-xs">
+        <label className="label"> <span className="label-text">Photo</span></label>
+        <input
+          type="file"
+          {...register("image", {
+            required: "Photo is Required"
+          })}
+          className="input input-bordered w-full max-w-xs"
+          onChange={uploadImage}
+        />
+        {errors.img && <p className='text-red-500'>{errors.img.message}</p>}
+      </form>
+      <input onClick={handleSubmit(uploadImage)} className='btn btn-accent w-full mt-4' value="Add Doctor" type="submit" />
+      {imageUrl && <img src={imageUrl} alt="Uploaded" />}
     </div>
   );
 };
 
-export default AllUsers;
+export default Test;
