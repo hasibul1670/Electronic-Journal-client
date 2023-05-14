@@ -1,5 +1,5 @@
 import { Button, Form, Input } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -8,6 +8,7 @@ import { useQuery } from "react-query";
 import Loading from "../Shared/Loading";
 
 const UpdateProfile = ({ user }) => {
+  const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState("");
 
   const {
@@ -31,9 +32,6 @@ const UpdateProfile = ({ user }) => {
     formState: { errors },
   } = useForm();
 
-
-
-
   const uploadImage = (event) => {
     const selectedFile = event.target.files[0];
     if (!selectedFile) {
@@ -50,20 +48,36 @@ const UpdateProfile = ({ user }) => {
       .then((res) => res.json())
       .then((iData) => {
         setImageUrl(iData.data.display_url);
+        setIsSaving(true)
+        setFormData({
+          ...formData,
+          imageUrl: iData.data.display_url,
+        });
       });
   };
 
-  const [imageUrl, setImageUrl] = useState(null);
+  const photo = users && users.length > 0 ? users[0]?.profilePic : 0;
+  const [imageUrl, setImageUrl] = useState(photo);
+
+  useEffect(() => {
+    setImageUrl(photo);
+  }, [photo]);
+
+
 
   const handleValuesChange = (changedValues, allValues) => {
-    setFormData(allValues,changedValues);
-//   console.log("Hello", formData);
- };
+    const newFormData = { ...allValues };
+    if (photo) {
+      newFormData.imageUrl = photo;
+    }
+    setFormData(newFormData, changedValues);
+  };
   
+  console.log('Hello',formData);
   const handleSubmit = async () => {
     try {
       const response = await fetch(
-       `http://localhost:4000/authorData/${user?.email}`,
+        `http://localhost:4000/authorData/${user?.email}`,
         {
           method: "PUT",
           body: JSON.stringify(formData),
@@ -73,20 +87,18 @@ const UpdateProfile = ({ user }) => {
         }
       );
       const data = await response.json();
-      console.log(data.modifiedCount);
-      if (data.modifiedCount>0){
+      if (data.modifiedCount > 0) {
         toast.success("Update Data Successfully");
         refetch();
-      }else{
+      } else {
         toast.error("Nothing To Update");
       }
-
-
     } catch (error) {
       console.error(error);
       toast.error("Update Data Error");
-   }
-  }
+    }
+    setIsSaving(false);
+  };
 
   if (isLoading) {
     return <Loading />;
@@ -95,17 +107,17 @@ const UpdateProfile = ({ user }) => {
   return (
     <div className="container-fluid">
       <img
-        src={users[0].profilePic}
+        src={photo}
         alt="Imafgfgge"
+        className="rounded-circle mb-5"
         style={{ width: "300px", height: "300px" }}
       />
+
       {users &&
         users?.map((user) => (
           <div key={user?._id} className="">
-
-
-       
             <Form
+              className="font-weight-bold text-primary"
               name="basic"
               initialValues={{ remember: true }}
               onValuesChange={handleValuesChange}
@@ -145,27 +157,21 @@ const UpdateProfile = ({ user }) => {
               >
                 <Input />
               </Form.Item>
-              <div className="form-control w-full max-w-xs">
-                <label className="label">
-                  {" "}
-                  <span className="label-text">Upload Your Profile Photo</span>
-                </label>
-                <input
+              <Form.Item label="Upload Your Profile Photo">
+                <Input
                   type="file"
-                  {...register("image", {
-                    required: "Photo is Required",
-                  })}
+                  name="imageUrl"
+                  {...register("image")}
                   className="input input-bordered w-full max-w-xs"
                   onChange={uploadImage}
                 />
-                {errors.img && (
-                  <p className="text-red-500">{errors.img.message}</p>
-                )}
-              </div>
-              {imageUrl && <img src={imageUrl} alt="Uploaded" />}
-
-
-
+              </Form.Item>
+              {isSaving && imageUrl && (
+                <> 
+                  <p>Preview Your Uploaded Photo</p>
+                  <img src={imageUrl} alt="Uploaded" />
+                </>
+              )}
               <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
                 <Button type="primary" onClick={handleSubmit}>
                   Save

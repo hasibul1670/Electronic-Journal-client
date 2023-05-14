@@ -17,6 +17,7 @@ import axios from "axios";
 import { useAuthState } from "react-firebase-hooks/auth";
 import app from "../LoginInfo/firebase.config";
 import { DisabledByDefault } from "@mui/icons-material";
+import PreviewAll from "./PreviewAll.js";
 const auth = getAuth(app);
 
 const steps = [
@@ -25,6 +26,7 @@ const steps = [
   "Attach Files",
   "Comments",
   "Review Preferences",
+  "Preview Whole Submission",
 ];
 
 export default function HorizontalLinearStepper() {
@@ -55,6 +57,7 @@ export default function HorizontalLinearStepper() {
         return !comment;
       case 4:
         return selectedReviewer.length === 0;
+        
       default:
         return true;
     }
@@ -171,6 +174,19 @@ export default function HorizontalLinearStepper() {
                   selectedReviewer={selectedReviewer}
                   setSelectedReviewer={setSelectedReviewer}
                 ></ReviewPreference>
+              </div>
+            )}
+                {activeStep === 5 && (
+              <div>
+                <PreviewAll
+                  selectedOption={selectedOption}
+                  data={data}
+                  file={file}
+                  url={url}
+                  comment={comment}
+                  selectedReviewer={selectedReviewer}
+                  
+                ></PreviewAll>
               </div>
             )}
 
