@@ -2,8 +2,8 @@
   text-align: center;
 }
 
-.style2{
-  height:200px
+.style2 {
+  height: 200px;
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -14,48 +14,40 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
-
-.navbar-bg-color{
-  background-color: #1F2058;
+.navbar-bg-color {
+  background-color: #1f2058;
 }
-.nav-text:focus{
-  color: #c5c0c0!important;
+.nav-text:focus {
+  color: #c5c0c0 !important;
   font-weight: 700;
-
 }
-.nav-text{
-  color: #ffffff!important;
+.nav-text {
+  color: #ffffff !important;
   font-weight: 600;
-
 }
-
 
 .navbar-toggler-icon {
-
- 
-  background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e")!important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
 
-
-.bg-login{
-  background-color:#F4F4F4!important;
+.bg-login {
+  background-color: #f4f4f4 !important;
 }
 .border-left {
-  border-left: 3px solid rgb(255, 255, 255)!important;
+  border-left: 3px solid rgb(255, 255, 255) !important;
   height: px;
 }
-.btn-secondary{
-  background-color:#1F2058!important;
-  border: 0px solid #1F2058;
+.btn-secondary {
+  background-color: #1f2058 !important;
+  border: 0px solid #1f2058;
 }
-.home-bg{
+.home-bg {
   background-color: #0c0c93;
-background-image:url(./logo/banner-journal.jpg)
-
+  background-image: url(./logo/banner-journal.jpg);
 }
 .App-logo {
   height: 40vmin;
@@ -91,30 +83,26 @@ background-image:url(./logo/banner-journal.jpg)
     transform: rotate(360deg);
   }
 }
-.lightgray{
+.lightgray {
   background-color: lightgray;
-
 }
-.line-height{
-  line-height: 150%!important;
+.line-height {
+  line-height: 150% !important;
 }
-.verticalline{
-
+.verticalline {
   border-left: 2px solid rgb(90, 90, 90);
   height: 440px;
-
 }
-.textDecoration{
-  font-size:1.2rem;
+.textDecoration {
+  font-size: 1.2rem;
 }
 
-.textDecoration:hover{
+.textDecoration:hover {
   color: rgb(235, 205, 194) !important;
-  text-decoration: none; 
+  text-decoration: none;
 }
-.opacity{
+.opacity {
   opacity: 1;
-
 }
 #myBtn:enabled {
   background-color: #0926ff; /* Blue */
@@ -127,22 +115,32 @@ background-image:url(./logo/banner-journal.jpg)
   color: #0c0c0c; /* White */
 }
 
-
 .primary-button {
-  background-color: #1E90FF; /* or #006400 for green */
-  color: #FFFFFF;
+  background-color: #1e90ff; /* or #006400 for green */
+  color: #ffffff;
 }
 
 .secondary-button {
-  background-color: #CCCCCC;
+  background-color: #cccccc;
   color: #000000;
 }
 
 .register-button {
-  background-color: #FFA500; /* or #FF4500 for orange */
-  color: #FFFFFF;
+  background-color: #ffa500; /* or #FF4500 for orange */
+  color: #ffffff;
 }
 
 .font-weight-bold label {
-  font-size: 17px!important;
+  font-size: 17px !important;
+}
+
+.custom-textarea {
+  background-color: #d7d5d5;
+}
+.bg-color-change {
+  background-color: hsl(219, 93%, 48%);
+}
+
+.toggle-icon {
+  cursor: pointer;
 }

@@ -30,7 +30,7 @@ const steps = [
 
 export default function HorizontalLinearStepper() {
   var [selectedOption, setSelectedOption] = useState("");
-  const [selectedReviewer, setSelectedReviewer] = useState([]);
+  const [submittedData, setSubmittedData] = useState([]);
   var [comment, setComment] = useState("");
   const [url, setUrl] = useState(null);
 
@@ -55,7 +55,7 @@ export default function HorizontalLinearStepper() {
       case 3:
         return !comment;
       case 4:
-        return selectedReviewer.length === 0;
+        return submittedData.length === 0;
 
       default:
         return true;
@@ -87,8 +87,8 @@ export default function HorizontalLinearStepper() {
     formData.append("url", url);
     formData.append("fileName", file?.name);
     formData.append("comment", comment.comment);
-    for (let i = 0; i < selectedReviewer.length; i++) {
-      formData.append("reviewer[]", JSON.stringify(selectedReviewer[i]));
+    for (let i = 0; i < submittedData.length; i++) {
+      formData.append("reviewer[]", JSON.stringify(submittedData[i]));
     }
 
     try {
@@ -149,7 +149,7 @@ export default function HorizontalLinearStepper() {
 
             {activeStep === 1 && (
               <div>
-                <ManuscriptData data={data} setData={setData}></ManuscriptData>;
+                <ManuscriptData data={data} setData={setData}></ManuscriptData>
               </div>
             )}
 
@@ -171,8 +171,9 @@ export default function HorizontalLinearStepper() {
             {activeStep === 4 && (
               <div>
                 <ReviewPreference
-                  selectedReviewer={selectedReviewer}
-                  setSelectedReviewer={setSelectedReviewer}
+                  submittedData={submittedData}
+                  setSubmittedData={setSubmittedData}
+
                 ></ReviewPreference>
               </div>
             )}
