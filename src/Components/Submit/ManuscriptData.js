@@ -7,7 +7,6 @@ const ManuscriptData = ({data,setData}) => {
     const handleChange = (event) => {
         const { name, value } = event.target;
         setData((prevFormData) => ({ ...prevFormData, [name]: value }));
-        console.log('Hello',data);
      
       };
 

@@ -1,22 +1,21 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
-import Selection from "./Selection.js";
-import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
+import Stepper from "@mui/material/Stepper";
+import * as React from "react";
 import AttachFile from "./AttachFile";
-import ReviewPreference from "./ReviewPreference.js";
 import Comment from "./Comment.js";
+import ReviewPreference from "./ReviewPreference.js";
+import Selection from "./Selection.js";
 
-import ManuscriptData from "./ManuscriptData.js";
-import { useLocation, useNavigate } from "react-router";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { getAuth, signOut } from "firebase/auth";
 import axios from "axios";
+import { getAuth } from "firebase/auth";
+import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { Toaster, toast } from "react-hot-toast";
+import { useNavigate } from "react-router";
 import app from "../LoginInfo/firebase.config";
-import { DisabledByDefault } from "@mui/icons-material";
+import ManuscriptData from "./ManuscriptData.js";
 import PreviewAll from "./PreviewAll.js";
 const auth = getAuth(app);
 
@@ -31,7 +30,7 @@ const steps = [
 
 export default function HorizontalLinearStepper() {
   var [selectedOption, setSelectedOption] = useState("");
- const [selectedReviewer, setSelectedReviewer] = useState([]);
+  const [selectedReviewer, setSelectedReviewer] = useState([]);
   var [comment, setComment] = useState("");
   const [url, setUrl] = useState(null);
 
@@ -57,7 +56,7 @@ export default function HorizontalLinearStepper() {
         return !comment;
       case 4:
         return selectedReviewer.length === 0;
-        
+
       default:
         return true;
     }
@@ -68,7 +67,6 @@ export default function HorizontalLinearStepper() {
 
     if (activeStep === steps.length - 1) {
       onSubmit();
-      navigate("/SuccessSubmission");
     }
   };
 
@@ -81,7 +79,6 @@ export default function HorizontalLinearStepper() {
 
   const onSubmit = async () => {
     const formData = new FormData();
-
     formData.append("articleType", selectedOption);
     formData.append("email", user.email);
     formData.append("title", data.title);
@@ -93,7 +90,6 @@ export default function HorizontalLinearStepper() {
     for (let i = 0; i < selectedReviewer.length; i++) {
       formData.append("reviewer[]", JSON.stringify(selectedReviewer[i]));
     }
-
 
     try {
       const response = await axios.post(
@@ -108,9 +104,13 @@ export default function HorizontalLinearStepper() {
       );
 
       console.log(response.data);
-      console.log(" data submitted succcessfiully");
+      toast.success("data submitted succcessfully");
+      console.log(" data submitted succcessfully");
+      navigate("/SuccessSubmission");
+    
     } catch (error) {
       console.error(error);
+      toast.error("something went wrong!! Please try again");
     }
   };
 
@@ -176,16 +176,18 @@ export default function HorizontalLinearStepper() {
                 ></ReviewPreference>
               </div>
             )}
-                {activeStep === 5 && (
+            {activeStep === 5 && (
               <div>
                 <PreviewAll
                   selectedOption={selectedOption}
                   data={data}
+                  setData={setData}
+                 setComment ={setComment}
+                  setFile={setFile}
                   file={file}
-                  url={url}
                   comment={comment}
-                  selectedReviewer={selectedReviewer}
-                  
+                  url={url}
+                  setUrl={setUrl}
                 ></PreviewAll>
               </div>
             )}
@@ -216,7 +218,11 @@ export default function HorizontalLinearStepper() {
               )}
 
               {activeStep === 5 && (
-                <button onClick={() => onSubmit()} disabled={isDisabled()}>
+                <button
+                  className="btn btn-primary btn-lg "
+                  id="myBtn"
+                  onClick={() => onSubmit()}
+                >
                   Submit
                 </button>
               )}
@@ -224,6 +230,7 @@ export default function HorizontalLinearStepper() {
           </>
         )}
       </Box>
+      <Toaster/>
     </div>
   );
 }
