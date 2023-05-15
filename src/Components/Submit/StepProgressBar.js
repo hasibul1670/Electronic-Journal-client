@@ -189,6 +189,10 @@ export default function HorizontalLinearStepper() {
                   comment={comment}
                   url={url}
                   setUrl={setUrl}
+                  submittedData={submittedData}
+                  setSubmittedData={setSubmittedData}
+
+
                 ></PreviewAll>
               </div>
             )}

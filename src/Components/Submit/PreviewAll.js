@@ -7,6 +7,8 @@ const PreviewAll = ({
   file,
   comment,
   setFile,
+  submittedData,
+  setSubmittedData,
   url,
   setUrl,
   setComment,
@@ -142,6 +144,72 @@ const PreviewAll = ({
         </h6>
       )}
       <br />
+{isEditing ? (  
+  
+  <div className="mb-3 border border-primary p-2"> 
+  <h3>Your Suggested Reviewers List</h3>
+  <table class="table table-sm">
+  <thead>
+    <tr class="table-info">
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Institution</th>
+      <th scope="col">Email</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {submittedData.map((data, index) => (
+      <tr key={index}>
+        <th scope="row">{index + 1}</th>
+        <td>
+          {data.firstName} {data.lastName}
+        </td>
+        <td>
+          {data.position}, at {data.institution}
+        </td>
+        <td>{data.email}</td>
+     
+      </tr>
+    ))}
+  </tbody>
+</table>
+  </div>
+ 
+      ):( 
+        
+        <div className="mb-3 border border-primary p-2"> 
+        <h6>Your Suggested Reviewers List</h6>
+        <table class="table table-sm">
+        <thead>
+          <tr class="table-info">
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Institution</th>
+            <th scope="col">Email</th>
+          </tr>
+        </thead>
+      
+        <tbody>
+          {submittedData.map((data, index) => (
+            <tr key={index}>
+              <th scope="row">{index + 1}</th>
+              <td>
+                {data.firstName} {data.lastName}
+              </td>
+              <td>
+                {data.position}, at {data.institution}
+              </td>
+              <td>{data.email}</td>
+           
+            </tr>
+          ))}
+        </tbody>
+      </table>
+        </div>
+  )}
+
+      
       {isEditing ? (
         <button className="btn btn-primary" onClick={handleSave}>
           Save
