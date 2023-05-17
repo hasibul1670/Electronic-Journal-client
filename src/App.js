@@ -18,7 +18,6 @@ import Dashbord from "./Components/Admin/Dashboard";
 import Editor from "./Components/Editor/Editor";
 import Test from "./Components/Test/Test";
 import { createContext } from "react";
-
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
@@ -51,6 +50,7 @@ import { authorContext } from './contexts/AuthorContext';
 export const editorContext = createContext();
 export const reviewerContext = createContext();
 export const dataContext = createContext();
+export const userNameContext = createContext();
 
 function App() {
   const auth = getAuth(app);
@@ -61,6 +61,7 @@ function App() {
   const [submittedFile, setSubmittedFile] = useState([]);
   const [userEmail, setUserEmail] = useState("");
   const [author, setAuthor] = useState([]);
+  const [name, setName] = useState('');
 
   useEffect(() => {
     axios
@@ -201,6 +202,7 @@ function App() {
     { path: "*", element: <Nomatch /> },
   ]);
   return (
+    <userNameContext.Provider value={ [name, setName]} >
     <authorContext.Provider value={[author,setAuthor]}>
       <reviewerContext.Provider value={[reviewer, setReviewer]}>
         <editorContext.Provider value={[editor, setEditor]}>
@@ -210,6 +212,7 @@ function App() {
         </editorContext.Provider>
       </reviewerContext.Provider>
     </authorContext.Provider>
+    </userNameContext.Provider>
   );
 }
 

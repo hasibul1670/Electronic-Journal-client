@@ -73,7 +73,7 @@ const UpdateProfile = ({ user }) => {
     setFormData(newFormData, changedValues);
   };
   
-  console.log('Hello',formData);
+  // console.log('Hello',formData);
   const handleSubmit = async () => {
     try {
       const response = await fetch(

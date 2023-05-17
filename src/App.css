@@ -140,6 +140,9 @@ input[type="number"] {
 .bg-color-change {
   background-color: hsl(219, 93%, 48%);
 }
+.bg-gray{
+  background-color: hsl(216, 42%, 95%);
+}
 
 .toggle-icon {
   cursor: pointer;

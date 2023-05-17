@@ -11,6 +11,7 @@ import { authorContext } from "../../contexts/AuthorContext";
 import useReviewer from "../../Hooks/useReviewer";
 const auth = getAuth(app);
 
+export let name ;
 const AuthorNav = () => {
   const [user] = useAuthState(auth);
   const [isAdmin] = useAdmin(user?.email);
@@ -22,7 +23,7 @@ const AuthorNav = () => {
   const [author] = useContext(authorContext);
  const userEmail = user?.email;
 // console.log('Hello',author);
-  let name ;
+ 
 
 for (let i = 0; i < author.length; i++) {
   if (author[i].email === userEmail) {

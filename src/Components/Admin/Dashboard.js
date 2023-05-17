@@ -30,6 +30,8 @@ import { useQuery } from "react-query";
 import Loading from './../Shared/Loading';
 import useReviewer from "../../Hooks/useReviewer";
 import AssignedReview from "../Reviewer/AssignedReview";
+import AddReviewer from "../Reviewer/AddReviewer";
+import {name} from "../Shared/AuthorNav"
 
 const Dashbord = () => {
   const auth = getAuth(app);
@@ -129,7 +131,8 @@ const Dashbord = () => {
       {refetch()}
     
         return (
-          <Table striped bordered hover>
+          <div className="">
+   <Table striped bordered hover>
             <thead>
               <tr>
                 <th>File</th>
@@ -221,6 +224,8 @@ const Dashbord = () => {
                   ))}
             </tbody>
           </Table>
+          </div>
+       
         );
       case "Published":
          // eslint-disable-next-line no-lone-blocks
@@ -244,7 +249,15 @@ const Dashbord = () => {
             </Card.Body>
           </Card>
         );
-
+        case "AddReviewer":
+          // eslint-disable-next-line no-lone-blocks
+       return (
+         <Card>
+           <Card.Body>
+         <AddReviewer/>
+           </Card.Body>
+         </Card>
+       );
       case "All Users":
            // eslint-disable-next-line no-lone-blocks
     
@@ -300,12 +313,12 @@ const Dashbord = () => {
   return (
     <>
     {allLoading ? <h3 >loading .....</h3>:  <div>
-      <Container fluid className="mt-5 p-4">
+      <Container fluid className="mt-5 p-2">
         <Row>
-          <Col md={3}>
+          <Col md={2}>
             <Card>
               <Card.Body>
-                <Card.Title>Electronic Journal</Card.Title>
+               <Card.Title className="font-weight-bold">{name}</Card.Title> 
                 <Nav variant="pills" className="flex-column">
                   
                 {isReviewer ? null :
@@ -351,6 +364,18 @@ const Dashbord = () => {
                       </Nav.Link>
                     </Nav.Item>
                   )}
+
+{isAdmin && (
+                    <Nav.Item>
+                      <Nav.Link
+                        href="#"
+                        active={activeMenu === "AddReviewer"}
+                        onClick={() => handleMenuClick("AddReviewer")}
+                      >
+                        Add Reviewer
+                      </Nav.Link>
+                    </Nav.Item>
+                  )}
                   {isReviewer && (
                     <Nav.Item>
                       <Nav.Link
@@ -377,7 +402,7 @@ const Dashbord = () => {
               </Card.Body>
             </Card>
           </Col>
-          <Col md={9}>
+          <Col md={10}>
             <Card>
               <Card.Body>
                 <Card.Title>{activeMenu.toUpperCase()}</Card.Title>

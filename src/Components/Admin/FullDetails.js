@@ -12,6 +12,7 @@ import useAdmin from "../../Hooks/useAdmin";
 import useReviewer from "../../Hooks/useReviewer";
 import app from "../LoginInfo/firebase.config";
 import Loading from "../Shared/Loading";
+import Test from "../Test/Test";
 
 const FullDetails = () => {
   const { id } = useParams();
@@ -99,7 +100,8 @@ const FullDetails = () => {
           <tr key={users?._id}>
             <td>
               <a href={users?.url}>
-                Docx <FontAwesomeIcon icon={faDownload} />
+               {/* Docx <FontAwesomeIcon icon={faDownload} /> */}
+                <Test  url={users?.url}  />
               </a>
             </td>
             <td className="font-weight-bold">{users?.email}</td>
