@@ -1,13 +1,15 @@
 import { Button, Form, Input } from "antd";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Toaster, toast } from "react-hot-toast";
 import { useQuery } from "react-query";
 import Loading from "../Shared/Loading";
+import { loginUserContext } from "../../App";
 
 const UpdateProfile = ({ user }) => {
+  const [loginUserEmail, setLoginUserEmail] = useContext(loginUserContext);
   const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState("");
 
@@ -16,10 +18,10 @@ const UpdateProfile = ({ user }) => {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["users", user?.email],
+    queryKey: ["users", loginUserEmail],
     queryFn: async () => {
       const response = await fetch(
-        `http://localhost:4000/author/?email=${user?.email}`
+        `http://localhost:4000/author/?email=${loginUserEmail}`
       );
       const data = await response.json();
       return data;
@@ -77,7 +79,7 @@ const UpdateProfile = ({ user }) => {
   const handleSubmit = async () => {
     try {
       const response = await fetch(
-        `http://localhost:4000/authorData/${user?.email}`,
+        `http://localhost:4000/authorData/${loginUserEmail}`,
         {
           method: "PUT",
           body: JSON.stringify(formData),

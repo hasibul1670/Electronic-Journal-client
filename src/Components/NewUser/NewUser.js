@@ -52,6 +52,7 @@ const NewUser = () => {
     await signOut(data.email);
     await updateProfile({ displayName: data.displayName });
 
+    
     const authorInfoInDb = {
       authorName: data.displayName,
       email: data.email,

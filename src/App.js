@@ -1,59 +1,49 @@
-import "./App.css";
-import Header from "./Components/Header/Header";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-import Nomatch from "./Components/Shared/Nomatch";
-import Login from "./Components/LoginInfo/Login";
-import AuthorMainMenu from "./Components/Submit/AuthorMainMenu";
-import Submit from "./Components/Submit/Submit";
-import SubmitHome from "./Components/Submit/SubmitHome";
-import NewUser from "./Components/NewUser/NewUser";
-import ForgetPass from "./Components/NewUser/ForgetPass";
-import Dashbord from "./Components/Admin/Dashboard";
-import Editor from "./Components/Editor/Editor";
-import Test from "./Components/Test/Test";
-import { createContext } from "react";
-import { useState } from "react";
-import { useEffect } from "react";
 import axios from "axios";
+import { getAuth } from "firebase/auth";
+import { createContext, useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import "./App.css";
+import Dashbord from "./Components/Admin/Dashboard";
+import FullDetails from "./Components/Admin/FullDetails";
+import Editor from "./Components/Editor/Editor";
+import Header from "./Components/Header/Header";
+import Login from "./Components/LoginInfo/Login";
+import app from "./Components/LoginInfo/firebase.config";
+import ForgetPass from "./Components/NewUser/ForgetPass";
+import NewUser from "./Components/NewUser/NewUser";
+import VerifyEmail from "./Components/NewUser/VerifyEmail";
 import AboutUs from "./Components/Shared/AboutUs";
+import Copyright from "./Components/Shared/Copyright";
 import Help from "./Components/Shared/Help";
 import News from "./Components/Shared/News";
+import Nomatch from "./Components/Shared/Nomatch";
 import OpenAccess from "./Components/Shared/OpenAccess";
-import Copyright from "./Components/Shared/Copyright";
-import VerifyEmail from "./Components/NewUser/VerifyEmail";
-import SuccessSubmission from "./SuccessSubmission/SuccessSubmission";
-import FullDetails from "./Components/Admin/FullDetails";
-import Main from "./layout/Main";
-import AuthorNavbar from "./layout/AuthorNavbar";
-import PrivateRoute from "./routes/PrivateRoute";
-import Explore from "./Explore/Explore";
+import AuthorMainMenu from "./Components/Submit/AuthorMainMenu";
+import Submit from "./Components/Submit/Submit";
+import Test from "./Components/Test/Test";
 import Aim from "./Explore/Aim";
-import ExploreNav from "./Explore/ExploreNav";
-import ExploreNavbar from "./layout/ExploreNavbar";
-import GuidLine from "./Explore/GuidLine";
 import ContactUs from "./Explore/ContactUs";
+import GuidLine from "./Explore/GuidLine";
 import ReviewPolicy from "./Explore/ReviewPolicy";
-import app from "./Components/LoginInfo/firebase.config";
-import { getAuth } from "firebase/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
+import SuccessSubmission from "./SuccessSubmission/SuccessSubmission";
+import { authorContext } from "./contexts/AuthorContext";
+import AuthorNavbar from "./layout/AuthorNavbar";
 import DashboardLayout from "./layout/DashboardLayout";
-import useAdmin from "./Hooks/useAdmin";
-import { Toaster } from "react-hot-toast";
-import { authorContext } from './contexts/AuthorContext';
+import ExploreNavbar from "./layout/ExploreNavbar";
+import Main from "./layout/Main";
+import PrivateRoute from "./routes/PrivateRoute";
 
 export const editorContext = createContext();
 export const reviewerContext = createContext();
 export const dataContext = createContext();
 export const userNameContext = createContext();
+export const loginUserContext = createContext();
 
 function App() {
   const auth = getAuth(app);
+  const [loginUserEmail, setLoginUserEmail] = useState("");
+
   const [user, loading] = useAuthState(auth);
   const [data, setData] = useState([]);
   const [editor, setEditor] = useState([]);
@@ -61,7 +51,7 @@ function App() {
   const [submittedFile, setSubmittedFile] = useState([]);
   const [userEmail, setUserEmail] = useState("");
   const [author, setAuthor] = useState([]);
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
 
   useEffect(() => {
     axios
@@ -87,16 +77,13 @@ function App() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/author/?email=${user?.email}`)
+      .get(`http://localhost:4000/author/?email=${loginUserEmail}`)
       .then((res) => {
         setAuthor(res.data);
-        //console.log('Hello',author);
+        console.log("Heldfflo", author);
       })
       .catch((err) => {});
-  }, [user?.email,author]);
-
-  
-
+  }, [loginUserEmail]);
 
   const headers = {
     "Content-Type": "application/json",
@@ -105,11 +92,14 @@ function App() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`http://localhost:4000/submittedData?email=${user?.email}`, {
-          method: "GET",
-          headers: headers,
-        });
-  
+        const response = await fetch(
+          `http://localhost:4000/submittedData?email=${loginUserEmail}`,
+          {
+            method: "GET",
+            headers: headers,
+          }
+        );
+
         if (response.ok) {
           const data = await response.json();
           setData(data);
@@ -118,13 +108,9 @@ function App() {
         console.error(error.message);
       }
     }
-  
+
     fetchData();
-  }, [user?.email]);
-
-
-
-
+  }, [loginUserEmail]);
 
   const router = createBrowserRouter([
     {
@@ -181,7 +167,7 @@ function App() {
             </PrivateRoute>
           ),
         },
-       
+
         { path: "/dashboard/fulldetails/:id", element: <FullDetails /> },
       ],
     },
@@ -202,17 +188,19 @@ function App() {
     { path: "*", element: <Nomatch /> },
   ]);
   return (
-    <userNameContext.Provider value={ [name, setName]} >
-    <authorContext.Provider value={[author,setAuthor]}>
-      <reviewerContext.Provider value={[reviewer, setReviewer]}>
-        <editorContext.Provider value={[editor, setEditor]}>
-          <dataContext.Provider value={[data, setData]}>
-            <RouterProvider router={router} />
-          </dataContext.Provider>
-        </editorContext.Provider>
-      </reviewerContext.Provider>
-    </authorContext.Provider>
-    </userNameContext.Provider>
+    <loginUserContext.Provider value={[loginUserEmail, setLoginUserEmail]}>
+      <userNameContext.Provider value={[name, setName]}>
+        <authorContext.Provider value={[author, setAuthor]}>
+          <reviewerContext.Provider value={[reviewer, setReviewer]}>
+            <editorContext.Provider value={[editor, setEditor]}>
+              <dataContext.Provider value={[data, setData]}>
+                <RouterProvider router={router} />
+              </dataContext.Provider>
+            </editorContext.Provider>
+          </reviewerContext.Provider>
+        </authorContext.Provider>
+      </userNameContext.Provider>
+    </loginUserContext.Provider>
   );
 }
 

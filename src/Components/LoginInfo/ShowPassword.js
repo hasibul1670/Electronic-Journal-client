@@ -9,23 +9,25 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Toaster, toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import { editorContext } from "../../App";
+import { editorContext, loginUserContext } from "../../App";
 import useAdmin from "../../Hooks/useAdmin";
 import useReviewer from "../../Hooks/useReviewer";
 import useToken from "../../Hooks/useToken";
 import Loading from "../Shared/Loading";
+
 
 const ShowPassword = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
-  const [editor] = useContext(editorContext);
+  const [loginUserEmail, setLoginUserEmail] = useContext(loginUserContext);
   const [size, setSize] = useState("large");
   const auth = getAuth(app);
   const [user, loading] = useAuthState(auth);
 
-  const [loginUserEmail, setLoginUserEmail] = useState("");
+  // const [loginUserEmail, setLoginUserEmail] = useState("");
+
   const [token] = useToken(loginUserEmail);
 
   const navigate = useNavigate();
@@ -37,8 +39,6 @@ const ShowPassword = () => {
     <Loading />
     navigate(from, { replace: true });
   }
-
-  // navigate(from, { replace: true });
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -91,88 +91,76 @@ const ShowPassword = () => {
 
   
 
-
-  const handleFormSubmit = (userType) => {
-
-      signInWithEmailAndPassword(auth, email, password)
-        .then((result) => {
-          const user = result.user;
-          if (user.emailVerified === true) {
-            if (userType === "author") {
-              signInWithEmailAndPassword(auth, email, password)
-                .then((result) => {
-                  const user = result.user;
-                  if (!isAdmin&&!isReviewer) {
-                    setLoginUserEmail(user?.email);
-                  } else {
-                    toast.error("Your are not an Author");
-                    setError("Your are not an Author");
-                    signOutFunc();
-                  }
-                })
-                .catch((error) => {
-                  setError(mapAuthCodeToMessage(error.code));
-                  const errorMessage = mapAuthCodeToMessage(error.code);
-                  setError(errorMessage);
-                  toast.error(errorMessage);
-                });
+//Login function start
+const handleFormSubmit =async(userType) => {
+  if (userType === "author" || userType === "editor") {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((result) => {
+        const user = result.user;
+        if (user.emailVerified === true) {
+          if (userType === "author") {
+            if (!isAdmin && !isReviewer) {
+              setLoginUserEmail(user.email);
+            } else {
+              toast.error("You are not an Author");
+              setError("You are not an Author");
+              signOutFunc();
             }
-              else if (userType === "editor") {
-              signInWithEmailAndPassword(auth, email, password)
-                .then((result) => {
-                  const user = result.user;
-                  if (isAdmin) {
-                    setLoginUserEmail(user?.email);
-                  } else {
-                    toast.error("Your are not an Editor");
-                    setError("Your are not an Editor");
-                    signOutFunc();
-                  }
-                })
-                .catch((error) => {
-                  setError(mapAuthCodeToMessage(error.code));
-                  const errorMessage = mapAuthCodeToMessage(error.code);
-                  setError(errorMessage);
-                  toast.error(errorMessage);
-                });
+          } else if (userType === "editor") {
+            if (isAdmin) {
+              setLoginUserEmail(user.email);
+            } else {
+              toast.error("You are not an Editor");
+              setError("You are not an Editor");
+              signOutFunc();
             }
-            else if (userType === "reviewer") {
-              signInWithEmailAndPassword(auth, email, password)
-                .then((result) => {
-                  const user = result.user;
-                  if (isReviewer) {
-                    setLoginUserEmail(user?.email);
-                  } else {
-                    toast.error("Your are not a Reviewer");
-                    setError("Your are not a Reviewer");
-                    signOutFunc();
-                  }
-                })
-                .catch((error) => {
-                  setError(mapAuthCodeToMessage(error.code));
-                  const errorMessage = mapAuthCodeToMessage(error.code);
-                  setError(errorMessage);
-                  toast.error(errorMessage);
-                });
-            }
-
-
           }
-          else {
-            setSuccess("Please Verify Your Email!!");
-            toast.error("Please Verify Your Email!!");
-            signOutFunc();
-          }
-        })
-        .catch((error) => {
-          setError(mapAuthCodeToMessage(error.code));
-          const errorMessage = mapAuthCodeToMessage(error.code);
-          setError(errorMessage);
-          toast.error(errorMessage);
-        }); 
+        } else {
+          setSuccess("Please Verify Your Email!!");
+          toast.error("Please Verify Your Email!!");
+          signOutFunc();
+        }
+      })
+      .catch((error) => {
+        setError(mapAuthCodeToMessage(error.code));
+        const errorMessage = mapAuthCodeToMessage(error.code);
+        setError(errorMessage);
+        toast.error(errorMessage);
+      });
+  } 
+  else if (userType === "reviewer") {
+    // Call API to check the reviewer email and password
+    try {
+      const response = await fetch("http://localhost:4000/reviewerLogin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
 
-        handleClick();
-  };
+      if (response.ok && data.success) {
+   
+        setLoginUserEmail(data.user.email);
+
+        // Perform any additional actions for successful reviewer login
+      } else {
+        toast.error("Invalid email or password");
+      }
+    } catch (error) {
+      console.log('Hello',error);
+      setError("Error occurred while logging in");
+      toast.error("Error occurred while logging in");
+    }
+  }
+
+  handleClick();
+};
+
+
+//Login function end
+ 
   
 
   if (isAdminLoading || isReviewerLoading) {

@@ -6,15 +6,17 @@ import logo from "./../../logo/logo3.png";
 import { getAuth, signOut } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { authorContext } from "../../contexts/AuthorContext";
+import { loginUserContext } from "../../App";
 
 function Navbar() {
   const auth = getAuth(app);
-  const [user, loading] = useAuthState(auth);
+  const [loginUserEmail, setLoginUserEmail] = useContext(loginUserContext);
+  const [, loading] = useAuthState(auth);
 
   const [loginUser, setLoginuser] = useState("");
 
   const [author] = useContext(authorContext);
-  const userEmail = user?.email;
+  const userEmail = loginUserEmail;
 
   let name;
 
@@ -46,7 +48,7 @@ function Navbar() {
         </div>
 
         <div className="  p-2">
-          {user ? (
+          {loginUserEmail ? (
             <Link
               to="/"
               onClick={signOutFunc}
@@ -60,7 +62,7 @@ function Navbar() {
             </Link>
           )}
 
-          {user ? (
+          {loginUserEmail ? (
             <Link
               to="/submit/mainmenu"
               className="btn  btn-primary rounded-pill mr-2"
@@ -134,7 +136,7 @@ function Navbar() {
                 </div>
               </div>
 
-              {user && (
+              {loginUserEmail && (
                 <li className="nav-item active">
                   <Link to="/dashboard" className="nav-link nav-text">
                     Dashboard

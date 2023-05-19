@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import axios from "axios";
 import { useContext } from "react";
-import { dataContext, editorContext } from "../../App";
+import { dataContext, editorContext, loginUserContext } from "../../App";
 import AuthorNav from "../Shared/AuthorNav";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -35,11 +35,12 @@ import {name} from "../Shared/AuthorNav"
 
 const Dashbord = () => {
   const auth = getAuth(app);
+  const [loginUserEmail, setLoginUserEmail] = useContext(loginUserContext);
   const [user, loading] = useAuthState(auth);
   const [data, setData] = useState([]);
+  const [isAdmin, isAdminLoading] = useAdmin(loginUserEmail);
+  const [isReviewer, isReviewerLoading] = useReviewer(loginUserEmail);
 
-  const [isAdmin, isAdminLoading] = useAdmin(user?.email);
-  const [isReviewer, isReviewerLoading] = useReviewer(user?.email);
 
   const headers = {
     "Content-Type": "application/json",
@@ -55,7 +56,7 @@ const Dashbord = () => {
     },
   });
  
-  const url = `http://localhost:4000/submittedData?email=${user?.email}`;
+  const url = `http://localhost:4000/submittedData?email=${loginUserEmail}`;
 
   useEffect(() => {
     fetch(url, {
@@ -75,9 +76,9 @@ const Dashbord = () => {
       .catch((error) => {
         console.error(error.message);
       });
-  }, [user?.email]);
+  }, [loginUserEmail]);
 
-
+console.log('Hello',loginUserEmail);
 
   const [isDeleted, setIsDeleted] = useState(false);
 
@@ -120,15 +121,18 @@ const Dashbord = () => {
     setActiveMenu(menu);
   };
 
-
+  
+  useEffect(() => {
+    if (isAdmin) {
+      refetch();
+    }
+  }, [isAdmin, refetch]);
 
 
   const renderContent = () => {
     switch (activeMenu) {
       case "dashboard":
-
-      // eslint-disable-next-line no-lone-blocks
-      {refetch()}
+    
     
         return (
           <div className="">

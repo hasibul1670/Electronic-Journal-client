@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
@@ -10,19 +10,19 @@ import { Toaster, toast } from "react-hot-toast";
 import { useQuery } from "react-query";
 import useAdmin from "../../Hooks/useAdmin";
 import useReviewer from "../../Hooks/useReviewer";
-import app from "../LoginInfo/firebase.config";
 import Loading from "../Shared/Loading";
 import Test from "../Test/Test";
+import { loginUserContext } from "../../App";
 
 const FullDetails = () => {
   const { id } = useParams();
-  const auth = getAuth(app);
-  const [user, loading] = useAuthState(auth);
+ 
+  const [loginUserEmail, setLoginUserEmail] = useContext(loginUserContext);
   const [assignReviewer, setAssignReviewer] = useState("");
   const [assignReviewerEmail, setAssignReviewerEmail] = useState("");
   const [status, setStatus] = useState("");
-  const [isAdmin, isAdminLoading] = useAdmin(user?.email);
-  const [isReviewer, isReviewerLoading] = useReviewer(user?.email);
+  const [isAdmin, isAdminLoading] = useAdmin(loginUserEmail);
+  const [isReviewer, isReviewerLoading] = useReviewer(loginUserEmail);
 
   const handleChange = (event) => {
     const selectedValue = event.target.value;

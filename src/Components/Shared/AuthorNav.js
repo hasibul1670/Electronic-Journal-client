@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useContext } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Navigate } from "react-router";
-import { dataContext, editorContext } from "../../App";
+import { dataContext, editorContext, loginUserContext } from "../../App";
 import app from "../LoginInfo/firebase.config";
 import { Link } from "react-router-dom";
 import useAdmin from "../../Hooks/useAdmin";
@@ -14,14 +14,15 @@ const auth = getAuth(app);
 export let name ;
 const AuthorNav = () => {
   const [user] = useAuthState(auth);
-  const [isAdmin] = useAdmin(user?.email);
-  const [isReviewer,isReviewerLoading] = useReviewer(user?.email);
+  const [loginUserEmail, setLoginUserEmail] = useContext(loginUserContext);
+  const [isAdmin] = useAdmin(loginUserEmail);
+  const [isReviewer,isReviewerLoading] = useReviewer(loginUserEmail);
 
   
     const [loginUser, setLoginuser] = useState('');
 
   const [author] = useContext(authorContext);
- const userEmail = user?.email;
+ const userEmail = loginUserEmail;
 // console.log('Hello',author);
  
 

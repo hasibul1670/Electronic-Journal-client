@@ -1,5 +1,9 @@
+import { getAuth } from "firebase/auth";
 import React from "react";
+import { useCreateUserWithEmailAndPassword, useSignOut, useUpdateProfile } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
+import app from "../LoginInfo/firebase.config";
+import { Toaster, toast } from "react-hot-toast";
 
 const AddReviewer = () => {
   const {
@@ -8,8 +12,37 @@ const AddReviewer = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  // const onSubmit = (data) => {
+  //   console.log(data);
+  // };
+  const auth = getAuth(app);
+  const [updateProfile] = useUpdateProfile(auth);
+  const [signOut] = useSignOut(auth);
+
+
+  const onSubmit = async (data) => {
+
+    const authorInfoInDb = {
+     reviewerName: data.displayName,
+      email: data.email,
+      password: data.password,
+      reviewerPosition: data.position,
+      institutionName: data.institutionName,
+      department: data.department,
+    };
+
+    fetch("http://localhost:4000/addReviewer", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(authorInfoInDb),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        toast.success("Reviewer added successfully")
+        console.log("Hello", data);
+      });
   };
 
   return (
@@ -17,17 +50,17 @@ const AddReviewer = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* First Name */}
         <div className="form-group row">
-          <label className="col-md-2" htmlFor="firstName">
+          <label className="col-md-2" htmlFor="displayName">
             First Name:
           </label>
           <input
             type="text"
             className={`form-control col-md-9 ${
-              errors.firstName ? "is-invalid" : ""
+              errors.displayName ? "is-invalid" : ""
             }`}
-            {...register("firstName", { required: true })}
+            {...register("displayName", { required: true })}
           />
-          {errors.firstName && (
+          {errors.displayName && (
             <div className="invalid-feedback">First name is required.</div>
           )}
         </div>
@@ -53,7 +86,7 @@ const AddReviewer = () => {
             Email Address :
           </label>
           <input
-            type="text"
+            type="email"
             className={`form-control col-md-9 ${
               errors.email ? "is-invalid" : ""
             }`}
@@ -64,12 +97,38 @@ const AddReviewer = () => {
                 message: "Invalid email address",
               },
             })}
-            aria-invalid={errors.mail ? "true" : "false"}
+            aria-invalid={errors.email ? "true" : "false"}
           />
-          {errors.mail && (
-            <div className="invalid-feedback">{errors.mail.message}</div>
+          {errors.email && (
+            <div className="invalid-feedback">{errors.email.message}</div>
           )}
         </div>
+
+        {/*Password */}
+        <div className="form-group row">
+          <label className="col-md-2 " htmlFor="email">
+            Password :
+          </label>
+          <input
+            type="password"
+            className={`form-control col-md-9 ${
+              errors.password ? "is-invalid" : ""
+            }`}
+            {...register("password", {
+              required: "Password is required",
+              pattern: {
+                value: /^.{6,}$/,
+                message:
+                  "Invalid password. It should be at least 6 characters long.",
+              },
+            })}
+            aria-invalid={errors.password ? "true" : "false"}
+          />
+          {errors.password && (
+            <div className="invalid-feedback">{errors.password.message}</div>
+          )}
+        </div>
+
         {/* Institution Name */}
         <div className="form-group row">
           <label className="col-md-2 " htmlFor="lastName">
@@ -126,6 +185,7 @@ const AddReviewer = () => {
           Submit
         </button>
       </form>
+      <Toaster/>
     </div>
   );
 };

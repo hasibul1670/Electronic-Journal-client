@@ -3,35 +3,26 @@ import {
   faDownload
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
-
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
-
 import { Table } from "react-bootstrap";
-
-import { getAuth } from "firebase/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
-import app from "../LoginInfo/firebase.config";
-
 import useAdmin from "../../Hooks/useAdmin";
 import useReviewer from "../../Hooks/useReviewer";
 import Loading from "./../Shared/Loading";
+import { loginUserContext } from "../../App";
 
 const AssignedReview = () => {
-  const auth = getAuth(app);
-  const [user, loading] = useAuthState(auth);
-  const [isAdmin, isAdminLoading] = useAdmin(user?.email);
-
+  const [loginUserEmail, setLoginUserEmail] = useContext(loginUserContext);
+  const [isAdmin, isAdminLoading] = useAdmin(loginUserEmail);
   const [data, setData] = useState([]);
-  const [isReviewer, isReviewerLoading] = useReviewer(user?.email);
+  const [isReviewer, isReviewerLoading] = useReviewer(loginUserEmail);
 
   const headers = {
     "Content-Type": "application/json",
     authorization: `bearer ${localStorage.getItem("accessToken")}`,
   };
 
-  const url = `http://localhost:4000/revData?email=${user?.email}`;
+  const url = `http://localhost:4000/revData?email=${loginUserEmail}`;
 
   useEffect(() => {
     fetch(url, {
@@ -53,7 +44,7 @@ const AssignedReview = () => {
       .catch((error) => {
         console.error(error.message);
       });
-  }, [user?.email]);
+  }, [loginUserEmail]);
 
   const [isDeleted, setIsDeleted] = useState(false);
 
