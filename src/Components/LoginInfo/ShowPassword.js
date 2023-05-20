@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router";
 
 import { Button, Form, Input, Space } from "antd";
 import { useContext, useState } from "react";
-import { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { loginUserContext } from "../../App";
@@ -100,11 +100,13 @@ const ShowPassword = () => {
         console.log("Login successful",data.message);
     
       } else {
-        console.log(data.message);
+       
+        toast.error(data.message);
      
       }
     } catch (error) {
-      console.log("Server Down !! Please Try Again Later", error);
+      
+      toast.error("Server Down !! Please Try Again Later");
     }
   };
 

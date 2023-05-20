@@ -78,8 +78,6 @@ const Dashbord = () => {
       });
   }, [loginUserEmail]);
 
-console.log('Hello',loginUserEmail);
-
   const [isDeleted, setIsDeleted] = useState(false);
 
   const handleDelete = (id) => {

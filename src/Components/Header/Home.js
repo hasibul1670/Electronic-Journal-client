@@ -7,20 +7,20 @@ import logo from "./../../logo/home.jpg";
 export default class Home extends PureComponent {
   render() {
     return (
-      <div className="home-bg">
+      <div className="img-fluid home-bg">
         <br />
 
         <div className="card opacity  p-5 mb-3 w-75 mx-auto">
           <div className=" row no-gutters">
             <div className="col-md-8 d-flex">
               <img
-                className="image-fluid"
+                className="img-fluid"
                 style={{ height: "225px", width: "165px" }}
                 src={logo}
                 alt=""
                 srcet=""
               />
-              <div className="card-body">
+              <div className="card-body img-fluid ">
                 <h4 className="card-title font-weight-bold ">
                   International Journal of Computer and Electronics Engineering
                 </h4>

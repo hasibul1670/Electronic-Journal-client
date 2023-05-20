@@ -5,11 +5,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Toaster, toast } from "react-hot-toast";
 import { useQuery } from "react-query";
-import Loading from "../Shared/Loading";
 import { loginUserContext } from "../../App";
+import Loading from "../Shared/Loading";
+
+import Swal from "sweetalert2";
 
 const UpdateProfile = ({ user }) => {
-  const [loginUserEmail, setLoginUserEmail] = useContext(loginUserContext);
+  const [loginUserEmail] = useContext(loginUserContext);
   const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState("");
 
@@ -50,7 +52,7 @@ const UpdateProfile = ({ user }) => {
       .then((res) => res.json())
       .then((iData) => {
         setImageUrl(iData.data.display_url);
-        setIsSaving(true)
+        setIsSaving(true);
         setFormData({
           ...formData,
           imageUrl: iData.data.display_url,
@@ -65,8 +67,6 @@ const UpdateProfile = ({ user }) => {
     setImageUrl(photo);
   }, [photo]);
 
-
-
   const handleValuesChange = (changedValues, allValues) => {
     const newFormData = { ...allValues };
     if (photo) {
@@ -74,7 +74,7 @@ const UpdateProfile = ({ user }) => {
     }
     setFormData(newFormData, changedValues);
   };
-  
+
   // console.log('Hello',formData);
   const handleSubmit = async () => {
     try {
@@ -89,8 +89,13 @@ const UpdateProfile = ({ user }) => {
         }
       );
       const data = await response.json();
-      if (data.modifiedCount > 0) {
-        toast.success("Update Data Successfully");
+      const updateSuccess = data.result.modifiedCount;
+      if (updateSuccess > 0) {
+        Swal.fire({
+          icon: "success",
+          title: "Update Your Profile Successfully",
+          text: "Your work has been saved",
+        });
         refetch();
       } else {
         toast.error("Nothing To Update");
@@ -111,7 +116,7 @@ const UpdateProfile = ({ user }) => {
       <img
         src={photo}
         alt="Imafgfgge"
-        className="rounded-circle mb-5"
+        className="rounded-circle img-fluid mb-5"
         style={{ width: "300px", height: "300px" }}
       />
 
@@ -128,13 +133,19 @@ const UpdateProfile = ({ user }) => {
               <Form.Item
                 label="Name"
                 name="authorName"
-                initialValue={user?.authorName}
+                initialValue={user?.authorName || user?.reviewerName}
               >
                 <Input />
               </Form.Item>
-              <Form.Item label="Phone" name="phone" initialValue={user?.phone}>
-                <Input />
-              </Form.Item>
+              {user?.phone && (
+                <Form.Item
+                  label="Phone"
+                  name="phone"
+                  initialValue={user?.phone}
+                >
+                  <Input />
+                </Form.Item>
+              )}
               <Form.Item
                 label="Institution Name"
                 name="institutionName"
@@ -149,16 +160,20 @@ const UpdateProfile = ({ user }) => {
               >
                 <Input />
               </Form.Item>
-              <Form.Item label="City" name="city" initialValue={user?.city}>
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Postal Code"
-                name="postalCode"
-                initialValue={user?.postalCode}
-              >
-                <Input />
-              </Form.Item>
+              {user?.city && (
+                <Form.Item label="City" name="city" initialValue={user?.city}>
+                  <Input />
+                </Form.Item>
+              )}
+              {user?.postalCode && (
+                <Form.Item
+                  label="Postal Code"
+                  name="postalCode"
+                  initialValue={user?.postalCode}
+                >
+                  <Input />
+                </Form.Item>
+              )}
               <Form.Item label="Upload Your Profile Photo">
                 <Input
                   type="file"
@@ -169,7 +184,7 @@ const UpdateProfile = ({ user }) => {
                 />
               </Form.Item>
               {isSaving && imageUrl && (
-                <> 
+                <>
                   <p>Preview Your Uploaded Photo</p>
                   <img src={imageUrl} alt="Uploaded" />
                 </>

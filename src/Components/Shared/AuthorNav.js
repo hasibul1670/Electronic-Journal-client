@@ -27,13 +27,15 @@ const AuthorNav = () => {
 // console.log('Hello',author);
  
 
+
 for (let i = 0; i < author.length; i++) {
   if (author[i].email === userEmail) {
     const matchingObject = author[i];
- name = matchingObject?.authorName;
-    break; 
+    name = matchingObject.authorName || matchingObject.reviewerName;
+    break;
   }
 }
+
 
 
   const signOutFunc = () => {

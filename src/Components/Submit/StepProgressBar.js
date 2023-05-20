@@ -2,22 +2,19 @@ import Box from "@mui/material/Box";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Stepper from "@mui/material/Stepper";
-import * as React from "react";
-import AttachFile from "./AttachFile";
-import Comment from "./Comment.js";
-import ReviewPreference from "./ReviewPreference.js";
-import Selection from "./Selection.js";
-
 import axios from "axios";
-import { getAuth } from "firebase/auth";
+import * as React from "react";
 import { useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { Toaster, toast } from "react-hot-toast";
 import { useNavigate } from "react-router";
-import app from "../LoginInfo/firebase.config";
+import Swal from "sweetalert2";
+import { loginUserContext } from "../../App";
+import AttachFile from "./AttachFile";
+import Comment from "./Comment.js";
 import ManuscriptData from "./ManuscriptData.js";
 import PreviewAll from "./PreviewAll.js";
-const auth = getAuth(app);
+import ReviewPreference from "./ReviewPreference.js";
+import Selection from "./Selection.js";
 
 const steps = [
   "Article Type Selection",
@@ -75,12 +72,12 @@ export default function HorizontalLinearStepper() {
   };
 
   const navigate = useNavigate();
-  const [user] = useAuthState(auth);
+  const [loginUserEmail] = React.useContext(loginUserContext);
 
   const onSubmit = async () => {
     const formData = new FormData();
     formData.append("articleType", selectedOption);
-    formData.append("email", user.email);
+    formData.append("email", loginUserEmail);
     formData.append("title", data.title);
     formData.append("abstract", data.abstract);
     formData.append("keyword", data.keywords);
@@ -107,7 +104,11 @@ export default function HorizontalLinearStepper() {
       toast.success("data submitted succcessfully");
       console.log(" data submitted succcessfully");
       navigate("/SuccessSubmission");
-    
+      Swal.fire({
+        icon: "success",
+        title: "Your submission has been successful",
+        text: "Thank you for submitting your Paper",
+      });
     } catch (error) {
       console.error(error);
       toast.error("something went wrong!! Please try again");
@@ -165,7 +166,7 @@ export default function HorizontalLinearStepper() {
             )}
             {activeStep === 3 && (
               <div>
-                <Comment comment={comment} setComment={setComment}></Comment>;
+                <Comment comment={comment} setComment={setComment}></Comment>
               </div>
             )}
             {activeStep === 4 && (
@@ -173,7 +174,6 @@ export default function HorizontalLinearStepper() {
                 <ReviewPreference
                   submittedData={submittedData}
                   setSubmittedData={setSubmittedData}
-
                 ></ReviewPreference>
               </div>
             )}
@@ -183,7 +183,7 @@ export default function HorizontalLinearStepper() {
                   selectedOption={selectedOption}
                   data={data}
                   setData={setData}
-                 setComment ={setComment}
+                  setComment={setComment}
                   setFile={setFile}
                   file={file}
                   comment={comment}
@@ -191,8 +191,6 @@ export default function HorizontalLinearStepper() {
                   setUrl={setUrl}
                   submittedData={submittedData}
                   setSubmittedData={setSubmittedData}
-
-
                 ></PreviewAll>
               </div>
             )}
@@ -235,7 +233,7 @@ export default function HorizontalLinearStepper() {
           </>
         )}
       </Box>
-      <Toaster/>
+      <Toaster />
     </div>
   );
 }

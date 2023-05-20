@@ -11,7 +11,7 @@ const SuccessSubmission = () => {
     return (
       <div className={`submission-success-container ${isVisible ? 'visible' : ''}`}>
       <div className="submission-success-card">
-        <h1 className="submission-success-heading">Your submission was successful!</h1>
+        <h1 className="submission-success-heading">Your submission has been successful</h1>
         <h5 className="submission-success-message">Thank you for submitting your Paper</h5>
         
       <a href="/dashboard" class="btn btn-primary">Go To Your Dashboard </a>

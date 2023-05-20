@@ -12,6 +12,7 @@ const SubmitHome = () => {
             <img
               style={{ height: "225px", width: "165px" }}
               src={logo}
+              className="img-fluid"
               alt=""
               srcSet=""
             />

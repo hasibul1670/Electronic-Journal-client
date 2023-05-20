@@ -17,7 +17,7 @@ const Login = () => {
           className=" p-4  bg-login w-75 d-flex justify-content-center p-2 mt-2 mx-auto mb-2"
         >
           <img
-            className="image-fluid mt-5"
+            className="img-fluid mt-5"
             style={{ height: "190px", width: "165px" }}
             src={logo}
             alt=""

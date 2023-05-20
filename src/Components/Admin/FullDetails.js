@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
@@ -24,6 +24,9 @@ const FullDetails = () => {
   const [isAdmin, isAdminLoading] = useAdmin(loginUserEmail);
   const [isReviewer, isReviewerLoading] = useReviewer(loginUserEmail);
 
+
+  const [reviewerData, setReviewerData] = useState([]);
+
   const handleChange = (event) => {
     const selectedValue = event.target.value;
     if (selectedValue === "") {
@@ -35,7 +38,21 @@ const FullDetails = () => {
       setAssignReviewerEmail(email.slice(0, -1));
     }
   };
-  //console.log("name:", assignReviewer, "email:", assignReviewerEmail);
+
+useEffect(() => {
+  const fetchReviewerData = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/getReviewer');
+      const data = await response.json();
+      setReviewerData(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  fetchReviewerData();
+
+} ,[])
   const {
     data: users = [],
     refetch,
@@ -48,7 +65,6 @@ const FullDetails = () => {
       return data;
     },
   });
-
   if (isLoading) {
     return <Loading />;
   }
@@ -73,6 +89,8 @@ const FullDetails = () => {
         }
       });
   };
+
+
 
   return (
     <div className="container-fluid  p-1">
@@ -100,8 +118,8 @@ const FullDetails = () => {
           <tr key={users?._id}>
             <td>
               <a href={users?.url}>
-               {/* Docx <FontAwesomeIcon icon={faDownload} /> */}
-                <Test  url={users?.url}  />
+               Docx <FontAwesomeIcon icon={faDownload} /> 
+             
               </a>
             </td>
             <td className="font-weight-bold">{users?.email}</td>
@@ -111,22 +129,24 @@ const FullDetails = () => {
             {isReviewer ? null : (
               <>
                 <td>
-                  <select
-                    className="border font-weight-bold w-75 border-secondary form-control"
-                    id="dropdown"
-                    onChange={handleChange}
-                  >
-                    <option value="">None</option>
-                    {users?.reviewer?.map((reviewer, index) => {
-                      const { name, email } = JSON.parse(reviewer);
-                      const value = `${name} (${email})`;
-                      return (
-                        <option key={index} value={value}>
-                          {name}
-                        </option>
-                      );
-                    })}
-                  </select>
+                <select
+        className="border font-weight-bold w-75 border-secondary form-control"
+        id="dropdown"
+        onChange={handleChange}
+       
+      >
+        <option value="">None</option>
+
+        {reviewerData.map((reviewer, index) => {
+          const { reviewerName, email } = reviewer;
+          const value = `${reviewerName} (${email})`;
+          return (
+            <option key={index} value={value}>
+              {reviewerName},{email}
+            </option>
+          );
+        })}
+      </select>
                 </td>
 
                 <td>

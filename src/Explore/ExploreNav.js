@@ -9,6 +9,7 @@ const ExploreNav = () => {
             <nav className="navbar navbar-expand-lg navbar-light ">
             <Link to="/" className="navbar-brand">
             <img
+            className='img-fluid'
               style={{ height: "100px", width: "300px" }}
               src={logo}
               alt=""

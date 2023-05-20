@@ -29,7 +29,7 @@ const AuthorMainMenu = () => {
         <div className="row no-gutters">
           <div className="col-md-4  ">
             <h4 className="p-4 ">Author Main Menu</h4>
-            <img src={logo} className="card-img p-2 ml-4 w-50" alt="..." />
+            <img src={logo} className="card-img img-fluid p-2 ml-4 w-50" alt="..." />
           </div>
           <div className="col-md-8">
             <div className="card-body">
