@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import useAdmin from "../../Hooks/useAdmin";
 import { authorContext } from "../../contexts/AuthorContext";
 import useReviewer from "../../Hooks/useReviewer";
+import { useSignOut } from "../LoginInfo/signout";
 const auth = getAuth(app);
 
 export let name ;
@@ -17,7 +18,7 @@ const AuthorNav = () => {
   const [loginUserEmail, setLoginUserEmail] = useContext(loginUserContext);
   const [isAdmin] = useAdmin(loginUserEmail);
   const [isReviewer,isReviewerLoading] = useReviewer(loginUserEmail);
-
+  const handleSignOut = useSignOut();
   
     const [loginUser, setLoginuser] = useState('');
 
@@ -36,7 +37,7 @@ for (let i = 0; i < author.length; i++) {
 
 
   const signOutFunc = () => {
-    signOut(auth);
+    handleSignOut()
     Navigate("/login");
   };
   return (

@@ -42,7 +42,8 @@ export const loginUserContext = createContext();
 
 function App() {
   const auth = getAuth(app);
-  const [loginUserEmail, setLoginUserEmail] = useState("");
+  const initialLoginUserEmail = localStorage.getItem("loginUserEmail") || "";
+  const [loginUserEmail, setLoginUserEmail] = useState(initialLoginUserEmail);
 
   const [user, loading] = useAuthState(auth);
   const [data, setData] = useState([]);
@@ -80,7 +81,6 @@ function App() {
       .get(`http://localhost:4000/author/?email=${loginUserEmail}`)
       .then((res) => {
         setAuthor(res.data);
-        console.log("Heldfflo", author);
       })
       .catch((err) => {});
   }, [loginUserEmail]);

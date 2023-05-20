@@ -1,25 +1,19 @@
 import { getAuth } from "firebase/auth";
-import React from "react";
+import React, { useContext } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Navigate, useLocation } from "react-router-dom";
 import app from "../Components/LoginInfo/firebase.config";
+import { loginUserContext } from "../App";
 
 const auth = getAuth(app);
 
 const PrivateRoute = ({ children }) => {
   let location = useLocation();
 
-  const [user, loading] = useAuthState(auth);
+  const [loginUserEmail] = useContext(loginUserContext);
 
-  if (loading) {
-    return;
-
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>;
-  }
-
-  if (user) {
+ 
+  if (loginUserEmail) {
     return children;
   }
 

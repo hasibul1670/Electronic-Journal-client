@@ -3,15 +3,16 @@ import { Link, Navigate } from "react-router-dom";
 
 import app from "../LoginInfo/firebase.config";
 import logo from "./../../logo/logo3.png";
-import { getAuth, signOut } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { authorContext } from "../../contexts/AuthorContext";
 import { loginUserContext } from "../../App";
+import { useSignOut } from "../LoginInfo/signout";
 
 function Navbar() {
-  const auth = getAuth(app);
+  const handleSignOut = useSignOut();
+
   const [loginUserEmail, setLoginUserEmail] = useContext(loginUserContext);
-  const [, loading] = useAuthState(auth);
+ 
 
   const [loginUser, setLoginuser] = useState("");
 
@@ -29,7 +30,7 @@ function Navbar() {
   }
 
   const signOutFunc = () => {
-    signOut(auth);
+    handleSignOut()
     Navigate("/login");
   };
 

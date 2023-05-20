@@ -1,20 +1,17 @@
-import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import React, { useEffect } from "react";
+import React from "react";
 import { useLocation, useNavigate } from "react-router";
-import app from "./firebase.config";
 
 import { Button, Form, Input, Space } from "antd";
 import { useContext, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { Toaster, toast } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import { editorContext, loginUserContext } from "../../App";
+import { loginUserContext } from "../../App";
 import useAdmin from "../../Hooks/useAdmin";
 import useReviewer from "../../Hooks/useReviewer";
 import useToken from "../../Hooks/useToken";
 import Loading from "../Shared/Loading";
-
+import { useSignOut } from "./signout";
 
 const ShowPassword = () => {
   const [email, setEmail] = useState("");
@@ -23,10 +20,7 @@ const ShowPassword = () => {
   const [error, setError] = useState("");
   const [loginUserEmail, setLoginUserEmail] = useContext(loginUserContext);
   const [size, setSize] = useState("large");
-  const auth = getAuth(app);
-  const [user, loading] = useAuthState(auth);
-
-  // const [loginUserEmail, setLoginUserEmail] = useState("");
+  const handleSignOut = useSignOut();
 
   const [token] = useToken(loginUserEmail);
 
@@ -34,9 +28,8 @@ const ShowPassword = () => {
   let location = useLocation();
 
   let from = location.state?.from?.pathname || "/";
-
   if (token) {
-    <Loading />
+    <Loading />;
     navigate(from, { replace: true });
   }
 
@@ -48,16 +41,13 @@ const ShowPassword = () => {
     setPassword(event.target.value);
   };
 
-  const signOutFunc = () => {
-    signOut(auth);
-    navigate("/login");
-  };
+  // Function to handle sign-out
 
   const [timerId, setTimerId] = useState(null);
   function handleClick() {
     clearTimeout(timerId);
     const newTimerId = setTimeout(() => {
-      setError('');
+      setError("");
     }, 3000);
 
     setTimerId(newTimerId);
@@ -84,92 +74,47 @@ const ShowPassword = () => {
     }
   }
   let IsMatched = false;
+
   const [isReviewer, isReviewerLoading] = useReviewer(email);
   const [isAdmin, isAdminLoading] = useAdmin(email);
- 
- 
 
-  
+  //Login function start
+  //   handleClick();
 
-//Login function start
-const handleFormSubmit =async(userType) => {
-  if (userType === "author" || userType === "editor") {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((result) => {
-        const user = result.user;
-        if (user.emailVerified === true) {
-          if (userType === "author") {
-            if (!isAdmin && !isReviewer) {
-              setLoginUserEmail(user.email);
-            } else {
-              toast.error("You are not an Author");
-              setError("You are not an Author");
-              signOutFunc();
-            }
-          } else if (userType === "editor") {
-            if (isAdmin) {
-              setLoginUserEmail(user.email);
-            } else {
-              toast.error("You are not an Editor");
-              setError("You are not an Editor");
-              signOutFunc();
-            }
-          }
-        } else {
-          setSuccess("Please Verify Your Email!!");
-          toast.error("Please Verify Your Email!!");
-          signOutFunc();
-        }
-      })
-      .catch((error) => {
-        setError(mapAuthCodeToMessage(error.code));
-        const errorMessage = mapAuthCodeToMessage(error.code);
-        setError(errorMessage);
-        toast.error(errorMessage);
-      });
-  } 
-  else if (userType === "reviewer") {
-    // Call API to check the reviewer email and password
+  const handleFormSubmit = async (userType) => {
     try {
       const response = await fetch("http://localhost:4000/reviewerLogin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, userType }),
       });
       const data = await response.json();
 
       if (response.ok && data.success) {
-   
-        setLoginUserEmail(data.user.email);
-
-        // Perform any additional actions for successful reviewer login
+        
+        const userEmail = data.user.email;
+        setLoginUserEmail(userEmail);
+        localStorage.setItem("loginUserEmail", userEmail);
+        console.log("Login successful",data.message);
+    
       } else {
-        toast.error("Invalid email or password");
+        console.log(data.message);
+     
       }
     } catch (error) {
-      console.log('Hello',error);
-      setError("Error occurred while logging in");
-      toast.error("Error occurred while logging in");
+      console.log("Server Down !! Please Try Again Later", error);
     }
-  }
+  };
 
-  handleClick();
-};
-
-
-//Login function end
- 
-  
+  //Login function end
 
   if (isAdminLoading || isReviewerLoading) {
     <p>
       <Loading />
     </p>;
   }
- 
-
 
   return (
     <div>
@@ -200,7 +145,6 @@ const handleFormSubmit =async(userType) => {
               message: "Please input your Email Address!",
             },
           ]}
-         
         >
           <Input style={{ height: "40px" }} />
         </Form.Item>
@@ -277,12 +221,10 @@ const handleFormSubmit =async(userType) => {
           </Space>
         </Form.Item>
       </Form>
-     
+
       <Toaster />
-     
     </div>
   );
 };
 
 export default ShowPassword;
-
