@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function ReviewPreference({submittedData,setSubmittedData}) {
+function ReviewPreference({ submittedData, setSubmittedData }) {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -14,7 +14,6 @@ function ReviewPreference({submittedData,setSubmittedData}) {
 
   const [editIndex, setEditIndex] = useState(-1);
 
-
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -25,8 +24,8 @@ function ReviewPreference({submittedData,setSubmittedData}) {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Check if any of the form fields are empty
-    const isFormEmpty = Object.values(formData).some(value => value === "");
-  
+    const isFormEmpty = Object.values(formData).some((value) => value === "");
+
     if (!isFormEmpty) {
       if (editIndex === -1) {
         // Add new data
@@ -49,10 +48,7 @@ function ReviewPreference({submittedData,setSubmittedData}) {
       email: "",
       reason: "",
     });
-
-  
   };
-  
 
   const handleEdit = (index) => {
     const selectedReviewer = submittedData[index];
@@ -78,7 +74,7 @@ function ReviewPreference({submittedData,setSubmittedData}) {
     <div className="container mt-5">
       <button
         type="button"
-        class="btn btn-primary"
+        className="btn btn-primary"
         data-toggle="modal"
         data-target="#exampleModal"
         data-whatever="@mdo"
@@ -87,30 +83,33 @@ function ReviewPreference({submittedData,setSubmittedData}) {
       </button>
 
       <div
-        class="modal fade"
+        className="modal fade"
         id="exampleModal"
         tabindex="-1"
         role="dialog"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header bg-info ">
-              <h5 class="modal-title text-white font-weight-bold " id="exampleModalLabel">
+        <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-content">
+            <div className="modal-header bg-info ">
+              <h5
+                className="modal-title text-white font-weight-bold "
+                id="exampleModalLabel"
+              >
                 Add New Reviewer
               </h5>
             </div>
 
-            <div class="modal-body font-weight-bold p-3">
+            <div className="modal-body font-weight-bold p-3">
               <form>
                 <div className="form-group row row">
                   <label className=" col-form-label col-sm-3 col-sm-3">
                     First Name:
                   </label>
                   <input
-                    type="text" 
-                     required
+                    type="text"
+                    required
                     className="form-control col-form-label col-sm-3 col-sm-8"
                     id="recipient-name"
                     name="firstName"
@@ -120,11 +119,15 @@ function ReviewPreference({submittedData,setSubmittedData}) {
                 </div>
 
                 <div className="form-group row">
-                  <label htmlFor="recipient-name" className="col-form-label col-sm-3">
+                  <label
+                    htmlFor="recipient-name"
+                    className="col-form-label col-sm-3"
+                  >
                     Last Name:
                   </label>
                   <input
-                    type="text"  required
+                    type="text"
+                    required
                     className="form-control col-form-label col-sm-3 col-sm-8"
                     id="recipient-name"
                     name="lastName"
@@ -133,11 +136,15 @@ function ReviewPreference({submittedData,setSubmittedData}) {
                   />
                 </div>
                 <div className="form-group row">
-                  <label htmlFor="recipient-name" className="col-form-label col-sm-3">
+                  <label
+                    htmlFor="recipient-name"
+                    className="col-form-label col-sm-3"
+                  >
                     Degree:
                   </label>
                   <input
-                    type="text"  required
+                    type="text"
+                    required
                     className="form-control col-form-label col-sm-3 col-sm-8"
                     id="recipient-name"
                     name="degree"
@@ -146,11 +153,15 @@ function ReviewPreference({submittedData,setSubmittedData}) {
                   />
                 </div>
                 <div className="form-group row">
-                  <label htmlFor="recipient-name" className="col-form-label col-sm-3">
+                  <label
+                    htmlFor="recipient-name"
+                    className="col-form-label col-sm-3"
+                  >
                     Position:
                   </label>
                   <input
-                    type="text"  required
+                    type="text"
+                    required
                     className="form-control col-form-label col-sm-3 col-sm-8"
                     id="recipient-name"
                     name="position"
@@ -159,11 +170,15 @@ function ReviewPreference({submittedData,setSubmittedData}) {
                   />
                 </div>
                 <div className="form-group row">
-                  <label htmlFor="recipient-name" className="col-form-label col-sm-3">
+                  <label
+                    htmlFor="recipient-name"
+                    className="col-form-label col-sm-3"
+                  >
                     Institution:
                   </label>
                   <input
-                    type="text"  required
+                    type="text"
+                    required
                     className="form-control col-form-label col-sm-3 col-sm-8"
                     id="recipient-name"
                     name="institution"
@@ -172,11 +187,14 @@ function ReviewPreference({submittedData,setSubmittedData}) {
                   />
                 </div>
                 <div className="form-group row">
-                  <label htmlFor="recipient-name" className="col-form-label col-sm-3">
+                  <label
+                    htmlFor="recipient-name"
+                    className="col-form-label col-sm-3"
+                  >
                     Department:
                   </label>
                   <input
-                    type="text"  
+                    type="text"
                     className="form-control col-form-label col-sm-3 col-sm-8"
                     id="recipient-name"
                     name="department"
@@ -186,7 +204,10 @@ function ReviewPreference({submittedData,setSubmittedData}) {
                   />
                 </div>
                 <div className="form-group row">
-                  <label htmlFor="recipient-name" className="col-form-label col-sm-3">
+                  <label
+                    htmlFor="recipient-name"
+                    className="col-form-label col-sm-3"
+                  >
                     Email:
                   </label>
                   <input
@@ -200,7 +221,10 @@ function ReviewPreference({submittedData,setSubmittedData}) {
                   />
                 </div>
                 <div className="form-group row">
-                  <label htmlFor="message-text" className="col-form-label col-sm-3">
+                  <label
+                    htmlFor="message-text"
+                    className="col-form-label col-sm-3"
+                  >
                     Reason:
                   </label>
                   <textarea
@@ -211,22 +235,21 @@ function ReviewPreference({submittedData,setSubmittedData}) {
                     onChange={handleInputChange}
                   ></textarea>
                 </div>
-                <div class="modal-footer">
-              <button
-                type="submit"
-                class="btn btn-primary"
-                onClick={handleSubmit}
-                data-dismiss="modal"
-                disabled={Object.values(formData).some(value => value === "")}
-              >
-                Save
-              </button>
-            </div>
+                <div className="modal-footer">
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    onClick={handleSubmit}
+                    data-dismiss="modal"
+                    disabled={Object.values(formData).some(
+                      (value) => value === ""
+                    )}
+                  >
+                    Save
+                  </button>
+                </div>
               </form>
             </div>
-
-           
-
           </div>
         </div>
       </div>
@@ -235,9 +258,9 @@ function ReviewPreference({submittedData,setSubmittedData}) {
 
       {submittedData.length > 0 && (
         <>
-          <table class="table table-sm">
+          <table className="table table-sm">
             <thead>
-              <tr class="table-info">
+              <tr className="table-info">
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
                 <th scope="col">Institution</th>

@@ -2,10 +2,10 @@ import React, { useContext, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 
 import logo from "./../../logo/logo3.png";
-import { authorContext } from "../../contexts/AuthorContext";
-import { loginUserContext } from "../../App";
+import { authorContext, loginUserContext } from "../../App";
 import { useSignOut } from "../LoginInfo/signout";
-import { name } from "./AuthorNav";
+
+let name ;
 
 function Navbar() {
   const handleSignOut = useSignOut();
@@ -18,22 +18,27 @@ function Navbar() {
   const [author] = useContext(authorContext);
   const userEmail = loginUserEmail;
 
+  for (let i = 0; i < author.length; i++) {
+    if (author[i].email === userEmail) {
+      const matchingObject = author[i];
+      name = matchingObject.authorName || matchingObject.reviewerName;
+      break;
+    }
+  }
   
-
-
   const signOutFunc = () => {
     handleSignOut()
     Navigate("/login");
   };
 
   return (
-    <div className="">
+    <div  className="">
       <div className="d-flex bd-highlight">
         <div className="mr-auto p-2 bd-highlight">
           <Link to="/" className="navbar-brand">
             <img
-            className="img-fluid"
-              style={{ height: "120px", width: "350px" }}
+            className="img-fluid "
+              style={{ height: "100px", width: "350px" }}
               src={logo}
               alt=""
               srcet=""

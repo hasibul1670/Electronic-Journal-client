@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
 
 import { Button, Form, Input, Space } from "antd";
@@ -12,6 +12,7 @@ import useReviewer from "../../Hooks/useReviewer";
 import useToken from "../../Hooks/useToken";
 import Loading from "../Shared/Loading";
 import { useSignOut } from "./signout";
+import Swal from "sweetalert2";
 
 const ShowPassword = () => {
   const [email, setEmail] = useState("");
@@ -20,10 +21,8 @@ const ShowPassword = () => {
   const [error, setError] = useState("");
   const [loginUserEmail, setLoginUserEmail] = useContext(loginUserContext);
   const [size, setSize] = useState("large");
-  const handleSignOut = useSignOut();
 
   const [token] = useToken(loginUserEmail);
-
   const navigate = useNavigate();
   let location = useLocation();
 
@@ -33,53 +32,23 @@ const ShowPassword = () => {
     navigate(from, { replace: true });
   }
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
+  const [formValues, setFormValues] = useState({});
+
+  const handleEmailChange = (e) => {
+    setFormValues({ ...formValues, email: e.target.value });
+    setEmail(e.target.value);
   };
-
-  const handlePassChange = (event) => {
-    setPassword(event.target.value);
+  
+  const handlePassChange = (e) => {
+    setFormValues({ ...formValues, password: e.target.value });
+    setPassword(e.target.value);
   };
-
-  // Function to handle sign-out
-
-  const [timerId, setTimerId] = useState(null);
-  function handleClick() {
-    clearTimeout(timerId);
-    const newTimerId = setTimeout(() => {
-      setError("");
-    }, 3000);
-
-    setTimerId(newTimerId);
-  }
-
-  function mapAuthCodeToMessage(errorCode) {
-    switch (errorCode) {
-      case "auth/wrong-password":
-        return "Incorrect password. Please try again.";
-      case "auth/internal-error":
-        return "Enter Your Password !!";
-
-      case "auth/user-not-found":
-        return "User not found. Please check your email and password";
-
-      case "auth/invalid-email":
-        return "Provided Email is invalid";
-
-      case "auth/too-many-requests":
-        return "Too many requests ! Please try again later";
-
-      default:
-        return "An error occurred. Please try again later.";
-    }
-  }
-  let IsMatched = false;
+  
 
   const [isReviewer, isReviewerLoading] = useReviewer(email);
   const [isAdmin, isAdminLoading] = useAdmin(email);
 
-  //Login function start
-  //   handleClick();
+
 
   const handleFormSubmit = async (userType) => {
     try {
@@ -93,19 +62,23 @@ const ShowPassword = () => {
       const data = await response.json();
 
       if (response.ok && data.success) {
-        
         const userEmail = data.user.email;
         setLoginUserEmail(userEmail);
         localStorage.setItem("loginUserEmail", userEmail);
-        console.log("Login successful",data.message);
-    
+        console.log("Login successful", data.message);
       } else {
        
-        toast.error(data.message);
-     
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: data.message,
+          showConfirmButton: false,
+          timer: 1200
+        })
+       // toast.error(data.message);
+
       }
     } catch (error) {
-      
       toast.error("Server Down !! Please Try Again Later");
     }
   };
@@ -123,10 +96,12 @@ const ShowPassword = () => {
       <Form
         name="basic"
         labelCol={{
-          span: 6,
+          offset: 0,
+          span: 0,
         }}
         wrapperCol={{
-          span: 16,
+          offset: 32,
+          span: 24,
         }}
         style={{
           maxWidth: 800,
@@ -148,12 +123,12 @@ const ShowPassword = () => {
             },
           ]}
         >
-          <Input style={{ height: "40px" }} />
+          <Input style={{ height: "40px", width: "100% " }} />
         </Form.Item>
 
         <Form.Item
-          className="font-weight-bold"
-          label="Enter Your Password"
+          className="font-weight-bold "
+          label="Enter  Password"
           name="password"
           onChange={handlePassChange}
           rules={[
@@ -163,13 +138,13 @@ const ShowPassword = () => {
             },
           ]}
         >
-          <Input.Password style={{ height: "40px" }} />
+          <Input.Password style={{ height: "40px", width: "100% " }} />
         </Form.Item>
 
         <Form.Item
           wrapperCol={{
             offset: 6,
-            span: 16,
+            span: 32,
           }}
         >
           <Space wrap>
@@ -179,6 +154,7 @@ const ShowPassword = () => {
               onClick={() => handleFormSubmit("author")}
               htmlType="submit"
               size={size}
+              disabled={!formValues.email || !formValues.password} 
             >
               Author Login
             </Button>
@@ -187,6 +163,7 @@ const ShowPassword = () => {
               className="font-weight-bold"
               onClick={() => handleFormSubmit("editor")}
               size={size}
+              disabled={!formValues.email || !formValues.password} 
             >
               Editor Login
             </Button>
@@ -195,6 +172,7 @@ const ShowPassword = () => {
               className="font-weight-bold"
               onClick={() => handleFormSubmit("reviewer")}
               size={size}
+              disabled={!formValues.email || !formValues.password} 
             >
               Reviewer Login
             </Button>
@@ -221,6 +199,8 @@ const ShowPassword = () => {
             <br />
             <h5 className="text-danger font-weight-bold">{success || error}</h5>
           </Space>
+          <p></p>
+        
         </Form.Item>
       </Form>
 

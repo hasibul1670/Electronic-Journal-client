@@ -1,29 +1,24 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getAuth } from "firebase/auth";
+import React, { useContext, useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { Toaster, toast } from "react-hot-toast";
 import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
+import { loginUserContext } from "../../App";
 import useAdmin from "../../Hooks/useAdmin";
 import useReviewer from "../../Hooks/useReviewer";
 import Loading from "../Shared/Loading";
-import Test from "../Test/Test";
-import { loginUserContext } from "../../App";
 
 const FullDetails = () => {
   const { id } = useParams();
- 
-  const [loginUserEmail, setLoginUserEmail] = useContext(loginUserContext);
+
+  const [loginUserEmail] = useContext(loginUserContext);
   const [assignReviewer, setAssignReviewer] = useState("");
   const [assignReviewerEmail, setAssignReviewerEmail] = useState("");
   const [status, setStatus] = useState("");
   const [isAdmin, isAdminLoading] = useAdmin(loginUserEmail);
   const [isReviewer, isReviewerLoading] = useReviewer(loginUserEmail);
-
 
   const [reviewerData, setReviewerData] = useState([]);
 
@@ -39,20 +34,20 @@ const FullDetails = () => {
     }
   };
 
-useEffect(() => {
-  const fetchReviewerData = async () => {
-    try {
-      const response = await fetch('http://localhost:4000/getReviewer');
-      const data = await response.json();
-      setReviewerData(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  useEffect(() => {
+    const fetchReviewerData = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/getReviewer");
+        const data = await response.json();
+        setReviewerData(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-  fetchReviewerData();
+    fetchReviewerData();
+  }, []);
 
-} ,[])
   const {
     data: users = [],
     refetch,
@@ -90,11 +85,10 @@ useEffect(() => {
       });
   };
 
-
-
   return (
-    <div className="container-fluid  p-1">
-      <h1>Full Details Page</h1>
+    <div className="container-fluid p-4 ">
+      <h4 className="text-primary m-4">Article Details Page</h4>
+      <hr />
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -118,8 +112,7 @@ useEffect(() => {
           <tr key={users?._id}>
             <td>
               <a href={users?.url}>
-               Docx <FontAwesomeIcon icon={faDownload} /> 
-             
+                Docx <FontAwesomeIcon icon={faDownload} />
               </a>
             </td>
             <td className="font-weight-bold">{users?.email}</td>
@@ -129,30 +122,30 @@ useEffect(() => {
             {isReviewer ? null : (
               <>
                 <td>
-                <select
-        className="border font-weight-bold w-75 border-secondary form-control"
-        id="dropdown"
-        onChange={handleChange}
-       
-      >
-        <option value="">None</option>
+                  <select
+                    className="border font-weight-bold w-75 border-secondary form-control"
+                    id="dropdown"
+                    onChange={handleChange}
+                  >
+                    <option value="">None</option>
 
-        {reviewerData.map((reviewer, index) => {
-          const { reviewerName, email } = reviewer;
-          const value = `${reviewerName} (${email})`;
-          return (
-            <option key={index} value={value}>
-              {reviewerName},{email}
-            </option>
-          );
-        })}
-      </select>
+                    {reviewerData.map((reviewer, index) => {
+                      const { reviewerName, email } = reviewer;
+                      const value = `${reviewerName} (${email})`;
+                      return (
+                        <option key={index} value={value}>
+                          {reviewerName},{email}
+                        </option>
+                      );
+                    })}
+                  </select>
                 </td>
 
                 <td>
                   <button
                     onClick={() => handleAssignReviewer(users?._id)}
                     className="btn btn-danger"
+                    disabled={!assignReviewer}
                   >
                     Done
                   </button>

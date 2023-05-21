@@ -14,8 +14,6 @@ const AllUsers = () => {
     },
   });
 
-  // console.log('Hello',users);
-  
   const handleAdmin = (id) => {
     fetch(`http://localhost:4000/users/admin/${id}`, {
       method: "PUT",

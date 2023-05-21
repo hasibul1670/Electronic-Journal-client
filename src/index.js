@@ -1,30 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
 
+import { QueryClient, QueryClientProvider } from "react-query";
+import App from "./App";
 
-import {
-  QueryClient,
-  QueryClientProvider,
-} from 'react-query'
-import App from './App';
-import AuthorContext from './contexts/AuthorContext';
-import useAdmin from './Hooks/useAdmin';
-import { ToastContainer } from 'react-toastify';
+const queryClient = new QueryClient();
 
-const queryClient = new QueryClient()
-
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <AuthorContext>
-    
-          <App />
-       
-      </AuthorContext>
+      <App />
     </QueryClientProvider>
   </React.StrictMode>
 );

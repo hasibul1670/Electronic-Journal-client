@@ -3,7 +3,6 @@ import AuthorNav from "../Shared/AuthorNav";
 import logo from "./../../logo/home.jpg";
 import { Link } from "react-router-dom";
 import { dataContext } from "../../App";
-import { useStateManager } from "react-select";
 import { useState } from "react";
 
 

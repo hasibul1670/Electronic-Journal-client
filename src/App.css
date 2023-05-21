@@ -147,3 +147,20 @@ input[type="number"] {
 .toggle-icon {
   cursor: pointer;
 }
+
+.notion-textarea {
+  resize: none;
+  border: none;
+  background-color: transparent;
+  box-shadow: none;
+  outline: none;
+  padding: 0;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.notion-textarea:focus {
+  border: none;
+  background-color: #f5f5f5;
+}
+

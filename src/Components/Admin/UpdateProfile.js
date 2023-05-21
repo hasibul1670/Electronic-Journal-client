@@ -11,14 +11,15 @@ import Loading from "../Shared/Loading";
 import Swal from "sweetalert2";
 
 const UpdateProfile = ({ user }) => {
-  const [loginUserEmail] = useContext(loginUserContext);
+  const [loginUserEmail,setLoginUserEmail] = useContext(loginUserContext);
   const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState("");
+
 
   const {
     data: users,
     isLoading,
-    refetch,
+    refetch
   } = useQuery({
     queryKey: ["users", loginUserEmail],
     queryFn: async () => {
@@ -75,7 +76,6 @@ const UpdateProfile = ({ user }) => {
     setFormData(newFormData, changedValues);
   };
 
-  // console.log('Hello',formData);
   const handleSubmit = async () => {
     try {
       const response = await fetch(
@@ -91,12 +91,12 @@ const UpdateProfile = ({ user }) => {
       const data = await response.json();
       const updateSuccess = data.result.modifiedCount;
       if (updateSuccess > 0) {
+        refetch();
         Swal.fire({
           icon: "success",
           title: "Update Your Profile Successfully",
-          text: "Your work has been saved",
+          text: "Your work has been saved",        
         });
-        refetch();
       } else {
         toast.error("Nothing To Update");
       }
@@ -104,7 +104,7 @@ const UpdateProfile = ({ user }) => {
       console.error(error);
       toast.error("Update Data Error");
     }
-    setIsSaving(false);
+  
   };
 
   if (isLoading) {

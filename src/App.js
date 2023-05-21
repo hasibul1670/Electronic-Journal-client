@@ -1,7 +1,5 @@
 import axios from "axios";
-import { getAuth } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import Dashbord from "./Components/Admin/Dashboard";
@@ -9,7 +7,6 @@ import FullDetails from "./Components/Admin/FullDetails";
 import Editor from "./Components/Editor/Editor";
 import Header from "./Components/Header/Header";
 import Login from "./Components/LoginInfo/Login";
-import app from "./Components/LoginInfo/firebase.config";
 import ForgetPass from "./Components/NewUser/ForgetPass";
 import NewUser from "./Components/NewUser/NewUser";
 import VerifyEmail from "./Components/NewUser/VerifyEmail";
@@ -27,30 +24,29 @@ import ContactUs from "./Explore/ContactUs";
 import GuidLine from "./Explore/GuidLine";
 import ReviewPolicy from "./Explore/ReviewPolicy";
 import SuccessSubmission from "./SuccessSubmission/SuccessSubmission";
-import { authorContext } from "./contexts/AuthorContext";
 import AuthorNavbar from "./layout/AuthorNavbar";
 import DashboardLayout from "./layout/DashboardLayout";
 import ExploreNavbar from "./layout/ExploreNavbar";
 import Main from "./layout/Main";
 import PrivateRoute from "./routes/PrivateRoute";
+import WriteReviewComment from "./Components/Reviewer/WriteReviewComment";
+import ShowFullPaper from "./Components/Admin/ShowFullPaper";
 
 export const editorContext = createContext();
+export const authorContext = createContext();
 export const reviewerContext = createContext();
 export const dataContext = createContext();
 export const userNameContext = createContext();
 export const loginUserContext = createContext();
 
 function App() {
-  const auth = getAuth(app);
   const initialLoginUserEmail = localStorage.getItem("loginUserEmail") || "";
+
   const [loginUserEmail, setLoginUserEmail] = useState(initialLoginUserEmail);
 
-  const [user, loading] = useAuthState(auth);
   const [data, setData] = useState([]);
   const [editor, setEditor] = useState([]);
   const [reviewer, setReviewer] = useState([]);
-  const [submittedFile, setSubmittedFile] = useState([]);
-  const [userEmail, setUserEmail] = useState("");
   const [author, setAuthor] = useState([]);
   const [name, setName] = useState("");
 
@@ -63,28 +59,21 @@ function App() {
       .catch((err) => {});
   }, []);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:4000/editor", {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("e-token")}`,
-        },
-      })
-      .then((res) => {
-        setEditor(res.data);
-      })
-      .catch((err) => {});
-  }, []);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/author/?email=${loginUserEmail}`)
+      .get(
+        `http://localhost:4000/author/?email=${loginUserEmail}&timestamp=${Date.now()}`
+      )
       .then((res) => {
         setAuthor(res.data);
       })
-      .catch((err) => {});
-  }, [loginUserEmail]);
+      .catch((err) => {
+        // Handle error
+      });
+  }, [data, loginUserEmail]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const headers = {
     "Content-Type": "application/json",
     authorization: `bearer ${localStorage.getItem("accessToken")}`,
@@ -111,6 +100,7 @@ function App() {
 
     fetchData();
   }, [loginUserEmail]);
+
 
   const router = createBrowserRouter([
     {
@@ -169,6 +159,8 @@ function App() {
         },
 
         { path: "/dashboard/fulldetails/:id", element: <FullDetails /> },
+        { path: "/dashboard/WriteReviewComment/:id", element: <WriteReviewComment /> },
+        { path: "/dashboard/ShowFullPaper/:id", element: <ShowFullPaper/> }
       ],
     },
 
@@ -179,7 +171,7 @@ function App() {
 
     { path: "/editor/dashboard", element: <Editor /> },
 
-    { path: "/test", element: <Test user={user} /> },
+    { path: "/test", element: <Test user={loginUserEmail} /> },
     { path: "/news", element: <News /> },
     { path: "/copyright", element: <Copyright /> },
     { path: "/SuccessSubmission", element: <SuccessSubmission /> },

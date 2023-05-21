@@ -1,41 +1,34 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
-import axios from "axios";
-import { useContext } from "react";
-import { dataContext, editorContext, loginUserContext } from "../../App";
-import AuthorNav from "../Shared/AuthorNav";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleInfo,
-  faCoffee,
-  faDownload,
-  faInfo,
+  faDownload
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
+import { loginUserContext } from "../../App";
 
-import { Line } from "react-chartjs-2";
+
+import { getAuth } from "firebase/auth";
+import { Card, Col, Container, Nav, Row, Table } from "react-bootstrap";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Outlet } from "react-router";
-import { Link } from "react-router-dom";
-
-import { Table, Card, Row, Col, Container, Nav } from "react-bootstrap";
-import Test from "../Test/Test";
-import ChartComponent from "./ChartComponent";
-import UpdateProfile from "./UpdateProfile";
-import { getAuth, signOut } from "firebase/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
-import app from "../LoginInfo/firebase.config";
-import AllUsers from "./AllUsers";
 import useAdmin from "../../Hooks/useAdmin";
-import { useQuery } from "react-query";
-import Loading from './../Shared/Loading';
 import useReviewer from "../../Hooks/useReviewer";
-import AssignedReview from "../Reviewer/AssignedReview";
+import app from "../LoginInfo/firebase.config";
 import AddReviewer from "../Reviewer/AddReviewer";
-import {name} from "../Shared/AuthorNav"
+import AssignedReview from "../Reviewer/AssignedReview";
+import { name } from "../Shared/AuthorNav";
+import Loading from './../Shared/Loading';
+import AllUsers from "./AllUsers";
+import UpdateProfile from "./UpdateProfile";
+import UnderReview from "./UnderReview";
 
 const Dashbord = () => {
   const auth = getAuth(app);
-  const [loginUserEmail, setLoginUserEmail] = useContext(loginUserContext);
+  const [loginUserEmail] = useContext(loginUserContext);
   const [user, loading] = useAuthState(auth);
   const [data, setData] = useState([]);
   const [isAdmin, isAdminLoading] = useAdmin(loginUserEmail);
@@ -114,7 +107,6 @@ const Dashbord = () => {
   
 
 
-
   const handleMenuClick = (menu) => {
     setActiveMenu(menu);
   };
@@ -137,38 +129,51 @@ const Dashbord = () => {
    <Table striped bordered hover>
             <thead>
               <tr>
-                <th>File</th>
+           
                 <th>Username</th>
                 <th>Article Type</th>
                 <th>Title of Article</th>
-                <th>Review Preference</th>
+                <th>Assigned Reviewer</th>
+                <th>Status</th>
                 <th>Details</th>
+                <th>Delete</th>
+                 
               </tr>
             </thead>
             <tbody>
               {isAdmin
                 ? users && users?.map((item) => (
                     <tr key={item._id}>
-                      <td>
-                        <a href={item.url}>
-                          Docx <FontAwesomeIcon icon={faDownload} />
-                        </a>
+                      
+                      <td>{item.email}
+
+                      <Link to={`/dashboard/ShowFullPaper/${item._id}`}>
+                <button
+                  onClick={() => (item._id)}
+                  className="btn btn-info"
+                >
+                  Show Full Paper <FontAwesomeIcon icon={faCircleInfo} />
+                </button>
+              </Link>
                       </td>
-                      <td>{item.email}</td>
-                      <td>{item.articleType}</td>
+
+                      <td>{item.articleType}</td>  
                       <td>{item.title}</td>
+                
+                      <td> {item.assignReviewer? <h6 className="text-success"> 
+                      {item.assignReviewer}, {item.assignReviewerEmail}  </h6>: 
+                      <h6 className="text-info">Not Assign Yet</h6>
+                      } </td>
 
                       <td>
-                        {item?.reviewer?.map((reviewer, index) => {
-                          const { name, email } = JSON.parse(reviewer);
-                          const value = `${name} (${email})`;
-                          return (
-                            <option key={index} value={value}>
-                              {name}
-                            </option>
-                          );
-                        })}
-                      </td>
+            
+              {item.reviewerComment ? <h5  className="text-success font-weight-bold">Review Done😍</h5>:
+               !item.reviewerComment &&!item.assignReviewer ? <h5  className="text-danger font-weight-bold">Awaiting Reviewer Assignment</h5>:
+              !item.reviewerComment && item.assignReviewer ? <h5  className="text-danger font-weight-bold">Review pending</h5> :
+               item.assignReviewer
+               }
+
+            </td>
                       <td>
                         {" "}
                         <Link to={`/dashboard/fulldetails/${item._id}`}>
@@ -186,68 +191,58 @@ const Dashbord = () => {
                     </tr>
                   ))
                 : data?.map((item) => (
-                    <tr key={item._id}>
-                      <td>
-                        <a href={item.url}>
-                          Docx <FontAwesomeIcon icon={faDownload} />
-                        </a>
-                      </td>
-                      <td>{item.email}</td>
-                      <td>{item.articleType}</td>
-                      <td>{item.title}</td>
+                  <tr key={item._id}>
+                      
+                  <td>{item.email}
+                 
+                  </td>
+                  <td>{item.articleType}</td>  
+                  <td>{item.title}</td>
+            
+                  <td> {item.assignReviewer? <h6 className="text-success"> 
+                  {item.assignReviewer}, {item.assignReviewerEmail}  </h6>: 
+                  <h6 className="text-info">Not Assign Yet</h6>
+                  } </td>
 
-                      <td>
-                        {" "}
-                        {item?.reviewer?.map((reviewer, index) => {
-                          const { name, email } = JSON.parse(reviewer);
-                          const value = `${name} (${email})`;
-                          return (
-                            <option key={index} value={value}>
-                              {name}
-                            </option>
-                          );
-                        })}
-                      </td>
-                      <td>
-                        {" "}
-                        <Link to={`/dashboard/fulldetails/${item._id}`}>
-                          See Details <FontAwesomeIcon icon={faCircleInfo} />{" "}
-                        </Link>{" "}
-                      </td>
-                      <td>
-                        <button
-                          onClick={() => handleDelete(item._id)}
-                          className="btn btn-danger"
-                        >
-                          Delete
-                        </button>{" "}
-                      </td>
-                    </tr>
+                  <td>
+        
+          {item.reviewerComment ? <h5  className="text-success font-weight-bold">Review Done😍</h5>:
+           !item.reviewerComment &&!item.assignReviewer ? <h5  className="text-danger font-weight-bold">Awaiting Reviewer Assignment</h5>:
+          !item.reviewerComment && item.assignReviewer ? <h5  className="text-danger font-weight-bold">Review pending</h5> :
+           item.assignReviewer
+           }
+
+        </td>
+                  <td>
+                    {" "}
+                    <Link to={`/dashboard/fulldetails/${item._id}`}>
+                      See Details <FontAwesomeIcon icon={faCircleInfo} />{" "}
+                    </Link>{" "}
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => handleDelete(item._id)}
+                      className="btn btn-danger"
+                    >
+                      Delete
+                    </button>{" "}
+                  </td>
+                </tr>
                   ))}
             </tbody>
           </Table>
           </div>
        
         );
-      case "Published":
-         // eslint-disable-next-line no-lone-blocks
-    
-    
-        return (
-          <Card>
-            <Card.Body>
-    <h2 className="text-danger">nothing to published</h2>
-            </Card.Body>
-          </Card>
-        );
+  
       case "UnderReview":
-           // eslint-disable-next-line no-lone-blocks
+          
 
     
         return (
           <Card>
             <Card.Body>
-          
+          <UnderReview/>
             </Card.Body>
           </Card>
         );
@@ -334,7 +329,8 @@ const Dashbord = () => {
                       {isAdmin ? "Total Submission" : "Your Submission"}
                     </Nav.Link>
                   </Nav.Item>
-                  <Nav.Item>
+
+                  {/* <Nav.Item>
                     <Nav.Link
                       href="#"
                       active={activeMenu === "Published"}
@@ -342,7 +338,8 @@ const Dashbord = () => {
                     >
                       {isAdmin ? "Total Published" : "Your Published"}
                     </Nav.Link>
-                  </Nav.Item>
+                  </Nav.Item> */}
+
                   <Nav.Item>
                     <Nav.Link
                       href="#"

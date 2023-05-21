@@ -6,7 +6,7 @@ import logo from "./../../logo/home.jpg";
 
 export default class Home extends PureComponent {
   render() {
-    return (
+  return (
       <div className="img-fluid home-bg">
         <br />
 

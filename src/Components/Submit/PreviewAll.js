@@ -77,10 +77,12 @@ const PreviewAll = ({
             />
           </div>
 
-          <div class="form-group">
-            <label className="text-danger font-weight-bold" for="abstract">Abstract</label>
+          <div className="form-group">
+            <label className="text-danger font-weight-bold" for="abstract">
+              Abstract
+            </label>
             <textarea
-              class="form-control"
+              className="form-control"
               id="abstract"
               name="abstract"
               value={data?.abstract}
@@ -115,10 +117,11 @@ const PreviewAll = ({
 
       {isEditing ? (
         <>
-          <label className="text-danger font-weight-bold mr-2" for="abstract">File : </label>
+          <label className="text-danger font-weight-bold mr-2" for="abstract">
+            File :{" "}
+          </label>
           <input type="file" onChange={handleFileChange} />
         </>
-       
       ) : (
         <h6 className="mb-3 border border-primary p-2">
           Attached File: {file?.name}
@@ -128,88 +131,84 @@ const PreviewAll = ({
 
       {isEditing ? (
         <>
-          <label className="text-danger font-weight-bold" for="abstract">Comment : </label> <br />
-        <textarea
-          name="comment"
-          rows={5} // Adjust the number of rows as needed
-          cols={100} // Adjust the number of columns as needed
-          value={comment?.comment}
-          onChange={handleCommentChange}
-        ></textarea>
+          <label className="text-danger font-weight-bold" for="abstract">
+            Comment :{" "}
+          </label>{" "}
+          <br />
+          <textarea
+            name="comment"
+            rows={5} // Adjust the number of rows as needed
+            cols={100} // Adjust the number of columns as needed
+            value={comment?.comment}
+            onChange={handleCommentChange}
+          ></textarea>
         </>
-      
       ) : (
         <h6 className="mb-3 border border-primary p-2">
           Comment: {comment?.comment}
         </h6>
       )}
       <br />
-{isEditing ? (  
-  
-  <div className="mb-3 border border-primary p-2"> 
-  <h3>Your Suggested Reviewers List</h3>
-  <table class="table table-sm">
-  <thead>
-    <tr class="table-info">
-      <th scope="col">#</th>
-      <th scope="col">Name</th>
-      <th scope="col">Institution</th>
-      <th scope="col">Email</th>
-    </tr>
-  </thead>
+      {isEditing ? (
+        <div className="mb-3 border border-primary p-2">
+          <h3>Your Suggested Reviewers List</h3>
+          <table className="table table-sm">
+            <thead>
+              <tr className="table-info">
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Institution</th>
+                <th scope="col">Email</th>
+              </tr>
+            </thead>
 
-  <tbody>
-    {submittedData.map((data, index) => (
-      <tr key={index}>
-        <th scope="row">{index + 1}</th>
-        <td>
-          {data.firstName} {data.lastName}
-        </td>
-        <td>
-          {data.position}, at {data.institution}
-        </td>
-        <td>{data.email}</td>
-     
-      </tr>
-    ))}
-  </tbody>
-</table>
-  </div>
- 
-      ):( 
-        
-        <div className="mb-3 border border-primary p-2"> 
-        <h6>Your Suggested Reviewers List</h6>
-        <table class="table table-sm">
-        <thead>
-          <tr class="table-info">
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Institution</th>
-            <th scope="col">Email</th>
-          </tr>
-        </thead>
-      
-        <tbody>
-          {submittedData.map((data, index) => (
-            <tr key={index}>
-              <th scope="row">{index + 1}</th>
-              <td>
-                {data.firstName} {data.lastName}
-              </td>
-              <td>
-                {data.position}, at {data.institution}
-              </td>
-              <td>{data.email}</td>
-           
-            </tr>
-          ))}
-        </tbody>
-      </table>
+            <tbody>
+              {submittedData.map((data, index) => (
+                <tr key={index}>
+                  <th scope="row">{index + 1}</th>
+                  <td>
+                    {data.firstName} {data.lastName}
+                  </td>
+                  <td>
+                    {data.position}, at {data.institution}
+                  </td>
+                  <td>{data.email}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-  )}
+      ) : (
+        <div className="mb-3 border border-primary p-2">
+          <h6>Your Suggested Reviewers List</h6>
+          <table className="table table-sm">
+            <thead>
+              <tr className="table-info">
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Institution</th>
+                <th scope="col">Email</th>
+              </tr>
+            </thead>
 
-      
+            <tbody>
+              {submittedData.map((data, index) => (
+                <tr key={index}>
+                  <th scope="row">{index + 1}</th>
+                  <td>
+                    {data.firstName} {data.lastName}
+                  </td>
+                  <td>
+                    {data.position}, at {data.institution}
+                  </td>
+                  <td>{data.email}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
       {isEditing ? (
         <button className="btn btn-primary" onClick={handleSave}>
           Save

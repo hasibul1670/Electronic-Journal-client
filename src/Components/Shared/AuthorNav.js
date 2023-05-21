@@ -3,29 +3,27 @@ import React, { useState } from "react";
 import { useContext } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Navigate } from "react-router";
-import { dataContext, editorContext, loginUserContext } from "../../App";
+import { authorContext, loginUserContext } from "../../App";
 import app from "../LoginInfo/firebase.config";
 import { Link } from "react-router-dom";
 import useAdmin from "../../Hooks/useAdmin";
-import { authorContext } from "../../contexts/AuthorContext";
 import useReviewer from "../../Hooks/useReviewer";
 import { useSignOut } from "../LoginInfo/signout";
 const auth = getAuth(app);
 
 export let name ;
+
 const AuthorNav = () => {
   const [user] = useAuthState(auth);
-  const [loginUserEmail, setLoginUserEmail] = useContext(loginUserContext);
+  const [loginUserEmail] = useContext(loginUserContext);
   const [isAdmin] = useAdmin(loginUserEmail);
-  const [isReviewer,isReviewerLoading] = useReviewer(loginUserEmail);
+  const [isReviewer] = useReviewer(loginUserEmail);
   const handleSignOut = useSignOut();
-  
-    const [loginUser, setLoginuser] = useState('');
 
-  const [author] = useContext(authorContext);
+ const [author] = useContext(authorContext);
  const userEmail = loginUserEmail;
-// console.log('Hello',author);
- 
+
+
 
 
 for (let i = 0; i < author.length; i++) {
@@ -42,6 +40,7 @@ for (let i = 0; i < author.length; i++) {
     handleSignOut()
     Navigate("/login");
   };
+  const roleText = isAdmin ? 'Admin' : isReviewer ? 'Reviewer' : 'Author';
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-bg-color ">
@@ -76,7 +75,7 @@ for (let i = 0; i < author.length; i++) {
               </Link>
             </li>
 
-            {user && (
+            {userEmail && (
               <li className="nav-item active">
                 <Link to="/dashboard" className="nav-link nav-text">
                   Dashboard
@@ -92,22 +91,10 @@ for (let i = 0; i < author.length; i++) {
           </ul>
 
           <div className="form-inline my-2 my-lg-0">
-            {isAdmin && (
-              <Link
-                to="/dashboard"
-                className="btn  btn-secondary rounded-pill mr-2"
-              >
-                <h5>Admin</h5>
-              </Link>
-            )}
-             {isReviewer && (
-              <Link
-                to="/dashboard"
-                className="btn  btn-secondary rounded-pill mr-2"
-              >
-                <h5>Reviewer</h5>
-              </Link>
-            )}
+
+          <Link to="/dashboard" className="btn btn-secondary rounded-pill mr-2">
+    <h6 className="text-white">{roleText}</h6>
+  </Link>
 
             <Link
               to="/dashboard"
@@ -121,7 +108,7 @@ for (let i = 0; i < author.length; i++) {
               onClick={signOutFunc}
               className="btn  btn-danger rounded-pill"
             >
-              Sign Out
+              Log Out
             </Link>
           </div>
         </div>

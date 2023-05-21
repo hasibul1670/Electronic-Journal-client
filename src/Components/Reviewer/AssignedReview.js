@@ -1,15 +1,13 @@
-import {
-  faCircleInfo,
-  faDownload
-} from "@fortawesome/free-solid-svg-icons";
+import { faCircleInfo, faDownload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
-import "react-toastify/dist/ReactToastify.css";
 import { Table } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
+import { loginUserContext } from "../../App";
 import useAdmin from "../../Hooks/useAdmin";
 import useReviewer from "../../Hooks/useReviewer";
 import Loading from "./../Shared/Loading";
-import { loginUserContext } from "../../App";
 
 const AssignedReview = () => {
   const [loginUserEmail, setLoginUserEmail] = useContext(loginUserContext);
@@ -37,9 +35,8 @@ const AssignedReview = () => {
         }
       })
       .then((data) => {
-     
         setData(data);
-          // console.log("Hello", data);
+        // console.log("Hello", data);
       })
       .catch((error) => {
         console.error(error.message);
@@ -47,8 +44,6 @@ const AssignedReview = () => {
   }, [loginUserEmail]);
 
   const [isDeleted, setIsDeleted] = useState(false);
-
-  const handleDelete = (id) => {};
 
   const [activeMenu, setActiveMenu] = useState("dashboard");
 
@@ -71,6 +66,7 @@ const AssignedReview = () => {
           <th>Title of Article</th>
           <th>Assigned Reviewer </th>
           <th>Edit</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
@@ -88,15 +84,22 @@ const AssignedReview = () => {
               {item.assignReviewer} <br />
               {item.assignReviewerEmail}
             </td>
-           
+
             <td>
-              <button
-                onClick={() => handleDelete(item._id)}
-                className="btn btn-danger"
-              >
-                Edit
-              </button>{" "}
+              <Link to={`/dashboard/WriteReviewComment/${item._id}`}>
+                <button
+                  onClick={() =>(item._id)}
+                  className="btn btn-danger"
+                >
+                  Edit <FontAwesomeIcon icon={faCircleInfo} />
+                </button>
+              </Link>
             </td>
+
+            <td className="text-success">
+              {item.reviewerComment ? <h5>Review Done😍</h5>: <h5>Pending🥴</h5>}
+            </td>
+
           </tr>
         ))}
       </tbody>
