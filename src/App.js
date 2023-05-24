@@ -4,7 +4,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import Dashbord from "./Components/Admin/Dashboard";
 import FullDetails from "./Components/Admin/FullDetails";
-import Editor from "./Components/Editor/Editor";
+
 import Header from "./Components/Header/Header";
 import Login from "./Components/LoginInfo/Login";
 import ForgetPass from "./Components/NewUser/ForgetPass";
@@ -31,6 +31,7 @@ import Main from "./layout/Main";
 import PrivateRoute from "./routes/PrivateRoute";
 import WriteReviewComment from "./Components/Reviewer/WriteReviewComment";
 import ShowFullPaper from "./Components/Admin/ShowFullPaper";
+import EditorialPanel from "./Explore/EditorialPanel";
 
 export const editorContext = createContext();
 export const authorContext = createContext();
@@ -141,6 +142,7 @@ function App() {
         { path: "/explore/guideline", element: <GuidLine /> },
         { path: "/explore/contactus", element: <ContactUs /> },
         { path: "/explore/review-policy", element: <ReviewPolicy /> },
+        { path: "/explore/editorial-board", element: <EditorialPanel/> },
       ],
     },
 
@@ -168,8 +170,6 @@ function App() {
     { path: "/newuser", element: <NewUser /> },
     { path: "/forgetPass", element: <ForgetPass /> },
     { path: "/mainmenu", element: <AuthorMainMenu /> },
-
-    { path: "/editor/dashboard", element: <Editor /> },
 
     { path: "/test", element: <Test user={loginUserEmail} /> },
     { path: "/news", element: <News /> },
