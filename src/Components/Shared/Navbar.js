@@ -153,6 +153,9 @@ function Navbar() {
                   About Us
                 </Link>
               </li>
+              <li className="nav-item">
+        <Link to="/explore/editorial-board" className="nav-link active nav-text">Editorial Board</Link>
+      </li>
               <li className="nav-right ">
                 <Link to="/help" className="nav-link active nav-text">
                   Help

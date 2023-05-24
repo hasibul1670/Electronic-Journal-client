@@ -25,6 +25,9 @@ const ExploreNav = () => {
 
   <div className="collapse navbar-collapse" id="navbarNav">
     <ul className="navbar-nav">
+    <li className="nav-item">
+        <Link to="/explore/editorial-board" className="nav-link font-weight-bold ">Editorial Board</Link>
+      </li>
       <li className="nav-item ">
         <Link to="/explore/aim"  className="nav-link font-weight-bold" >Aim & Scope</Link>
       </li>
@@ -37,9 +40,7 @@ const ExploreNav = () => {
       <li className="nav-item">
         <Link to="/explore/contactus" className="nav-link font-weight-bold ">Contact Us</Link>
       </li>
-      <li className="nav-item">
-        <Link to="/explore/editorial-board" className="nav-link font-weight-bold ">Editorial Board</Link>
-      </li>
+    
     </ul>
   </div>
 </nav>
