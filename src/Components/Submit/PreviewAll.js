@@ -60,10 +60,12 @@ const PreviewAll = ({
   };
 
   return (
-    <div className="container-fluid mt-4">
-      <h3 className="text-primary" style={{ textDecoration: "underline" }}>
+    <div className="container border  border-info p-4 mt-4">
+      <h4 className="text-info mb-3 font-weight-bold">
+        
         Preview your uploaded data before Submission
-      </h3>
+        <hr/>
+      </h4>
       {isEditing ? (
         <>
           <div className="form-group">
@@ -103,15 +105,15 @@ const PreviewAll = ({
         </>
       ) : (
         <>
-          <h6 className="mb-3 border border-primary p-2">
+          <h5 className="mb-3 p-2 font-weight-bold">
             Title: {data?.title}
-          </h6>
-          <h6 className="mb-3 border border-primary p-2">
+          </h5>
+          <h5 className="mb-3 p-2 font-weight-bold">
             Abstract: {data?.abstract}
-          </h6>
-          <h6 className="mb-3 border border-primary p-2">
+          </h5>
+          <h5 className="mb-3 p-2 font-weight-bold">
             Keywords: {data?.keywords}
-          </h6>
+          </h5>
         </>
       )}
 
@@ -123,9 +125,9 @@ const PreviewAll = ({
           <input type="file" onChange={handleFileChange} />
         </>
       ) : (
-        <h6 className="mb-3 border border-primary p-2">
+        <h5 className="mb-3 p-2 font-weight-bold">
           Attached File: {file?.name}
-        </h6>
+        </h5>
       )}
       <p></p>
 
@@ -144,13 +146,13 @@ const PreviewAll = ({
           ></textarea>
         </>
       ) : (
-        <h6 className="mb-3 border border-primary p-2">
+        <h5 className="mb-3 p-2 font-weight-bold">
           Comment: {comment?.comment}
-        </h6>
+        </h5>
       )}
       <br />
       {isEditing ? (
-        <div className="mb-3 border border-primary p-2">
+        <div className="mb-3 ">
           <h3>Your Suggested Reviewers List</h3>
           <table className="table table-sm">
             <thead>
@@ -179,8 +181,8 @@ const PreviewAll = ({
           </table>
         </div>
       ) : (
-        <div className="mb-3 border border-primary p-2">
-          <h6>Your Suggested Reviewers List</h6>
+        <div className="mb-3 ">
+          <h5>Your Suggested Reviewers List</h5>
           <table className="table table-sm">
             <thead>
               <tr className="table-info">

@@ -87,19 +87,19 @@ const AssignedReview = () => {
 
             <td>
               <Link to={`/dashboard/WriteReviewComment/${item._id}`}>
-                <button
-                  onClick={() =>(item._id)}
-                  className="btn btn-danger"
-                >
+                <button onClick={() => item._id} className="btn btn-danger">
                   Edit <FontAwesomeIcon icon={faCircleInfo} />
                 </button>
               </Link>
             </td>
 
             <td className="text-success">
-              {item.reviewerComment ? <h5>Review Done😍</h5>: <h5>Pending🥴</h5>}
+              {item.contentAbtract ? (
+                <h5>Review Done😍</h5>
+              ) : (
+                <h5>Pending🥴</h5>
+              )}
             </td>
-
           </tr>
         ))}
       </tbody>

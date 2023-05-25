@@ -1,9 +1,10 @@
 import { getAuth } from "firebase/auth";
-import React from "react";
+import React, { useState } from "react";
 import { useCreateUserWithEmailAndPassword, useSignOut, useUpdateProfile } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
 import app from "../LoginInfo/firebase.config";
 import { Toaster, toast } from "react-hot-toast";
+import axios from "axios";
 
 const AddReviewer = () => {
   const {
@@ -12,13 +13,7 @@ const AddReviewer = () => {
     formState: { errors },
   } = useForm();
 
-  // const onSubmit = (data) => {
-  //   console.log(data);
-  // };
-  const auth = getAuth(app);
-  const [updateProfile] = useUpdateProfile(auth);
-  const [signOut] = useSignOut(auth);
-
+ 
 
   const onSubmit = async (data) => {
 
@@ -180,6 +175,11 @@ const AddReviewer = () => {
             <div className="invalid-feedback">Department is required.</div>
           )}
         </div>
+
+
+
+
+
 
         <button type="submit" className="btn btn-primary">
           Submit

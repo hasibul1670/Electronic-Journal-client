@@ -1,19 +1,15 @@
-import {
-  faCircleInfo,
-  faDownload
-} from "@fortawesome/free-solid-svg-icons";
+import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { loginUserContext } from "../../App";
-
 
 import { getAuth } from "firebase/auth";
 import { Card, Col, Container, Nav, Row, Table } from "react-bootstrap";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAdmin from "../../Hooks/useAdmin";
 import useReviewer from "../../Hooks/useReviewer";
@@ -21,10 +17,10 @@ import app from "../LoginInfo/firebase.config";
 import AddReviewer from "../Reviewer/AddReviewer";
 import AssignedReview from "../Reviewer/AssignedReview";
 import { name } from "../Shared/AuthorNav";
-import Loading from './../Shared/Loading';
+import Loading from "./../Shared/Loading";
 import AllUsers from "./AllUsers";
-import UpdateProfile from "./UpdateProfile";
 import UnderReview from "./UnderReview";
+import UpdateProfile from "./UpdateProfile";
 
 const Dashbord = () => {
   const auth = getAuth(app);
@@ -34,13 +30,16 @@ const Dashbord = () => {
   const [isAdmin, isAdminLoading] = useAdmin(loginUserEmail);
   const [isReviewer, isReviewerLoading] = useReviewer(loginUserEmail);
 
-
   const headers = {
     "Content-Type": "application/json",
     authorization: `bearer ${localStorage.getItem("accessToken")}`,
   };
 
-  const { data: users = [],isLoading, refetch } = useQuery({
+  const {
+    data: users = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const response = await fetch("http://localhost:4000/adminData");
@@ -48,7 +47,7 @@ const Dashbord = () => {
       return data;
     },
   });
- 
+
   const url = `http://localhost:4000/submittedData?email=${loginUserEmail}`;
 
   useEffect(() => {
@@ -84,7 +83,7 @@ const Dashbord = () => {
         setIsDeleted(response.data);
         toast.success("Item deleted successfully!");
         setData(data.filter((data) => data._id !== id));
-          refetch();
+        refetch();
       })
       .catch((error) => {
         toast.error("An error occurred while deleting this Item.");
@@ -92,177 +91,191 @@ const Dashbord = () => {
   };
 
   const [activeMenu, setActiveMenu] = useState("");
-  
+
   const [allLoading, setallLoading] = useState(true);
-  
+
   useEffect(() => {
     async function waitAndSetMenu() {
-      await new Promise(resolve => setTimeout(resolve, 1)); 
-      setActiveMenu((isReviewer ? "AssignedReviewer" : "dashboard"));
+      await new Promise((resolve) => setTimeout(resolve, 1));
+      setActiveMenu(isReviewer ? "AssignedReviewer" : "dashboard");
       setallLoading(false);
     }
-  
+
     waitAndSetMenu();
   }, [isReviewer]);
-  
-
 
   const handleMenuClick = (menu) => {
     setActiveMenu(menu);
   };
 
-  
   useEffect(() => {
     if (isAdmin) {
       refetch();
     }
   }, [isAdmin, refetch]);
 
-
   const renderContent = () => {
     switch (activeMenu) {
       case "dashboard":
-    
-    
         return (
           <div className="">
-   <Table striped bordered hover>
-            <thead>
-              <tr>
-           
-                <th>Username</th>
-                <th>Article Type</th>
-                <th>Title of Article</th>
-                <th>Assigned Reviewer</th>
-                <th>Status</th>
-                <th>Details</th>
-                <th>Delete</th>
-                 
-              </tr>
-            </thead>
-            <tbody>
-              {isAdmin
-                ? users && users?.map((item) => (
-                    <tr key={item._id}>
-                      
-                      <td>{item.email}
-
-                      <Link to={`/dashboard/ShowFullPaper/${item._id}`}>
-                <button
-                  onClick={() => (item._id)}
-                  className="btn btn-info"
-                >
-                  Show Full Paper <FontAwesomeIcon icon={faCircleInfo} />
-                </button>
-              </Link>
-                      </td>
-
-                      <td>{item.articleType}</td>  
-                      <td>{item.title}</td>
-                
-                      <td> {item.assignReviewer? <h6 className="text-success"> 
-                      {item.assignReviewer}, {item.assignReviewerEmail}  </h6>: 
-                      <h6 className="text-info">Not Assign Yet</h6>
-                      } </td>
-
-                      <td>
-            
-              {item.reviewerComment ? <h5  className="text-success font-weight-bold">Review Done😍</h5>:
-               !item.reviewerComment &&!item.assignReviewer ? <h5  className="text-danger font-weight-bold">Awaiting Reviewer Assignment</h5>:
-              !item.reviewerComment && item.assignReviewer ? <h5  className="text-danger font-weight-bold">Review pending</h5> :
-               item.assignReviewer
-               }
-
-            </td>
-                      <td>
-                        {" "}
-                        <Link to={`/dashboard/fulldetails/${item._id}`}>
-                          See Details <FontAwesomeIcon icon={faCircleInfo} />{" "}
-                        </Link>{" "}
-                      </td>
-                      <td>
-                        <button
-                          onClick={() => handleDelete(item._id)}
-                          className="btn btn-danger"
-                        >
-                          Delete
-                        </button>{" "}
-                      </td>
-                    </tr>
-                  ))
-                : data?.map((item) => (
-                  <tr key={item._id}>
-                      
-                  <td>{item.email}
-                 
-                  </td>
-                  <td>{item.articleType}</td>  
-                  <td>{item.title}</td>
-            
-                  <td> {item.assignReviewer? <h6 className="text-success"> 
-                  {item.assignReviewer}, {item.assignReviewerEmail}  </h6>: 
-                  <h6 className="text-info">Not Assign Yet</h6>
-                  } </td>
-
-                  <td>
-        
-          {item.reviewerComment ? <h5  className="text-success font-weight-bold">Review Done😍</h5>:
-           !item.reviewerComment &&!item.assignReviewer ? <h5  className="text-danger font-weight-bold">Awaiting Reviewer Assignment</h5>:
-          !item.reviewerComment && item.assignReviewer ? <h5  className="text-danger font-weight-bold">Review pending</h5> :
-           item.assignReviewer
-           }
-
-        </td>
-                  <td>
-                    {" "}
-                    <Link to={`/dashboard/fulldetails/${item._id}`}>
-                      See Details <FontAwesomeIcon icon={faCircleInfo} />{" "}
-                    </Link>{" "}
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => handleDelete(item._id)}
-                      className="btn btn-danger"
-                    >
-                      Delete
-                    </button>{" "}
-                  </td>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Article Type</th>
+                  <th>Title of Article</th>
+                  <th>Assigned Reviewer</th>
+                  <th>Status</th>
+                  <th>Details</th>
+                  <th>Delete</th>
                 </tr>
-                  ))}
-            </tbody>
-          </Table>
-          </div>
-       
-        );
-  
-      case "UnderReview":
-          
+              </thead>
+              <tbody>
+                {isAdmin
+                  ? users &&
+                    users?.map((item) => (
+                      <tr key={item._id}>
+                        <td>
+                          {item.email}
 
-    
+                          <Link to={`/dashboard/ShowFullPaper/${item._id}`}>
+                            <button
+                              onClick={() => item._id}
+                              className="btn btn-info"
+                            >
+                              Show Full Paper{" "}
+                              <FontAwesomeIcon icon={faCircleInfo} />
+                            </button>
+                          </Link>
+                        </td>
+
+                        <td>{item.articleType}</td>
+                        <td>{item.title}</td>
+
+                        <td>
+                          {" "}
+                          {item.assignReviewer ? (
+                            <h6 className="text-success">
+                              {item.assignReviewer}, {item.assignReviewerEmail}{" "}
+                            </h6>
+                          ) : (
+                            <h6 className="text-info">Not Assign Yet</h6>
+                          )}{" "}
+                        </td>
+
+                        <td>
+                          {item.contentAbtract ? (
+                            <h5 className="text-success font-weight-bold">
+                              Review Done😍
+                            </h5>
+                          ) : !item.contentAbtract && !item.assignReviewer ? (
+                            <h5 className="text-danger font-weight-bold">
+                              Awaiting Reviewer Assignment
+                            </h5>
+                          ) : !item.contentAbtract && item.assignReviewer ? (
+                            <h5 className="text-danger font-weight-bold">
+                              Review pending
+                            </h5>
+                          ) : (
+                            item.assignReviewer
+                          )}
+                        </td>
+                        <td>
+                          {" "}
+                          <Link to={`/dashboard/fulldetails/${item._id}`}>
+                            See Details <FontAwesomeIcon icon={faCircleInfo} />{" "}
+                          </Link>{" "}
+                        </td>
+                        <td>
+                          <button
+                            onClick={() => handleDelete(item._id)}
+                            className="btn btn-danger"
+                          >
+                            Delete
+                          </button>{" "}
+                        </td>
+                      </tr>
+                    ))
+                  : data?.map((item) => (
+                      <tr key={item._id}>
+                        <td>{item.email}</td>
+                        <td>{item.articleType}</td>
+                        <td>{item.title}</td>
+
+                        <td>
+                          {" "}
+                          {item.assignReviewer ? (
+                            <h6 className="text-success">
+                              {item.assignReviewer}, {item.assignReviewerEmail}{" "}
+                            </h6>
+                          ) : (
+                            <h6 className="text-info">Not Assign Yet</h6>
+                          )}{" "}
+                        </td>
+
+                        <td>
+                          {item.contentAbtract ? (
+                            <h5 className="text-success font-weight-bold">
+                              Review Done😍
+                            </h5>
+                          ) : !item.contentAbtract && !item.assignReviewer ? (
+                            <h5 className="text-danger font-weight-bold">
+                              Awaiting Reviewer Assignment
+                            </h5>
+                          ) : !item.contentAbtract && item.assignReviewer ? (
+                            <h5 className="text-danger font-weight-bold">
+                              Review pending
+                            </h5>
+                          ) : (
+                            item.assignReviewer
+                          )}
+                        </td>
+                        <td>
+                          {" "}
+                          <Link to={`/dashboard/fulldetails/${item._id}`}>
+                            See Details <FontAwesomeIcon icon={faCircleInfo} />{" "}
+                          </Link>{" "}
+                        </td>
+                        <td>
+                          <button
+                            onClick={() => handleDelete(item._id)}
+                            className="btn btn-danger"
+                          >
+                            Delete
+                          </button>{" "}
+                        </td>
+                      </tr>
+                    ))}
+              </tbody>
+            </Table>
+          </div>
+        );
+
+      case "UnderReview":
         return (
           <Card>
             <Card.Body>
-          <UnderReview/>
+              <UnderReview />
             </Card.Body>
           </Card>
         );
-        case "AddReviewer":
-          // eslint-disable-next-line no-lone-blocks
-       return (
-         <Card>
-           <Card.Body>
-         <AddReviewer/>
-           </Card.Body>
-         </Card>
-       );
+      case "AddReviewer":
+        // eslint-disable-next-line no-lone-blocks
+        return (
+          <Card>
+            <Card.Body>
+              <AddReviewer />
+            </Card.Body>
+          </Card>
+        );
       case "All Users":
-           // eslint-disable-next-line no-lone-blocks
-    
+        // eslint-disable-next-line no-lone-blocks
+
         return (
           <Card>
             <Card.Body>
               <Card.Text>
-             
                 <AllUsers />
               </Card.Text>
             </Card.Body>
@@ -270,9 +283,8 @@ const Dashbord = () => {
         );
 
       case "AssignedReviewer":
-           // eslint-disable-next-line no-lone-blocks
-   
-    
+        // eslint-disable-next-line no-lone-blocks
+
         return (
           <Card>
             <Card.Body>
@@ -284,9 +296,8 @@ const Dashbord = () => {
           </Card>
         );
       case "updateProfile":
-           // eslint-disable-next-line no-lone-blocks
-     
-    
+        // eslint-disable-next-line no-lone-blocks
+
         return (
           <Card>
             <Card.Body>
@@ -302,35 +313,37 @@ const Dashbord = () => {
   if (isLoading) {
     return <Loading />;
   }
-  if (isAdminLoading||isReviewerLoading||loading) {
+  if (isAdminLoading || isReviewerLoading || loading) {
     <p>
       <Loading />
     </p>;
   }
   return (
     <>
-    {allLoading ? <h3 >loading .....</h3>:  <div>
-      <Container fluid className="mt-5 p-2">
-        <Row>
-          <Col md={2}>
-            <Card>
-              <Card.Body>
-               <Card.Title className="font-weight-bold">{name}</Card.Title> 
-                <Nav variant="pills" className="flex-column">
-                  
-                {isReviewer ? null :
-                <>
-                 <Nav.Item>
-                    <Nav.Link
-                      href="#"
-                      active={activeMenu === "dashboard"}
-                      onClick={() => handleMenuClick("dashboard")}
-                    >
-                      {isAdmin ? "Total Submission" : "Your Submission"}
-                    </Nav.Link>
-                  </Nav.Item>
+      {allLoading ? (
+        <h3>loading .....</h3>
+      ) : (
+        <div>
+          <Container fluid className="mt-5 p-2">
+            <Row>
+              <Col md={2}>
+                <Card>
+                  <Card.Body>
+                    <Card.Title className="font-weight-bold">{name}</Card.Title>
+                    <Nav variant="pills" className="flex-column">
+                      {isReviewer ? null : (
+                        <>
+                          <Nav.Item>
+                            <Nav.Link
+                              href="#"
+                              active={activeMenu === "dashboard"}
+                              onClick={() => handleMenuClick("dashboard")}
+                            >
+                              {isAdmin ? "Total Submission" : "Your Submission"}
+                            </Nav.Link>
+                          </Nav.Item>
 
-                  {/* <Nav.Item>
+                          {/* <Nav.Item>
                     <Nav.Link
                       href="#"
                       active={activeMenu === "Published"}
@@ -340,83 +353,79 @@ const Dashbord = () => {
                     </Nav.Link>
                   </Nav.Item> */}
 
-                  <Nav.Item>
-                    <Nav.Link
-                      href="#"
-                      active={activeMenu === "UnderReview"}
-                      onClick={() => handleMenuClick("UnderReview")}
-                    >
-                      Under Review
-                    </Nav.Link>
-                  </Nav.Item>
-                </>
-                 
-}
-                  {isAdmin && (
-                    <Nav.Item>
-                      <Nav.Link
-                        href="#"
-                        active={activeMenu === "All Users"}
-                        onClick={() => handleMenuClick("All Users")}
-                      >
-                        All Users
-                      </Nav.Link>
-                    </Nav.Item>
-                  )}
+                          <Nav.Item>
+                            <Nav.Link
+                              href="#"
+                              active={activeMenu === "UnderReview"}
+                              onClick={() => handleMenuClick("UnderReview")}
+                            >
+                              Under Review
+                            </Nav.Link>
+                          </Nav.Item>
+                        </>
+                      )}
+                      {isAdmin && (
+                        <Nav.Item>
+                          <Nav.Link
+                            href="#"
+                            active={activeMenu === "All Users"}
+                            onClick={() => handleMenuClick("All Users")}
+                          >
+                            All Users
+                          </Nav.Link>
+                        </Nav.Item>
+                      )}
 
-{isAdmin && (
-                    <Nav.Item>
-                      <Nav.Link
-                        href="#"
-                        active={activeMenu === "AddReviewer"}
-                        onClick={() => handleMenuClick("AddReviewer")}
-                      >
-                        Add Reviewer
-                      </Nav.Link>
-                    </Nav.Item>
-                  )}
-                  {isReviewer && (
-                    <Nav.Item>
-                      <Nav.Link
-                        href="#"
-                        active={activeMenu === "AssignedReviewer"}
-                        onClick={() => handleMenuClick("AssignedReviewer")}
-                      >
-                        Assigned Review
-                      </Nav.Link>
-                    </Nav.Item>
-                  )}
+                      {isAdmin && (
+                        <Nav.Item>
+                          <Nav.Link
+                            href="#"
+                            active={activeMenu === "AddReviewer"}
+                            onClick={() => handleMenuClick("AddReviewer")}
+                          >
+                            Add Reviewer
+                          </Nav.Link>
+                        </Nav.Item>
+                      )}
+                      {isReviewer && (
+                        <Nav.Item>
+                          <Nav.Link
+                            href="#"
+                            active={activeMenu === "AssignedReviewer"}
+                            onClick={() => handleMenuClick("AssignedReviewer")}
+                          >
+                            Assigned Review
+                          </Nav.Link>
+                        </Nav.Item>
+                      )}
 
-                  <Nav.Item>
-                    <Nav.Link
-                      href="#"
-                      active={activeMenu === "updateProfile"}
-                      onClick={() => handleMenuClick("updateProfile")}
-                    >
-                      Update Your Profile
-                    </Nav.Link>
-                  </Nav.Item>
-                  
-                </Nav>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={10}>
-            <Card>
-              <Card.Body>
-                <Card.Title>{activeMenu.toUpperCase()}</Card.Title>
-                {renderContent()}
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-      <ToastContainer />
-    </div>
-    
-    }
+                      <Nav.Item>
+                        <Nav.Link
+                          href="#"
+                          active={activeMenu === "updateProfile"}
+                          onClick={() => handleMenuClick("updateProfile")}
+                        >
+                          Update Your Profile
+                        </Nav.Link>
+                      </Nav.Item>
+                    </Nav>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col md={10}>
+                <Card>
+                  <Card.Body>
+                    <Card.Title>{activeMenu.toUpperCase()}</Card.Title>
+                    {renderContent()}
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+          <ToastContainer />
+        </div>
+      )}
     </>
-   
   );
 };
 

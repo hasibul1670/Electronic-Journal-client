@@ -23,14 +23,15 @@ const WriteReviewComment = () => {
   useEffect(() => {
     setData(users);
   }, [users]);
-
   const handleRefetch = () => {
-    console.log("Hello refetching");
     refetch();
   };
   return (
     <div className="container">
       <div className=" mt-5 p-5 border border-primary text- mb-4">
+      <hr />
+        <h4 className="text-info font-weight-bold">Submitted Article Section {data.name}</h4>
+        <hr />
         <h4>
           <strong> Article ID:</strong> {data._id}
         </h4>
@@ -63,13 +64,33 @@ const WriteReviewComment = () => {
           <strong>Author Comment:</strong> {data.comment}
         </h4>
         <p></p>
-        {data.reviewerComment && 
-         <h4>
-         <strong>Reviewer Comment:</strong> {data.reviewerComment}
-       </h4>
-        }
-       
-
+        <hr />
+        <h4 className="text-info font-weight-bold">Reviewer Comment Section</h4>
+        <hr />
+        {data.contentAbtract && (
+          <>
+            <h4>
+              <strong>Content Abtract:</strong> {data.contentAbtract}
+            </h4>
+            <p></p>
+            <h4>
+              <strong>Method Originality:</strong> {data.methodOriginality}
+            </h4>
+            <p></p>
+            <h4>
+              <strong>Experimental Result Originality:</strong>{" "}
+              {data.experimentalResultOriginality}
+            </h4>
+            <p></p>
+            <h4>
+              <strong>Reference Originality:</strong> {data.referenceOriginality}
+            </h4>
+            <p></p>
+            <h4>
+              <strong>Ethical Considerations:</strong> {data.ethicalConsiderations}
+            </h4>
+          </>
+        )}
       </div>
 
       <div>

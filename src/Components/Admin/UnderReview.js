@@ -43,7 +43,7 @@ const UnderReview = () => {
             {users &&
               users?.map((item) => (
                 <tr key={item._id}>
-                  {!item.reviewerComment && item.assignReviewer && (
+                  {!item.contentAbtract && item.assignReviewer && (
                     <>
                       <td>{item.email}</td>
                       <td>{item.articleType}</td>
