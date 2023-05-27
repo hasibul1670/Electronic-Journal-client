@@ -1,10 +1,8 @@
-import { getAuth } from "firebase/auth";
-import React, { useState } from "react";
-import { useCreateUserWithEmailAndPassword, useSignOut, useUpdateProfile } from "react-firebase-hooks/auth";
+import { faFloppyDisk } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import app from "../LoginInfo/firebase.config";
 import { Toaster, toast } from "react-hot-toast";
-import axios from "axios";
 
 const AddReviewer = () => {
   const {
@@ -13,12 +11,9 @@ const AddReviewer = () => {
     formState: { errors },
   } = useForm();
 
- 
-
   const onSubmit = async (data) => {
-
     const authorInfoInDb = {
-     reviewerName: data.displayName,
+      reviewerName: data.displayName,
       email: data.email,
       password: data.password,
       reviewerPosition: data.position,
@@ -35,18 +30,29 @@ const AddReviewer = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        toast.success("Reviewer added successfully")
+        toast.success("Reviewer added successfully");
         console.log("Hello", data);
       });
   };
 
+ 
+
   return (
     <div className="container font-weight-bold bg-gray p-4">
       <form onSubmit={handleSubmit(onSubmit)}>
+        {/* button  */}
+
+        <button type="submit" className="btn " title="Save">
+  <FontAwesomeIcon icon={faFloppyDisk} size="3x" />
+  <span className="tooltip">Save</span>
+</button>
+
+
+        <p></p>
         {/* First Name */}
         <div className="form-group row">
           <label className="col-md-2" htmlFor="displayName">
-            First Name:
+            Full Name:
           </label>
           <input
             type="text"
@@ -60,7 +66,7 @@ const AddReviewer = () => {
           )}
         </div>
         {/* Last Name */}
-        <div className="form-group row">
+        {/* <div className="form-group row">
           <label className="col-md-2 " htmlFor="lastName">
             Last Name:
           </label>
@@ -74,7 +80,7 @@ const AddReviewer = () => {
           {errors.lastName && (
             <div className="invalid-feedback">Last name is required.</div>
           )}
-        </div>
+        </div> */}
         {/*Email */}
         <div className="form-group row">
           <label className="col-md-2 " htmlFor="email">
@@ -142,6 +148,13 @@ const AddReviewer = () => {
             </div>
           )}
         </div>
+
+
+
+
+
+
+
         {/* Position */}
         <div className="form-group row">
           <label className="col-md-2 " htmlFor="lastName">
@@ -175,17 +188,8 @@ const AddReviewer = () => {
             <div className="invalid-feedback">Department is required.</div>
           )}
         </div>
-
-
-
-
-
-
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
       </form>
-      <Toaster/>
+      <Toaster />
     </div>
   );
 };
