@@ -127,7 +127,7 @@ const Dashbord = () => {
                   <th>Title of Article</th>
                   <th>Assigned Reviewer</th>
                   <th>Status</th>
-                  <th>Details</th>
+                  <th> Assign Reviewer </th>
                   <th>Delete</th>
                 </tr>
               </thead>
@@ -170,7 +170,7 @@ const Dashbord = () => {
                               Review Done😍
                             </h5>
                           ) : !item.contentAbtract && !item.assignReviewer ? (
-                            <h5 className="text-danger font-weight-bold">
+                            <h5 className="text-info font-weight-bold">
                               Awaiting Reviewer Assignment
                             </h5>
                           ) : !item.contentAbtract && item.assignReviewer ? (
@@ -184,7 +184,8 @@ const Dashbord = () => {
                         <td>
                           {" "}
                           <Link to={`/dashboard/fulldetails/${item._id}`}>
-                            See Details <FontAwesomeIcon icon={faCircleInfo} />{" "}
+                            Assign Reviewer{" "}
+                            <FontAwesomeIcon icon={faCircleInfo} />{" "}
                           </Link>{" "}
                         </td>
                         <td>
@@ -234,7 +235,8 @@ const Dashbord = () => {
                         <td>
                           {" "}
                           <Link to={`/dashboard/fulldetails/${item._id}`}>
-                            See Details <FontAwesomeIcon icon={faCircleInfo} />{" "}
+                            Assign Reviewer{" "}
+                            <FontAwesomeIcon icon={faCircleInfo} />{" "}
                           </Link>{" "}
                         </td>
                         <td>

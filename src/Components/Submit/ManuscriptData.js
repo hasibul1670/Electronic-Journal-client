@@ -100,7 +100,7 @@ const ManuscriptData = ({ data, setData }) => {
           </div>
         </div>
 
-        <div className="p-4">
+        <div className="p-4 border border-round ">
           <div onClick={() => handleToggle("keywords")}
            style={{
             transition: "background-color 0.5s"
