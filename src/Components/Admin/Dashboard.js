@@ -42,13 +42,15 @@ const Dashbord = () => {
   } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:4000/adminData");
+      const response = await fetch(
+        "https://electronic-journal-server-hasibul1670.vercel.app/adminData"
+      );
       const data = await response.json();
       return data;
     },
   });
 
-  const url = `http://localhost:4000/submittedData?email=${loginUserEmail}`;
+  const url = `https://electronic-journal-server-hasibul1670.vercel.app/submittedData?email=${loginUserEmail}`;
 
   useEffect(() => {
     fetch(url, {
@@ -74,11 +76,14 @@ const Dashbord = () => {
 
   const handleDelete = (id) => {
     axios
-      .delete(`http://localhost:4000/submittedData/${id}`, {
-        headers: {
-          authorization: `bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
+      .delete(
+        `https://electronic-journal-server-hasibul1670.vercel.app/submittedData/${id}`,
+        {
+          headers: {
+            authorization: `bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
       .then((response) => {
         setIsDeleted(response.data);
         toast.success("Item deleted successfully!");

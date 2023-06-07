@@ -11,20 +11,19 @@ import Loading from "../Shared/Loading";
 import Swal from "sweetalert2";
 
 const UpdateProfile = ({ user }) => {
-  const [loginUserEmail,setLoginUserEmail] = useContext(loginUserContext);
+  const [loginUserEmail, setLoginUserEmail] = useContext(loginUserContext);
   const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState("");
-
 
   const {
     data: users,
     isLoading,
-    refetch
+    refetch,
   } = useQuery({
     queryKey: ["users", loginUserEmail],
     queryFn: async () => {
       const response = await fetch(
-        `http://localhost:4000/author/?email=${loginUserEmail}`
+        `https://electronic-journal-server-hasibul1670.vercel.app/author/?email=${loginUserEmail}`
       );
       const data = await response.json();
       return data;
@@ -79,7 +78,7 @@ const UpdateProfile = ({ user }) => {
   const handleSubmit = async () => {
     try {
       const response = await fetch(
-        `http://localhost:4000/authorData/${loginUserEmail}`,
+        `https://electronic-journal-server-hasibul1670.vercel.app/authorData/${loginUserEmail}`,
         {
           method: "PUT",
           body: JSON.stringify(formData),
@@ -95,7 +94,7 @@ const UpdateProfile = ({ user }) => {
         Swal.fire({
           icon: "success",
           title: "Update Your Profile Successfully",
-          text: "Your work has been saved",        
+          text: "Your work has been saved",
         });
       } else {
         toast.error("Nothing To Update");
@@ -104,7 +103,6 @@ const UpdateProfile = ({ user }) => {
       console.error(error);
       toast.error("Update Data Error");
     }
-  
   };
 
   if (isLoading) {

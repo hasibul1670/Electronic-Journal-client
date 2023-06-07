@@ -5,11 +5,13 @@ import "./App.css";
 import Dashbord from "./Components/Admin/Dashboard";
 import FullDetails from "./Components/Admin/FullDetails";
 
+import ShowFullPaper from "./Components/Admin/ShowFullPaper";
 import Header from "./Components/Header/Header";
 import Login from "./Components/LoginInfo/Login";
 import ForgetPass from "./Components/NewUser/ForgetPass";
 import NewUser from "./Components/NewUser/NewUser";
 import VerifyEmail from "./Components/NewUser/VerifyEmail";
+import WriteReviewComment from "./Components/Reviewer/WriteReviewComment";
 import AboutUs from "./Components/Shared/AboutUs";
 import Copyright from "./Components/Shared/Copyright";
 import Help from "./Components/Shared/Help";
@@ -21,6 +23,7 @@ import Submit from "./Components/Submit/Submit";
 import Test from "./Components/Test/Test";
 import Aim from "./Explore/Aim";
 import ContactUs from "./Explore/ContactUs";
+import EditorialPanel from "./Explore/EditorialPanel";
 import GuidLine from "./Explore/GuidLine";
 import ReviewPolicy from "./Explore/ReviewPolicy";
 import SuccessSubmission from "./SuccessSubmission/SuccessSubmission";
@@ -29,9 +32,6 @@ import DashboardLayout from "./layout/DashboardLayout";
 import ExploreNavbar from "./layout/ExploreNavbar";
 import Main from "./layout/Main";
 import PrivateRoute from "./routes/PrivateRoute";
-import WriteReviewComment from "./Components/Reviewer/WriteReviewComment";
-import ShowFullPaper from "./Components/Admin/ShowFullPaper";
-import EditorialPanel from "./Explore/EditorialPanel";
 
 export const editorContext = createContext();
 export const authorContext = createContext();
@@ -53,18 +53,17 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/reviewer")
+      .get("https://electronic-journal-server-hasibul1670.vercel.app/reviewer")
       .then((res) => {
         setReviewer(res.data);
       })
       .catch((err) => {});
   }, []);
 
-
   useEffect(() => {
     axios
       .get(
-        `http://localhost:4000/author/?email=${loginUserEmail}&timestamp=${Date.now()}`
+        `https://electronic-journal-server-hasibul1670.vercel.app/author/?email=${loginUserEmail}&timestamp=${Date.now()}`
       )
       .then((res) => {
         setAuthor(res.data);
@@ -83,7 +82,7 @@ function App() {
     async function fetchData() {
       try {
         const response = await fetch(
-          `http://localhost:4000/submittedData?email=${loginUserEmail}`,
+          `https://electronic-journal-server-hasibul1670.vercel.app/submittedData?email=${loginUserEmail}`,
           {
             method: "GET",
             headers: headers,
@@ -101,7 +100,6 @@ function App() {
 
     fetchData();
   }, [loginUserEmail]);
-
 
   const router = createBrowserRouter([
     {
@@ -142,7 +140,7 @@ function App() {
         { path: "/explore/guideline", element: <GuidLine /> },
         { path: "/explore/contactus", element: <ContactUs /> },
         { path: "/explore/review-policy", element: <ReviewPolicy /> },
-        { path: "/explore/editorial-board", element: <EditorialPanel/> },
+        { path: "/explore/editorial-board", element: <EditorialPanel /> },
       ],
     },
 
@@ -161,8 +159,11 @@ function App() {
         },
 
         { path: "/dashboard/fulldetails/:id", element: <FullDetails /> },
-        { path: "/dashboard/WriteReviewComment/:id", element: <WriteReviewComment /> },
-        { path: "/dashboard/ShowFullPaper/:id", element: <ShowFullPaper/> }
+        {
+          path: "/dashboard/WriteReviewComment/:id",
+          element: <WriteReviewComment />,
+        },
+        { path: "/dashboard/ShowFullPaper/:id", element: <ShowFullPaper /> },
       ],
     },
 

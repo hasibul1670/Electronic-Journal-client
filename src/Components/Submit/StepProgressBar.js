@@ -90,7 +90,7 @@ export default function HorizontalLinearStepper() {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/submittedData",
+        "https://electronic-journal-server-hasibul1670.vercel.app/submittedData",
         formData,
         {
           method: "POST",

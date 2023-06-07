@@ -1,18 +1,17 @@
-import React, { useState } from "react";
 import { getAuth } from "firebase/auth";
-import app from "../LoginInfo/firebase.config";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import {
   useCreateUserWithEmailAndPassword,
   useSendEmailVerification,
-  useUpdateProfile,
   useSignOut,
+  useUpdateProfile,
 } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
+import { useLocation, useNavigate } from "react-router-dom";
+import app from "../LoginInfo/firebase.config";
 
 const auth = getAuth(app);
 const NewUser = () => {
-  
   const {
     register,
     formState: { errors },
@@ -52,7 +51,6 @@ const NewUser = () => {
     await signOut(data.email);
     await updateProfile({ displayName: data.displayName });
 
-    
     const authorInfoInDb = {
       authorName: data.displayName,
       email: data.email,
@@ -65,7 +63,7 @@ const NewUser = () => {
       city: data.city,
     };
 
-    fetch("http://localhost:4000/author", {
+    fetch("https://electronic-journal-server-hasibul1670.vercel.app/author", {
       method: "POST",
       headers: {
         "content-type": "application/json",

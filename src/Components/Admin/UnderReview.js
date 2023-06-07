@@ -14,7 +14,9 @@ const UnderReview = () => {
   } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:4000/adminData");
+      const response = await fetch(
+        "https://electronic-journal-server-hasibul1670.vercel.app/adminData"
+      );
       const data = await response.json();
       return data;
     },

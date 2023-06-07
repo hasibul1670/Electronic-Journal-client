@@ -19,23 +19,24 @@ const CommentTextArea = ({ handleRefetch }) => {
   } = useForm();
 
   const handleReviewerComment = (data) => {
-
     const reviewerCommentInDb = {
       contentAbtract: data.contentAbtract,
       methodOriginality: data.methodOriginality,
       referenceOriginality: data.referenceOriginality,
       ethicalConsiderations: data.ethicalConsiderations,
       experimentalResultOriginality: data.experimentalResultOriginality,
-
     };
 
-    fetch(`http://localhost:4000/reviewerComment/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(reviewerCommentInDb),
-    })
+    fetch(
+      `https://electronic-journal-server-hasibul1670.vercel.app/reviewerComment/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reviewerCommentInDb),
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -43,7 +44,7 @@ const CommentTextArea = ({ handleRefetch }) => {
           Swal.fire({
             icon: "success",
             title: "Reviewer Comment Submitted Successfully",
-            text: "Thanks For Reviewing this Article!"
+            text: "Thanks For Reviewing this Article!",
           });
           handleRefetch();
           setReviewerComment("");
@@ -57,10 +58,6 @@ const CommentTextArea = ({ handleRefetch }) => {
         // Handle any error scenarios
       });
   };
-
-
-
-
 
   return (
     <div className="border border-primary p-4">
@@ -76,11 +73,11 @@ const CommentTextArea = ({ handleRefetch }) => {
           placeholder="Content Asbtract Evaluation "
         ></textarea>
 
-{errors.contentAbtract?.type === "required" && (
-                <p className="text-danger" role="alert">
-                  Content Abtract is required
-                </p>
-              )}
+        {errors.contentAbtract?.type === "required" && (
+          <p className="text-danger" role="alert">
+            Content Abtract is required
+          </p>
+        )}
       </div>
 
       <label className="font-weight-bold text-info">
@@ -94,10 +91,10 @@ const CommentTextArea = ({ handleRefetch }) => {
         placeholder="Originality of Methodology"
       ></textarea>
       {errors.methodOriginality?.type === "required" && (
-                <p className="text-danger" role="alert">
-                  Originality of Methodology
-                </p>
-              )}
+        <p className="text-danger" role="alert">
+          Originality of Methodology
+        </p>
+      )}
 
       <label className="font-weight-bold text-info">
         Originality of that Experimental Result :
@@ -109,11 +106,11 @@ const CommentTextArea = ({ handleRefetch }) => {
         name="experimentalResultOriginality"
         placeholder="Originality of that Experimental Result"
       ></textarea>
-{errors.experimentalResultOriginality?.type === "required" && (
-                <p className="text-danger" role="alert">
-                  Originality of that Experimental Result is required
-                </p>
-              )}
+      {errors.experimentalResultOriginality?.type === "required" && (
+        <p className="text-danger" role="alert">
+          Originality of that Experimental Result is required
+        </p>
+      )}
       <label className="font-weight-bold text-info">
         Reference Originality :
       </label>
@@ -125,10 +122,10 @@ const CommentTextArea = ({ handleRefetch }) => {
         placeholder="Reference Originality"
       ></textarea>
       {errors.referenceOriginality?.type === "required" && (
-                <p className="text-danger" role="alert">
-                  Reference Originality is required
-                </p>
-              )}
+        <p className="text-danger" role="alert">
+          Reference Originality is required
+        </p>
+      )}
 
       <label className="font-weight-bold text-info">
         Ethical Considerations :
@@ -141,13 +138,12 @@ const CommentTextArea = ({ handleRefetch }) => {
         placeholder="Ethical Considerations"
       ></textarea>
       {errors.ethicalConsiderations?.type === "required" && (
-                <p className="text-danger" role="alert">
-                Ethical Considerations is required
-                </p>
-              )}
+        <p className="text-danger" role="alert">
+          Ethical Considerations is required
+        </p>
+      )}
 
       <button
-     
         className="btn btn-primary mt-3"
         onClick={handleSubmit(handleReviewerComment)}
       >

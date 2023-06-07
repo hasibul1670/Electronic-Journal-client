@@ -16,7 +16,7 @@ const WriteReviewComment = () => {
     refetch,
   } = useQuery(["users", id], async () => {
     const response = await axios.get(
-      `http://localhost:4000/submittedData/${id}`
+      `https://electronic-journal-server-hasibul1670.vercel.app/submittedData/${id}`
     );
     return response.data;
   });
@@ -29,8 +29,10 @@ const WriteReviewComment = () => {
   return (
     <div className="container">
       <div className=" mt-5 p-5 border border-primary text- mb-4">
-      <hr />
-        <h4 className="text-info font-weight-bold">Submitted Article Section {data.name}</h4>
+        <hr />
+        <h4 className="text-info font-weight-bold">
+          Submitted Article Section {data.name}
+        </h4>
         <hr />
         <h4>
           <strong> Article ID:</strong> {data._id}
@@ -83,11 +85,13 @@ const WriteReviewComment = () => {
             </h4>
             <p></p>
             <h4>
-              <strong>Reference Originality:</strong> {data.referenceOriginality}
+              <strong>Reference Originality:</strong>{" "}
+              {data.referenceOriginality}
             </h4>
             <p></p>
             <h4>
-              <strong>Ethical Considerations:</strong> {data.ethicalConsiderations}
+              <strong>Ethical Considerations:</strong>{" "}
+              {data.ethicalConsiderations}
             </h4>
           </>
         )}

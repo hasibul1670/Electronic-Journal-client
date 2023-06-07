@@ -20,7 +20,7 @@ const AssignedReview = () => {
     authorization: `bearer ${localStorage.getItem("accessToken")}`,
   };
 
-  const url = `http://localhost:4000/revData?email=${loginUserEmail}`;
+  const url = `https://electronic-journal-server-hasibul1670.vercel.app/revData?email=${loginUserEmail}`;
 
   useEffect(() => {
     fetch(url, {

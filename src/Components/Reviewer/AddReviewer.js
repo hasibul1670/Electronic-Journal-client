@@ -1,6 +1,6 @@
 import { faFloppyDisk } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { Toaster, toast } from "react-hot-toast";
 
@@ -21,13 +21,16 @@ const AddReviewer = () => {
       department: data.department,
     };
 
-    fetch("http://localhost:4000/addReviewer", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(authorInfoInDb),
-    })
+    fetch(
+      "https://electronic-journal-server-hasibul1670.vercel.app/addReviewer",
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(authorInfoInDb),
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         toast.success("Reviewer added successfully");
@@ -35,18 +38,15 @@ const AddReviewer = () => {
       });
   };
 
- 
-
   return (
     <div className="container font-weight-bold bg-gray p-4">
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* button  */}
 
         <button type="submit" className="btn " title="Save">
-  <FontAwesomeIcon icon={faFloppyDisk} size="3x" />
-  <span className="tooltip">Save</span>
-</button>
-
+          <FontAwesomeIcon icon={faFloppyDisk} size="3x" />
+          <span className="tooltip">Save</span>
+        </button>
 
         <p></p>
         {/* First Name */}
@@ -148,12 +148,6 @@ const AddReviewer = () => {
             </div>
           )}
         </div>
-
-
-
-
-
-
 
         {/* Position */}
         <div className="form-group row">

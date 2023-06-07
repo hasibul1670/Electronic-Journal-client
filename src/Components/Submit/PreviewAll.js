@@ -32,7 +32,10 @@ const PreviewAll = ({
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const response = await axios.post("http://localhost:4000/file", formData);
+      const response = await axios.post(
+        "https://electronic-journal-server-hasibul1670.vercel.app/file",
+        formData
+      );
       setMessage(
         "File uploaded successfully. Click Next Button For the next steps."
       );
@@ -62,9 +65,8 @@ const PreviewAll = ({
   return (
     <div className="container border  border-info p-4 mt-4">
       <h4 className="text-info mb-3 font-weight-bold">
-        
         Preview your uploaded data before Submission
-        <hr/>
+        <hr />
       </h4>
       {isEditing ? (
         <>
@@ -105,9 +107,7 @@ const PreviewAll = ({
         </>
       ) : (
         <>
-          <h5 className="mb-3 p-2 font-weight-bold">
-            Title: {data?.title}
-          </h5>
+          <h5 className="mb-3 p-2 font-weight-bold">Title: {data?.title}</h5>
           <h5 className="mb-3 p-2 font-weight-bold">
             Abstract: {data?.abstract}
           </h5>

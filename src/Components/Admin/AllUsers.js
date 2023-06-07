@@ -1,26 +1,31 @@
+import React from "react";
+import { Table } from "react-bootstrap";
 import { useQuery } from "react-query";
-import React, { useContext, useState } from "react";
-import "react-toastify/dist/ReactToastify.css";
-import { Table,} from "react-bootstrap";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AllUsers = () => {
-  const { data: users = [],refetch } = useQuery({
+  const { data: users = [], refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:4000/allUserData");
+      const response = await fetch(
+        "https://electronic-journal-server-hasibul1670.vercel.app/allUserData"
+      );
       const data = await response.json();
       return data;
     },
   });
 
   const handleAdmin = (id) => {
-    fetch(`http://localhost:4000/users/admin/${id}`, {
-      method: "PUT",
-      headers: {
-        authorization: `bearer ${localStorage.getItem("accessToken")}`,
-      },
-    })
+    fetch(
+      `https://electronic-journal-server-hasibul1670.vercel.app/users/admin/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          authorization: `bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data?.lastErrorObject?.updatedExisting === true) {
@@ -31,9 +36,8 @@ const AllUsers = () => {
         }
       });
   };
-  
 
-return (
+  return (
     <div>
       <Table striped bordered hover>
         <thead>
@@ -46,34 +50,34 @@ return (
           </tr>
         </thead>
         <tbody>
-          {users && users?.map((item) => (
-            <tr key={item._id}>
-              <td>{item?.authorName}</td>
-              <td>{item?.email}</td>
-              <td>{item?.institutionName}</td>
-              <td>
-                {item?.role !== "admin" && (
-                  <button
-                    onClick={() => handleAdmin(item._id)}
-                    className="btn btn-primary"
-                  >
-                    Make Admin
-                  </button>
-                )}
-              </td>
-              <td>
-                {item?.role !== "admin" && (
-                  <button
-                    //   onClick={() => handleDelete(item._id)}
-                    className="btn btn-danger"
-                  >
-                    Delete
-                  </button>
-                )}
-              </td>
-            </tr>
-          ))}
-          
+          {users &&
+            users?.map((item) => (
+              <tr key={item._id}>
+                <td>{item?.authorName}</td>
+                <td>{item?.email}</td>
+                <td>{item?.institutionName}</td>
+                <td>
+                  {item?.role !== "admin" && (
+                    <button
+                      onClick={() => handleAdmin(item._id)}
+                      className="btn btn-primary"
+                    >
+                      Make Admin
+                    </button>
+                  )}
+                </td>
+                <td>
+                  {item?.role !== "admin" && (
+                    <button
+                      //   onClick={() => handleDelete(item._id)}
+                      className="btn btn-danger"
+                    >
+                      Delete
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
         </tbody>
       </Table>
     </div>

@@ -21,7 +21,7 @@ const ShowFullPaper = () => {
     refetch,
   } = useQuery(["users", id], async () => {
     const response = await axios.get(
-      `http://localhost:4000/submittedData/${id}`
+      `https://electronic-journal-server-hasibul1670.vercel.app/submittedData/${id}`
     );
     return response.data;
   });
@@ -44,13 +44,16 @@ const ShowFullPaper = () => {
     const editorCommentInDb = {
       editorComment: data.editorComment,
     };
-    fetch(`http://localhost:4000/editorComment/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(editorCommentInDb),
-    })
+    fetch(
+      `https://electronic-journal-server-hasibul1670.vercel.app/editorComment/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(editorCommentInDb),
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
