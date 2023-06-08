@@ -16,7 +16,6 @@ const AssignedReview = () => {
   const [isReviewer, isReviewerLoading] = useReviewer(loginUserEmail);
 
   const headers = {
-    "Content-Type": "application/json",
     authorization: `bearer ${localStorage.getItem("accessToken")}`,
   };
 
