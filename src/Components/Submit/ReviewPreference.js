@@ -1,9 +1,10 @@
+import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 
 function ReviewPreference({ submittedData, setSubmittedData }) {
   const [formData, setFormData] = useState({
     firstName: "",
-    lastName: "",
     degree: "",
     position: "",
     institution: "",
@@ -40,7 +41,6 @@ function ReviewPreference({ submittedData, setSubmittedData }) {
     }
     setFormData({
       firstName: "",
-      lastName: "",
       degree: "",
       position: "",
       institution: "",
@@ -103,9 +103,23 @@ function ReviewPreference({ submittedData, setSubmittedData }) {
 
             <div className="modal-body font-weight-bold p-3">
               <form>
+                <button
+                  title="Save"
+                  type="submit"
+                  className="btn"
+                  onClick={handleSubmit}
+                  data-dismiss="modal"
+                  disabled={Object.values(formData).some(
+                    (value) => value === ""
+                  )}
+                >
+                  <FontAwesomeIcon icon={faFloppyDisk} size="2x" />
+                  <span className="tooltip">Save</span>
+                </button>
+
                 <div className="form-group row row">
                   <label className=" col-form-label col-sm-3 col-sm-3">
-                    First Name:
+                    Full Name:
                   </label>
                   <input
                     type="text"
@@ -114,24 +128,6 @@ function ReviewPreference({ submittedData, setSubmittedData }) {
                     id="recipient-name"
                     name="firstName"
                     value={formData.firstName}
-                    onChange={handleInputChange}
-                  />
-                </div>
-
-                <div className="form-group row">
-                  <label
-                    htmlFor="recipient-name"
-                    className="col-form-label col-sm-3"
-                  >
-                    Last Name:
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    className="form-control col-form-label col-sm-3 col-sm-8"
-                    id="recipient-name"
-                    name="lastName"
-                    value={formData.lastName}
                     onChange={handleInputChange}
                   />
                 </div>

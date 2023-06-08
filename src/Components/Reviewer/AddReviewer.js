@@ -65,23 +65,7 @@ const AddReviewer = () => {
             <div className="invalid-feedback">First name is required.</div>
           )}
         </div>
-        {/* Last Name */}
-        {/* <div className="form-group row">
-          <label className="col-md-2 " htmlFor="lastName">
-            Last Name:
-          </label>
-          <input
-            type="text"
-            className={`form-control col-md-9 ${
-              errors.lastName ? "is-invalid" : ""
-            }`}
-            {...register("lastName", { required: true })}
-          />
-          {errors.lastName && (
-            <div className="invalid-feedback">Last name is required.</div>
-          )}
-        </div> */}
-        {/*Email */}
+  
         <div className="form-group row">
           <label className="col-md-2 " htmlFor="email">
             Email Address :
