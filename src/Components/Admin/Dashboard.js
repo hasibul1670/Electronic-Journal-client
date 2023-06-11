@@ -41,15 +41,13 @@ const Dashbord = () => {
   } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const response = await fetch(
-        "https://electronic-journal-server-hasibul1670.vercel.app/adminData"
-      );
+      const response = await fetch("http://localhost:4000/adminData");
       const data = await response.json();
       return data;
     },
   });
 
-  const url = `https://electronic-journal-server-hasibul1670.vercel.app/submittedData?email=${loginUserEmail}`;
+  const url = `http://localhost:4000/submittedData?email=${loginUserEmail}`;
 
   useEffect(() => {
     fetch(url, {
@@ -75,14 +73,11 @@ const Dashbord = () => {
 
   const handleDelete = (id) => {
     axios
-      .delete(
-        `https://electronic-journal-server-hasibul1670.vercel.app/submittedData/${id}`,
-        {
-          headers: {
-            authorization: `bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      )
+      .delete(`http://localhost:4000/submittedData/${id}`, {
+        headers: {
+          authorization: `bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
       .then((response) => {
         setIsDeleted(response.data);
         toast.success("Item deleted successfully!");
@@ -131,8 +126,13 @@ const Dashbord = () => {
                   <th>Title of Article</th>
                   <th>Assigned Reviewer</th>
                   <th>Status</th>
-                  <th> Assign Reviewer </th>
-                  <th>Delete</th>
+                  {isAdmin && (
+                    <>
+                      {" "}
+                      <th> Assign Reviewer </th>
+                      <th>Delete</th>
+                    </>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -204,7 +204,19 @@ const Dashbord = () => {
                     ))
                   : data?.map((item) => (
                       <tr key={item._id}>
-                        <td>{item.email}</td>
+                        <td>
+                          {item.email}
+
+                          <Link to={`/dashboard/ShowFullPaper/${item._id}`}>
+                            <button
+                              onClick={() => item._id}
+                              className="btn btn-info"
+                            >
+                              Show Full Paper{" "}
+                              <FontAwesomeIcon icon={faCircleInfo} />
+                            </button>
+                          </Link>
+                        </td>
                         <td>{item.articleType}</td>
                         <td>{item.title}</td>
 
@@ -236,28 +248,12 @@ const Dashbord = () => {
                             item.assignReviewer
                           )}
                         </td>
-                        <td>
-                          {" "}
-                          <Link to={`/dashboard/fulldetails/${item._id}`}>
-                            Assign Reviewer{" "}
-                            <FontAwesomeIcon icon={faCircleInfo} />{" "}
-                          </Link>{" "}
-                        </td>
-                        <td>
-                          <button
-                            onClick={() => handleDelete(item._id)}
-                            className="btn btn-danger"
-                          >
-                            Delete
-                          </button>{" "}
-                        </td>
                       </tr>
                     ))}
               </tbody>
             </Table>
           </div>
         );
-
       case "UnderReview":
         return (
           <Card>
@@ -289,16 +285,9 @@ const Dashbord = () => {
         );
 
       case "AssignedReviewer":
-        // eslint-disable-next-line no-lone-blocks
-
         return (
           <Card>
-            <Card.Body>
-              <Card.Title></Card.Title>
-              <Card.Text>
-                <AssignedReview />
-              </Card.Text>
-            </Card.Body>
+            <AssignedReview />
           </Card>
         );
       case "updateProfile":
@@ -348,16 +337,6 @@ const Dashbord = () => {
                               {isAdmin ? "Total Submission" : "Your Submission"}
                             </Nav.Link>
                           </Nav.Item>
-
-                          {/* <Nav.Item>
-                    <Nav.Link
-                      href="#"
-                      active={activeMenu === "Published"}
-                      onClick={() => handleMenuClick("Published")}
-                    >
-                      {isAdmin ? "Total Published" : "Your Published"}
-                    </Nav.Link>
-                  </Nav.Item> */}
 
                           <Nav.Item>
                             <Nav.Link

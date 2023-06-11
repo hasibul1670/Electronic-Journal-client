@@ -16,7 +16,7 @@ const WriteReviewComment = () => {
     refetch,
   } = useQuery(["users", id], async () => {
     const response = await axios.get(
-      `https://electronic-journal-server-hasibul1670.vercel.app/submittedData/${id}`
+      `http://localhost:4000/submittedData/${id}`
     );
     return response.data;
   });
@@ -29,25 +29,36 @@ const WriteReviewComment = () => {
   return (
     <div className="container">
       <div className=" mt-5 p-5 border border-primary text- mb-4">
-        <hr />
+      <hr />
         <h4 className="text-info font-weight-bold">
           Submitted Article Section {data.name}
         </h4>
         <hr />
         <h4>
-          <strong> Article ID:</strong> {data._id}
+          <strong className="text-info"> Article ID:</strong> {data?.articleId}
+        </h4>
+        <h4>
+          <strong className="text-info"> Submission Date :</strong>{" "}
+          {data?.submissionDate}
+        </h4>
+        <h4>
+          <strong className="text-info"> Submission Time:</strong>{" "}
+          {data?.submissionTime}
+        </h4>
+        <hr />
+        <hr />
+        <p></p>
+        <h4>
+          <strong className="text-primary"> Article Type:</strong>{" "}
+          {data.articleType}
         </h4>
         <p></p>
         <h4>
-          <strong> Article Type:</strong> {data.articleType}
+          <strong className="text-primary">Title:</strong> {data.title}
         </h4>
         <p></p>
         <h4>
-          <strong>Title:</strong> {data.title}
-        </h4>
-        <p></p>
-        <h4>
-          <strong>File:</strong>{" "}
+          <strong className="text-primary">File:</strong>{" "}
           <Link className="text-danger" to={data.url} target="_blank">
             Click to Open
             <FontAwesomeIcon icon={faFileArrowDown} />{" "}
@@ -55,15 +66,16 @@ const WriteReviewComment = () => {
         </h4>
         <p></p>
         <h4>
-          <strong>Abstract:</strong> {data.abstract}
+          <strong className="text-primary">Abstract:</strong> {data.abstract}
         </h4>
         <p></p>
         <h4>
-          <strong>Keyword:</strong> {data.keyword}
+          <strong className="text-primary">Keyword:</strong> {data.keyword}
         </h4>
         <p></p>
         <h4>
-          <strong>Author Comment:</strong> {data.comment}
+          <strong className="text-primary">Author Comment:</strong>{" "}
+          {data.comment}
         </h4>
         <p></p>
         <hr />

@@ -32,10 +32,7 @@ const PreviewAll = ({
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const response = await axios.post(
-        "https://electronic-journal-server-hasibul1670.vercel.app/file",
-        formData
-      );
+      const response = await axios.post("http://localhost:4000/file", formData);
       setMessage(
         "File uploaded successfully. Click Next Button For the next steps."
       );

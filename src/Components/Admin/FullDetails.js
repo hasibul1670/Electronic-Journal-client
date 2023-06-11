@@ -37,9 +37,7 @@ const FullDetails = () => {
   useEffect(() => {
     const fetchReviewerData = async () => {
       try {
-        const response = await fetch(
-          "https://electronic-journal-server-hasibul1670.vercel.app/getReviewer"
-        );
+        const response = await fetch("http://localhost:4000/getReviewer");
         const data = await response.json();
         setReviewerData(data);
       } catch (error) {
@@ -57,9 +55,7 @@ const FullDetails = () => {
   } = useQuery({
     queryKey: ["users", id],
     queryFn: async () => {
-      const response = await fetch(
-        `https://electronic-journal-server-hasibul1670.vercel.app/submittedData/${id}`
-      );
+      const response = await fetch(`http://localhost:4000/submittedData/${id}`);
       const data = await response.json();
       return data;
     },
@@ -68,19 +64,16 @@ const FullDetails = () => {
     return <Loading />;
   }
   const handleAssignReviewer = (id) => {
-    fetch(
-      `https://electronic-journal-server-hasibul1670.vercel.app/assign/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          assignReviewer,
-          assignReviewerEmail,
-        }),
-      }
-    )
+    fetch(`http://localhost:4000/assign/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        assignReviewer,
+        assignReviewerEmail,
+      }),
+    })
       .then((res) => res.json())
       .then((data) => {
         if (data?.lastErrorObject?.updatedExisting === true) {

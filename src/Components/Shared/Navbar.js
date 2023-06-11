@@ -98,42 +98,7 @@ function Navbar() {
                 </Link>
               </li>
 
-              <div className="dropdown">
-                <button
-                  className="btn nav-link nav-text btn-secondary dropdown-toggle"
-                  type="button"
-                  id="dropdownMenuButton"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  Subjects
-                </button>
-
-                <div
-                  className="dropdown-menu"
-                  aria-labelledby="dropdownMenuButton"
-                >
-                  <Link to=" " className="dropdown-item">
-                    Algorithm
-                  </Link>
-                  <Link to=" " className="dropdown-item">
-                    Image Processing
-                  </Link>
-                  <Link to=" " className="dropdown-item">
-                    IOT
-                  </Link>
-                  <Link to=" " className="dropdown-item">
-                    Compiler Design
-                  </Link>
-                  <Link to=" " className="dropdown-item">
-                    Web Engineering
-                  </Link>
-                  <Link to=" " className="dropdown-item">
-                    Data Mining
-                  </Link>
-                </div>
-              </div>
+             
 
               {loginUserEmail && (
                 <li className="nav-item active">

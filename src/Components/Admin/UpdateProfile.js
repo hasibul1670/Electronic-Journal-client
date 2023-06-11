@@ -11,7 +11,7 @@ import Loading from "../Shared/Loading";
 import Swal from "sweetalert2";
 
 const UpdateProfile = ({ user }) => {
-  const [loginUserEmail, setLoginUserEmail] = useContext(loginUserContext);
+  const [loginUserEmail] = useContext(loginUserContext);
   const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState("");
 
@@ -23,7 +23,7 @@ const UpdateProfile = ({ user }) => {
     queryKey: ["users", loginUserEmail],
     queryFn: async () => {
       const response = await fetch(
-        `https://electronic-journal-server-hasibul1670.vercel.app/author/?email=${loginUserEmail}`
+        `http://localhost:4000/author/?email=${loginUserEmail}`
       );
       const data = await response.json();
       return data;
@@ -78,7 +78,7 @@ const UpdateProfile = ({ user }) => {
   const handleSubmit = async () => {
     try {
       const response = await fetch(
-        `https://electronic-journal-server-hasibul1670.vercel.app/authorData/${loginUserEmail}`,
+        `http://localhost:4000/authorData/${loginUserEmail}`,
         {
           method: "PUT",
           body: JSON.stringify(formData),
@@ -110,15 +110,39 @@ const UpdateProfile = ({ user }) => {
   }
 
   return (
-    <div className="container-fluid">
-      <img
-        src={photo}
-        alt="Imafgfgge"
-        className="rounded-circle img-fluid mb-5"
-        style={{ width: "300px", height: "300px" }}
-      />
+    <div className="container-fluid w-75 lightgray p-4">
+      <div className="w-100 d-flex  ">
+        <div>
+          {" "}
+          <img
+            src={photo}
+            alt="Imafgfgge"
+            className="rounded-circle img-fluid mb-5"
+            style={{ width: "300px", height: "300px" }}
+          />
+        </div>
 
-      {users &&
+        <div className="mt-4 ml-5">
+          <h2>Profile Information </h2>
+          <hr />
+          {users &&
+  users?.map((user) => (
+    <div key={user?._id} className="">
+      <h5>Name: {user?.authorName || user?.reviewerName}</h5>
+      {user?.phone && <h5>Phone: {user?.phone}</h5>}
+      <h5>Institution Name: {user?.institutionName}</h5>
+      <h5>Department: {user?.department}</h5>
+      {user?.city && <h5>City: {user?.city}</h5>}
+    
+    </div>
+  ))}
+
+        </div>
+    
+      </div>
+
+<div className="row justify-content-center">
+{users &&
         users?.map((user) => (
           <div key={user?._id} className="">
             <Form
@@ -195,6 +219,8 @@ const UpdateProfile = ({ user }) => {
             </Form>
           </div>
         ))}
+</div>
+    
 
       <Toaster />
     </div>

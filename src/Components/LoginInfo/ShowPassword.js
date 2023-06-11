@@ -48,16 +48,13 @@ const ShowPassword = () => {
 
   const handleFormSubmit = async (userType) => {
     try {
-      const response = await fetch(
-        "https://electronic-journal-server-hasibul1670.vercel.app/reviewerLogin",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password, userType }),
-        }
-      );
+      const response = await fetch("http://localhost:4000/reviewerLogin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password, userType }),
+      });
       const data = await response.json();
 
       if (response.ok && data.success) {

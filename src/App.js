@@ -4,7 +4,6 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import Dashbord from "./Components/Admin/Dashboard";
 import FullDetails from "./Components/Admin/FullDetails";
-
 import ShowFullPaper from "./Components/Admin/ShowFullPaper";
 import Header from "./Components/Header/Header";
 import Login from "./Components/LoginInfo/Login";
@@ -26,6 +25,7 @@ import ContactUs from "./Explore/ContactUs";
 import EditorialPanel from "./Explore/EditorialPanel";
 import GuidLine from "./Explore/GuidLine";
 import ReviewPolicy from "./Explore/ReviewPolicy";
+import useAdmin from "./Hooks/useAdmin";
 import SuccessSubmission from "./SuccessSubmission/SuccessSubmission";
 import AuthorNavbar from "./layout/AuthorNavbar";
 import DashboardLayout from "./layout/DashboardLayout";
@@ -50,10 +50,11 @@ function App() {
   const [reviewer, setReviewer] = useState([]);
   const [author, setAuthor] = useState([]);
   const [name, setName] = useState("");
+  const [isAdmin] = useAdmin(loginUserEmail);
 
   useEffect(() => {
     axios
-      .get("https://electronic-journal-server-hasibul1670.vercel.app/reviewer")
+      .get("http://localhost:4000/reviewer")
       .then((res) => {
         setReviewer(res.data);
       })
@@ -63,7 +64,7 @@ function App() {
   useEffect(() => {
     axios
       .get(
-        `https://electronic-journal-server-hasibul1670.vercel.app/author/?email=${loginUserEmail}&timestamp=${Date.now()}`
+        `http://localhost:4000/author/?email=${loginUserEmail}&timestamp=${Date.now()}`
       )
       .then((res) => {
         setAuthor(res.data);
@@ -81,7 +82,7 @@ function App() {
     async function fetchData() {
       try {
         const response = await fetch(
-          `https://electronic-journal-server-hasibul1670.vercel.app/submittedData?email=${loginUserEmail}`,
+          `http://localhost:4000/submittedData?email=${loginUserEmail}`,
           {
             method: "GET",
             headers: headers,
@@ -117,7 +118,7 @@ function App() {
       path: "/submit",
       element: <AuthorNavbar />,
       children: [
-        {
+        !isAdmin && {
           path: "/submit",
           element: (
             <PrivateRoute>

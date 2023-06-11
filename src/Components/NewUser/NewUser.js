@@ -63,7 +63,7 @@ const NewUser = () => {
       city: data.city,
     };
 
-    fetch("https://electronic-journal-server-hasibul1670.vercel.app/author", {
+    fetch("http://localhost:4000/author", {
       method: "POST",
       headers: {
         "content-type": "application/json",

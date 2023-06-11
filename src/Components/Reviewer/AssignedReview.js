@@ -10,7 +10,7 @@ import useReviewer from "../../Hooks/useReviewer";
 import Loading from "./../Shared/Loading";
 
 const AssignedReview = () => {
-  const [loginUserEmail, setLoginUserEmail] = useContext(loginUserContext);
+  const [loginUserEmail] = useContext(loginUserContext);
   const [isAdmin, isAdminLoading] = useAdmin(loginUserEmail);
   const [data, setData] = useState([]);
   const [isReviewer, isReviewerLoading] = useReviewer(loginUserEmail);
@@ -19,7 +19,7 @@ const AssignedReview = () => {
     authorization: `bearer ${localStorage.getItem("accessToken")}`,
   };
 
-  const url = `https://electronic-journal-server-hasibul1670.vercel.app/revData?email=${loginUserEmail}`;
+  const url = `http://localhost:4000/revData?email=${loginUserEmail}`;
 
   useEffect(() => {
     fetch(url, {
@@ -56,10 +56,10 @@ const AssignedReview = () => {
     </p>;
   }
   return (
-    <Table striped bordered hover>
+    <Table striped bordered hover >
       <thead>
         <tr>
-          <th>File</th>
+         
           <th>Username</th>
           <th>Article Type</th>
           <th>Title of Article</th>
@@ -71,12 +71,7 @@ const AssignedReview = () => {
       <tbody>
         {data?.map((item) => (
           <tr key={item._id}>
-            <td>
-              <a href={item.url}>
-                Docx <FontAwesomeIcon icon={faDownload} />
-              </a>
-            </td>
-            <td>{item.email}</td>
+            <td><p>{item.email}</p></td>
             <td>{item.articleType}</td>
             <td>{item.title}</td>
             <td>
@@ -87,16 +82,16 @@ const AssignedReview = () => {
             <td>
               <Link to={`/dashboard/WriteReviewComment/${item._id}`}>
                 <button onClick={() => item._id} className="btn btn-danger">
-                  Edit <FontAwesomeIcon icon={faCircleInfo} />
+                  Review 
                 </button>
               </Link>
             </td>
 
-            <td className="text-success">
+            <td>
               {item.contentAbtract ? (
-                <h5>Review Done😍</h5>
+                <h5 className="font-weight-bold text-success"> Review Done ✅</h5>
               ) : (
-                <h5>Pending🥴</h5>
+                <h5 className="text-danger font-weight-bold">Pending </h5>
               )}
             </td>
           </tr>

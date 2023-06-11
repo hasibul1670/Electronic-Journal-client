@@ -1,19 +1,24 @@
-import {
-  faArrowAltCircleLeft,
-  faFileArrowDown,
-} from "@fortawesome/free-solid-svg-icons";
+import { faFileArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Toaster, toast } from "react-hot-toast";
 import { useQuery } from "react-query";
 import { Link, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import { loginUserContext } from "../../App";
+import useAdmin from "../../Hooks/useAdmin";
+import useReviewer from "../../Hooks/useReviewer";
+import SendEmailToAuthor from "./SendEmailToAuthor";
 
 const ShowFullPaper = () => {
   const { id } = useParams();
   const [data, setData] = useState([]);
+  const [loginUserEmail] = useContext(loginUserContext);
+
+  const [isAdmin] = useAdmin(loginUserEmail);
+  const [isReviewer] = useReviewer(loginUserEmail);
 
   const {
     data: users = [id],
@@ -21,17 +26,13 @@ const ShowFullPaper = () => {
     refetch,
   } = useQuery(["users", id], async () => {
     const response = await axios.get(
-      `https://electronic-journal-server-hasibul1670.vercel.app/submittedData/${id}`
+      `http://localhost:4000/submittedData/${id}`
     );
     return response.data;
   });
   useEffect(() => {
     setData(users);
   }, [users]);
-
-  const handleRefetch = () => {
-    refetch();
-  };
   const {
     register,
     formState: { errors },
@@ -44,16 +45,13 @@ const ShowFullPaper = () => {
     const editorCommentInDb = {
       editorComment: data.editorComment,
     };
-    fetch(
-      `https://electronic-journal-server-hasibul1670.vercel.app/editorComment/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(editorCommentInDb),
-      }
-    )
+    fetch(`http://localhost:4000/editorComment/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(editorCommentInDb),
+    })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -85,19 +83,30 @@ const ShowFullPaper = () => {
         </h4>
         <hr />
         <h4>
-          <strong> Article ID:</strong> {data._id}
+          <strong className="text-info"> Article ID:</strong> {data?.articleId}
+        </h4>
+        <h4>
+          <strong className="text-info"> Submission Date :</strong>{" "}
+          {data?.submissionDate}
+        </h4>
+        <h4>
+          <strong className="text-info"> Submission Time:</strong>{" "}
+          {data?.submissionTime}
+        </h4>
+        <hr />
+        <hr />
+        <p></p>
+        <h4>
+          <strong className="text-primary"> Article Type:</strong>{" "}
+          {data.articleType}
         </h4>
         <p></p>
         <h4>
-          <strong> Article Type:</strong> {data.articleType}
+          <strong className="text-primary">Title:</strong> {data.title}
         </h4>
         <p></p>
         <h4>
-          <strong>Title:</strong> {data.title}
-        </h4>
-        <p></p>
-        <h4>
-          <strong>File:</strong>{" "}
+          <strong className="text-primary">File:</strong>{" "}
           <Link className="text-danger" to={data.url} target="_blank">
             Click to Open
             <FontAwesomeIcon icon={faFileArrowDown} />{" "}
@@ -105,15 +114,16 @@ const ShowFullPaper = () => {
         </h4>
         <p></p>
         <h4>
-          <strong>Abstract:</strong> {data.abstract}
+          <strong className="text-primary">Abstract:</strong> {data.abstract}
         </h4>
         <p></p>
         <h4>
-          <strong>Keyword:</strong> {data.keyword}
+          <strong className="text-primary">Keyword:</strong> {data.keyword}
         </h4>
         <p></p>
         <h4>
-          <strong>Author Comment:</strong> {data.comment}
+          <strong className="text-primary">Author Comment:</strong>{" "}
+          {data.comment}
         </h4>
         <p></p>
         <hr />
@@ -165,40 +175,47 @@ const ShowFullPaper = () => {
 
           {/* editor  comment section */}
 
-          <div className="border border-primary p-4">
-            <label className="font-weight-bold text-info">
-              Editor Comment Area
-            </label>
-            <textarea
-              {...register("editorComment", { required: true })}
-              className="form-control mt-3 "
-              rows="4"
-              value={editorComment}
-              onChange={(e) => setEditorComment(e.target.value)}
-              name="editorComment"
-              placeholder=" Editor Comment here...."
-            ></textarea>
-            {errors.methodOriginality?.type === "required" && (
-              <p className="text-danger" role="alert">
-                Editor Comment...
-              </p>
-            )}
-
+          {isAdmin && (
+            <div className="border border-primary p-4">
+              <label className="font-weight-bold text-info">
+                Editor Comment Area
+              </label>
+              <textarea
+                {...register("editorComment", { required: true })}
+                className="form-control mt-3 "
+                rows="4"
+                value={editorComment}
+                onChange={(e) => setEditorComment(e.target.value)}
+                name="editorComment"
+                placeholder=" Editor Comment here...."
+              ></textarea>
+              {errors.methodOriginality?.type === "required" && (
+                <p className="text-danger" role="alert">
+                  Editor Comment...
+                </p>
+              )}
+              <Toaster />
+            </div>
+          )}
+          <div className="d-flex">
             <button
-              className="btn btn-primary mr-2 mt-3"
+              className="btn btn-primary mr-2 mt-4"
               onClick={handleSubmit(handleEditorComment)}
             >
               Submit
             </button>
-
-            <Link to="/dashboard">
-              <button className="btn ml-2 mt-3 btn-info">
-                <FontAwesomeIcon icon={faArrowAltCircleLeft} />
-                Show Full Paper
-              </button>
+            <Link to="/dashboard" className="btn ml-2 mt-4 btn-info">
+              🔙 Back To Dashboard
             </Link>
-
-            <Toaster />
+            {isAdmin && (
+              <Link className=" mt-4">
+                <SendEmailToAuthor
+                emailAdress= {data?.email}
+                  submittedData={data?.articleId}
+                  setSubmittedData={data?.articleId}
+                ></SendEmailToAuthor>
+              </Link>
+            )}
           </div>
         </div>
       </div>

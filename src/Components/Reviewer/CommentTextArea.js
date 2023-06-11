@@ -1,7 +1,9 @@
+import { faArrowAltCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Toaster, toast } from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const CommentTextArea = ({ handleRefetch }) => {
@@ -27,16 +29,13 @@ const CommentTextArea = ({ handleRefetch }) => {
       experimentalResultOriginality: data.experimentalResultOriginality,
     };
 
-    fetch(
-      `https://electronic-journal-server-hasibul1670.vercel.app/reviewerComment/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(reviewerCommentInDb),
-      }
-    )
+    fetch(`http://localhost:4000/reviewerComment/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(reviewerCommentInDb),
+    })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -149,6 +148,12 @@ const CommentTextArea = ({ handleRefetch }) => {
       >
         Submit
       </button>
+      <Link to="/dashboard">
+              <button className="btn ml-2 mt-3 btn-info">
+                <FontAwesomeIcon icon={faArrowAltCircleLeft} />
+                Back To Dashboard
+              </button>
+            </Link>
 
       <Toaster />
     </div>

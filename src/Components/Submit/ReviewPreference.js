@@ -39,6 +39,7 @@ function ReviewPreference({ submittedData, setSubmittedData }) {
         setEditIndex(-1);
       }
     }
+    
     setFormData({
       firstName: "",
       degree: "",
@@ -131,6 +132,7 @@ function ReviewPreference({ submittedData, setSubmittedData }) {
                     onChange={handleInputChange}
                   />
                 </div>
+                
                 <div className="form-group row">
                   <label
                     htmlFor="recipient-name"

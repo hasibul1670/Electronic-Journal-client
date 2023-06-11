@@ -21,16 +21,13 @@ const AddReviewer = () => {
       department: data.department,
     };
 
-    fetch(
-      "https://electronic-journal-server-hasibul1670.vercel.app/addReviewer",
-      {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(authorInfoInDb),
-      }
-    )
+    fetch("http://localhost:4000/addReviewer", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(authorInfoInDb),
+    })
       .then((res) => res.json())
       .then((data) => {
         toast.success("Reviewer added successfully");
@@ -65,7 +62,7 @@ const AddReviewer = () => {
             <div className="invalid-feedback">First name is required.</div>
           )}
         </div>
-  
+
         <div className="form-group row">
           <label className="col-md-2 " htmlFor="email">
             Email Address :

@@ -14,7 +14,6 @@ const auth = getAuth(app);
 export let name ;
 
 const AuthorNav = () => {
-  const [user] = useAuthState(auth);
   const [loginUserEmail] = useContext(loginUserContext);
   const [isAdmin] = useAdmin(loginUserEmail);
   const [isReviewer] = useReviewer(loginUserEmail);
@@ -63,17 +62,13 @@ for (let i = 0; i < author.length; i++) {
               </Link>
             </li>
 
-            <li className="  nav-item active">
-              <Link to="/submit/mainmenu" className="nav-link nav-text">
-                Main Menu
-              </Link>
-            </li>
-
+          
+{!isAdmin?
             <li className="nav-item active">
               <Link to="/submit" className="nav-link nav-text">
                 Submit a Manuscript
               </Link>
-            </li>
+            </li> :" "}
 
             {userEmail && (
               <li className="nav-item active">

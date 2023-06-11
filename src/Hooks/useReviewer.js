@@ -6,9 +6,7 @@ const useReviewer = (email) => {
 
   useEffect(() => {
     if (email) {
-      fetch(
-        `https://electronic-journal-server-hasibul1670.vercel.app/users/reviewer/${email}`
-      )
+      fetch(`http://localhost:4000/users/reviewer/${email}`)
         .then((res) => res.json())
         .then((data) => {
           setIsReviewer(data.isReviewer);

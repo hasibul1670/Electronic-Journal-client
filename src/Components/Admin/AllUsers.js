@@ -8,24 +8,19 @@ const AllUsers = () => {
   const { data: users = [], refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const response = await fetch(
-        "https://electronic-journal-server-hasibul1670.vercel.app/allUserData"
-      );
+      const response = await fetch("http://localhost:4000/allUserData");
       const data = await response.json();
       return data;
     },
   });
 
   const handleAdmin = (id) => {
-    fetch(
-      `https://electronic-journal-server-hasibul1670.vercel.app/users/admin/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          authorization: `bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    )
+    fetch(`http://localhost:4000/users/admin/${id}`, {
+      method: "PUT",
+      headers: {
+        authorization: `bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         if (data?.lastErrorObject?.updatedExisting === true) {
