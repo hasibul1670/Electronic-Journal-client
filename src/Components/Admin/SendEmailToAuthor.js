@@ -1,5 +1,5 @@
+import axios from "axios";
 import React, { useState } from "react";
-import axios from 'axios';
 import Swal from "sweetalert2";
 
 const SendEmailToAuthor = ({ emailAdress }) => {
@@ -13,31 +13,28 @@ const SendEmailToAuthor = ({ emailAdress }) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
-     
     });
   };
- 
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-  
+
     // Make an HTTP POST request to the backend API endpoint
-    axios.post('http://localhost:4000/send-email', formData)
+    axios
+      .post("http://localhost:4000/send-email", formData)
       .then((response) => {
         console.log(response.data); // Log the response from the backend
         Swal.fire({
-            icon: "success",
-            title: `Email is Sent to ${emailAdress}`  ,
-            //text: "Thank you for submitting your Paper",
-          });
-        
+          icon: "success",
+          title: `Email is Sent to ${emailAdress}`,
+          //text: "Thank you for submitting your Paper",
+        });
       })
       .catch((error) => {
         console.error(error);
       });
   };
-  
 
   const openModal = () => {
     const modal = document.getElementById("exampleModal");
@@ -60,14 +57,14 @@ const SendEmailToAuthor = ({ emailAdress }) => {
       </button>
 
       <div
-        className="modal fade"
+        className="modal fade bd-example-modal-lg"
         id="exampleModal"
         tabIndex="-1"
         role="dialog"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
-        <div className="modal-dialog modal-dialog-centered" role="document">
+        <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
           <div className="modal-content">
             <div className="modal-header bg-info ">
               <h5
@@ -78,7 +75,7 @@ const SendEmailToAuthor = ({ emailAdress }) => {
               </h5>
             </div>
 
-            <div className="modal-body font-weight-bold p-3">
+            <div className="modal-body font-weight-bold p-3" >
               <form>
                 <div className="form-group row row">
                   <label className=" col-form-label col-sm-3 col-sm-3">
@@ -124,8 +121,9 @@ const SendEmailToAuthor = ({ emailAdress }) => {
                     className="form-control col-form-label col-sm-3 col-sm-8"
                     id="message-text"
                     name="message"
-                    initialvalue ={formData.message}
+                    initialvalue={formData.message}
                     onChange={handleInputChange}
+                    style={{ height: "200px", width: "400px" }}
                   ></textarea>
                 </div>
                 <div className="modal-footer">
@@ -134,7 +132,6 @@ const SendEmailToAuthor = ({ emailAdress }) => {
                     className="btn btn-primary"
                     onClick={handleSubmit}
                     data-dismiss="modal"
-                
                   >
                     Send
                   </button>

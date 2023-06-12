@@ -187,7 +187,7 @@ const ShowPassword = () => {
                 type="primary"
                 size={size}
               >
-                Forget Password
+                Forgot Password
               </Button>
             </Link>
             <br />
