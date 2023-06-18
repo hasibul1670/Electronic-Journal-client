@@ -1,17 +1,15 @@
-import { getAuth, signOut } from "firebase/auth";
-import React, { useState } from "react";
-import { useContext } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { getAuth } from "firebase/auth";
+import React, { useContext } from "react";
 import { Navigate } from "react-router";
-import { authorContext, loginUserContext } from "../../App";
-import app from "../LoginInfo/firebase.config";
 import { Link } from "react-router-dom";
+import { authorContext, loginUserContext } from "../../App";
 import useAdmin from "../../Hooks/useAdmin";
 import useReviewer from "../../Hooks/useReviewer";
+import app from "../LoginInfo/firebase.config";
 import { useSignOut } from "../LoginInfo/signout";
 const auth = getAuth(app);
 
-export let name ;
+export let name;
 
 const AuthorNav = () => {
   const [loginUserEmail] = useContext(loginUserContext);
@@ -19,27 +17,22 @@ const AuthorNav = () => {
   const [isReviewer] = useReviewer(loginUserEmail);
   const handleSignOut = useSignOut();
 
- const [author] = useContext(authorContext);
- const userEmail = loginUserEmail;
+  const [author] = useContext(authorContext);
+  const userEmail = loginUserEmail;
 
-
-
-
-for (let i = 0; i < author.length; i++) {
-  if (author[i].email === userEmail) {
-    const matchingObject = author[i];
-    name = matchingObject.authorName || matchingObject.reviewerName;
-    break;
+  for (let i = 0; i < author.length; i++) {
+    if (author[i].email === userEmail) {
+      const matchingObject = author[i];
+      name = matchingObject.authorName || matchingObject.reviewerName;
+      break;
+    }
   }
-}
-
-
 
   const signOutFunc = () => {
-    handleSignOut()
+    handleSignOut();
     Navigate("/login");
   };
-  const roleText = isAdmin ? 'Admin' : isReviewer ? 'Reviewer' : 'Author';
+  const roleText = isAdmin ? "Admin" : isReviewer ? "Reviewer" : "Author";
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-bg-color ">
@@ -62,13 +55,15 @@ for (let i = 0; i < author.length; i++) {
               </Link>
             </li>
 
-          
-{!isAdmin?
-            <li className="nav-item active">
-              <Link to="/submit" className="nav-link nav-text">
-                Submit a Manuscript
-              </Link>
-            </li> :" "}
+            {!isAdmin && !isReviewer ? (
+              <li className="nav-item active">
+                <Link to="/submit" className="nav-link nav-text">
+                  Submit a Manuscript
+                </Link>
+              </li>
+            ) : (
+              " "
+            )}
 
             {userEmail && (
               <li className="nav-item active">
@@ -86,10 +81,12 @@ for (let i = 0; i < author.length; i++) {
           </ul>
 
           <div className="form-inline my-2 my-lg-0">
-
-          <Link to="/dashboard" className="btn btn-secondary rounded-pill mr-2">
-    <h6 className="text-white">{roleText}</h6>
-  </Link>
+            <Link
+              to="/dashboard"
+              className="btn btn-secondary rounded-pill mr-2"
+            >
+              <h6 className="text-white">{roleText}</h6>
+            </Link>
 
             <Link
               to="/dashboard"

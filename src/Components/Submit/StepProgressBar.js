@@ -104,11 +104,7 @@ export default function HorizontalLinearStepper() {
       toast.success("data submitted succcessfully");
       console.log(" data submitted succcessfully");
       navigate("/SuccessSubmission");
-      Swal.fire({
-        icon: "success",
-        title: "Your submission has been successful",
-        text: "Thank you for submitting your Paper",
-      });
+   
     } catch (error) {
       console.error(error);
       toast.error("something went wrong!! Please try again");

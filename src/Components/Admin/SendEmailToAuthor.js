@@ -141,6 +141,8 @@ const SendEmailToAuthor = ({ emailAdress }) => {
           </div>
         </div>
       </div>
+
+      
     </div>
   );
 };
