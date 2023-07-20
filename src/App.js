@@ -32,6 +32,8 @@ import DashboardLayout from "./layout/DashboardLayout";
 import ExploreNavbar from "./layout/ExploreNavbar";
 import Main from "./layout/Main";
 import PrivateRoute from "./routes/PrivateRoute";
+import ResetPassword from "./Components/NewUser/ResetPassword";
+import { Toaster } from "react-hot-toast";
 
 export const editorContext = createContext();
 export const authorContext = createContext();
@@ -169,7 +171,8 @@ function App() {
 
     { path: "/login", element: <Login /> },
     { path: "/newuser", element: <NewUser /> },
-    { path: "/forgetPass", element: <ForgetPass /> },
+    { path: "/forgetpassword", element: <ForgetPass /> },
+    { path: "/reset-Password/:token", element: <ResetPassword /> },
     { path: "/mainmenu", element: <AuthorMainMenu /> },
 
     { path: "/test", element: <Test user={loginUserEmail} /> },
@@ -193,7 +196,9 @@ function App() {
           </reviewerContext.Provider>
         </authorContext.Provider>
       </userNameContext.Provider>
+      <Toaster/>
     </loginUserContext.Provider>
+ 
   );
 }
 

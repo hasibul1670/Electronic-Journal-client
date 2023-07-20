@@ -181,7 +181,7 @@ const ShowPassword = () => {
               </Button>
             </Link>
 
-            <Link to="/forgetpass">
+            <Link to="/forgetpassword">
               <Button
                 className="secondary-button font-weight-bold"
                 type="primary"
