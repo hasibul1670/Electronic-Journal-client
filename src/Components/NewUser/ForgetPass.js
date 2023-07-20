@@ -39,8 +39,7 @@ const ForgetPass = () => {
      
       if(passReset){
         setSuccess(<p className=' font-weight-bold text-danger'>Password Reset Email Send!!
-        Please! Check Your Email inbox/spam</p>) }
-      
+        Please! Check Your Email inbox/spam box</p>) } 
     }
   
     return (
