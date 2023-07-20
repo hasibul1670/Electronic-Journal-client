@@ -8,6 +8,7 @@ import {
 } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import app from "../LoginInfo/firebase.config";
 
 const auth = getAuth(app);
@@ -17,6 +18,8 @@ const NewUser = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
+
+  const [signiInError, setSignInError] = useState("");
 
   const [updateProfile] = useUpdateProfile(auth);
   const [signOut] = useSignOut(auth);
@@ -29,8 +32,6 @@ const NewUser = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  let signiInError;
-
   if (loading) {
     return (
       <div className="spinner-border m-5" role="status">
@@ -38,23 +39,17 @@ const NewUser = () => {
       </div>
     );
   }
-  if (error) {
-    signiInError = <p className="text-danger">{error?.message}</p>;
-  }
+
   if (user) {
     navigate("/verifyemail");
   }
 
   const onSubmit = async (data) => {
-    await createUserWithEmailAndPassword(data.email, data.password);
-    await sendEmailVerification(data.email);
-    await signOut(data.email);
-    await updateProfile({ displayName: data.displayName });
-
     const authorInfoInDb = {
       authorName: data.displayName,
       email: data.email,
       phone: data.phone,
+      password: data.password,
       postalCode: data.postalCode,
       authorPosition: data.position,
       field: data.feild,
@@ -72,7 +67,21 @@ const NewUser = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Hello", data);
+        if (data.status === 409) {
+          setSignInError(data.message);
+          Swal.fire({
+            icon: "error",
+            title: data.message,
+          });
+        }
+        if (data.status === 200) {
+          setSignInError(data.message);
+          Swal.fire({
+            icon: "success",
+            title: data.message,
+          });
+          navigate("/login");
+        }
       });
   };
   return (
@@ -302,7 +311,7 @@ const NewUser = () => {
         </a>
       </form>
 
-      {signiInError || success}
+      <p className="text-danger"> {signiInError || success} </p>
     </div>
   );
 };

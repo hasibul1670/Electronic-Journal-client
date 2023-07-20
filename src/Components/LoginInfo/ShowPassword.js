@@ -64,7 +64,7 @@ const ShowPassword = () => {
         console.log("Login successful", data.message);
       } else {
         Swal.fire({
-          position: "top-end",
+          position: "top-middle",
           icon: "error",
           title: data.message,
           showConfirmButton: false,

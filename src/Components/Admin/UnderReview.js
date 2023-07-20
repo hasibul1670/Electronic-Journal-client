@@ -1,11 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Table } from "react-bootstrap";
 import { useQuery } from "react-query";
-import { loginUserContext } from "../../App";
 import Loading from "../Shared/Loading";
 
 const UnderReview = () => {
-  const [loginUserEmail] = useContext(loginUserContext);
+  const loginUserEmail = localStorage.getItem("loginUserEmail");
 
   const {
     data: users = [],
@@ -23,6 +22,8 @@ const UnderReview = () => {
   if (isLoading) {
     return <Loading />;
   }
+
+  console.log("Hello", users);
 
   return (
     <div className="container-fluid p-4 ">
@@ -43,7 +44,7 @@ const UnderReview = () => {
             {users &&
               users?.map((item) => (
                 <tr key={item._id}>
-                  {!item.contentAbtract && item.assignReviewer && (
+                  {!item.contentAbtract && item.assignReviewer && item?.email === loginUserEmail && (
                     <>
                       <td>{item.email}</td>
                       <td>{item.articleType}</td>

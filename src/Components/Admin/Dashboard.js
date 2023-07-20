@@ -72,6 +72,7 @@ const Dashbord = () => {
   const [isDeleted, setIsDeleted] = useState(false);
 
   const handleDelete = (id) => {
+    console.log('Hello',`Delete ${id}`);
     axios
       .delete(`http://localhost:4000/submittedData/${id}`, {
         headers: {
@@ -80,6 +81,7 @@ const Dashbord = () => {
       })
       .then((response) => {
         setIsDeleted(response.data);
+        console.log('Hello',response.data);
         toast.success("Item deleted successfully!");
         setData(data.filter((data) => data._id !== id));
         refetch();

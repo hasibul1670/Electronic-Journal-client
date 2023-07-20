@@ -40,8 +40,7 @@ const AllUsers = () => {
             <th>User Name</th>
             <th>Email</th>
             <th>Institution Name</th>
-            <th>Admin</th>
-            <th>Delete User</th>
+            <th>Admin</th>   
           </tr>
         </thead>
         <tbody>
@@ -61,16 +60,7 @@ const AllUsers = () => {
                     </button>
                   )}
                 </td>
-                <td>
-                  {item?.role !== "admin" && (
-                    <button
-                      //   onClick={() => handleDelete(item._id)}
-                      className="btn btn-danger"
-                    >
-                      Delete
-                    </button>
-                  )}
-                </td>
+            
               </tr>
             ))}
         </tbody>
