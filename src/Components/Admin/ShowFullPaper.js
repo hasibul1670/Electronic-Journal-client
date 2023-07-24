@@ -210,7 +210,8 @@ const ShowFullPaper = () => {
             {isAdmin && (
               <Link className=" mt-4">
                 <SendEmailToAuthor
-                emailAdress= {data?.email}
+                  data={data}
+                 
                   submittedData={data?.articleId}
                   setSubmittedData={data?.articleId}
                 ></SendEmailToAuthor>
