@@ -18,6 +18,7 @@ const CommentTextArea = ({ handleRefetch }) => {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm();
 
   const handleReviewerComment = (data) => {
@@ -38,7 +39,6 @@ const CommentTextArea = ({ handleRefetch }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data?.lastErrorObject?.updatedExisting === true) {
           Swal.fire({
             icon: "success",
@@ -47,6 +47,7 @@ const CommentTextArea = ({ handleRefetch }) => {
           });
           handleRefetch();
           setReviewerComment("");
+          reset();
         } else {
           toast.error("Error Submitting Reviewer Comment");
           setReviewerComment("");
@@ -62,32 +63,32 @@ const CommentTextArea = ({ handleRefetch }) => {
     <div className="border border-primary p-4">
       <div className="mb-4">
         <label className="font-weight-bold text-info">
-          Content Asbtract Evaluation:
+          Article/Paper Asbtract Evaluation:
         </label>
         <textarea
           {...register("contentAbtract", { required: true })}
           className="form-control mt-3 "
           rows="4"
           name="contentAbtract"
-          placeholder="Content Asbtract Evaluation "
+          placeholder=".... "
         ></textarea>
 
         {errors.contentAbtract?.type === "required" && (
           <p className="text-danger" role="alert">
-            Content Abtract is required
+            Article/Paper Abtract is required
           </p>
         )}
       </div>
 
       <label className="font-weight-bold text-info">
-        Originality of Methodology:
+        Comment on Methodology:
       </label>
       <textarea
         {...register("methodOriginality", { required: true })}
         className="form-control mt-3 "
         rows="4"
         name="methodOriginality"
-        placeholder="Originality of Methodology"
+        placeholder="..."
       ></textarea>
       {errors.methodOriginality?.type === "required" && (
         <p className="text-danger" role="alert">
@@ -103,7 +104,7 @@ const CommentTextArea = ({ handleRefetch }) => {
         className="form-control mt-3"
         rows="4"
         name="experimentalResultOriginality"
-        placeholder="Originality of that Experimental Result"
+        placeholder="...."
       ></textarea>
       {errors.experimentalResultOriginality?.type === "required" && (
         <p className="text-danger" role="alert">
@@ -111,18 +112,18 @@ const CommentTextArea = ({ handleRefetch }) => {
         </p>
       )}
       <label className="font-weight-bold text-info">
-        Reference Originality :
+        Reference Authenticity :
       </label>
       <textarea
         {...register("referenceOriginality", { required: true })}
         className="form-control mt-3"
         rows="4"
         name="referenceOriginality"
-        placeholder="Reference Originality"
+        placeholder="...."
       ></textarea>
       {errors.referenceOriginality?.type === "required" && (
         <p className="text-danger" role="alert">
-          Reference Originality is required
+          Reference Authenticity is required
         </p>
       )}
 
@@ -134,7 +135,7 @@ const CommentTextArea = ({ handleRefetch }) => {
         className="form-control mt-3"
         rows="4"
         name="ethicalConsiderations"
-        placeholder="Ethical Considerations"
+        placeholder="...."
       ></textarea>
       {errors.ethicalConsiderations?.type === "required" && (
         <p className="text-danger" role="alert">
@@ -146,14 +147,14 @@ const CommentTextArea = ({ handleRefetch }) => {
         className="btn btn-primary mt-3"
         onClick={handleSubmit(handleReviewerComment)}
       >
-        Submit
+        Submit Review
       </button>
       <Link to="/dashboard">
-              <button className="btn ml-2 mt-3 btn-info">
-                <FontAwesomeIcon icon={faArrowAltCircleLeft} />
-                Back To Dashboard
-              </button>
-            </Link>
+        <button className="btn ml-2 mt-3 btn-info">
+          <FontAwesomeIcon icon={faArrowAltCircleLeft} />
+          Back To Dashboard
+        </button>
+      </Link>
 
       <Toaster />
     </div>

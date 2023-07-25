@@ -81,7 +81,7 @@ const AssignedReview = () => {
 
             <td>
               <Link to={`/dashboard/WriteReviewComment/${item._id}`}>
-                <button onClick={() => item._id} className="btn btn-danger">
+                <button onClick={() => item._id} className="btn btn-info">
                   Review 
                 </button>
               </Link>

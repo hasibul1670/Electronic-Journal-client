@@ -72,7 +72,7 @@ const Dashbord = () => {
   const [isDeleted, setIsDeleted] = useState(false);
 
   const handleDelete = (id) => {
-    console.log('Hello',`Delete ${id}`);
+    console.log("Hello", `Delete ${id}`);
     axios
       .delete(`http://localhost:4000/submittedData/${id}`, {
         headers: {
@@ -81,7 +81,7 @@ const Dashbord = () => {
       })
       .then((response) => {
         setIsDeleted(response.data);
-        console.log('Hello',response.data);
+        console.log("Hello", response.data);
         toast.success("Item deleted successfully!");
         setData(data.filter((data) => data._id !== id));
         refetch();
@@ -123,11 +123,12 @@ const Dashbord = () => {
             <Table striped bordered hover>
               <thead>
                 <tr>
-                  <th>Username</th>
-                  <th>Article Type</th>
+                  <th style={{ width: "15px" }}>Username</th>
+                  
                   <th>Title of Article</th>
                   <th>Assigned Reviewer</th>
                   <th>Status</th>
+        
                   {isAdmin && (
                     <>
                       {" "}
@@ -148,16 +149,16 @@ const Dashbord = () => {
                           <Link to={`/dashboard/ShowFullPaper/${item._id}`}>
                             <button
                               onClick={() => item._id}
-                              className="btn btn-info"
+                              className="btn btn-sm btn-primary"
                             >
                               Show Full Paper{" "}
-                              <FontAwesomeIcon icon={faCircleInfo} />
+                        
                             </button>
                           </Link>
                         </td>
 
-                        <td>{item.articleType}</td>
-                        <td>{item.title}</td>
+                      
+                        <td className="text-sm">{item.title}</td>
 
                         <td>
                           {" "}
@@ -172,17 +173,17 @@ const Dashbord = () => {
 
                         <td>
                           {item.contentAbtract ? (
-                            <h5 className="text-success font-weight-bold">
-                              Review Done😍
-                            </h5>
+                            <h6 className="text-success font-weight-bold">
+                              Review Done
+                            </h6>
                           ) : !item.contentAbtract && !item.assignReviewer ? (
-                            <h5 className="text-info font-weight-bold">
+                            <h6 className="text-info font-weight-bold">
                               Awaiting Reviewer Assignment
-                            </h5>
+                            </h6>
                           ) : !item.contentAbtract && item.assignReviewer ? (
-                            <h5 className="text-danger font-weight-bold">
+                            <h6 className="text-danger font-weight-bold">
                               Review pending
-                            </h5>
+                            </h6>
                           ) : (
                             item.assignReviewer
                           )}
@@ -197,7 +198,7 @@ const Dashbord = () => {
                         <td>
                           <button
                             onClick={() => handleDelete(item._id)}
-                            className="btn btn-danger"
+                            className="btn btn-info"
                           >
                             Delete
                           </button>{" "}
@@ -215,11 +216,11 @@ const Dashbord = () => {
                               className="btn btn-info"
                             >
                               Show Full Paper{" "}
-                              <FontAwesomeIcon icon={faCircleInfo} />
+                         
                             </button>
                           </Link>
                         </td>
-                        <td>{item.articleType}</td>
+                    
                         <td>{item.title}</td>
 
                         <td>
@@ -235,17 +236,17 @@ const Dashbord = () => {
 
                         <td>
                           {item.contentAbtract ? (
-                            <h5 className="text-success font-weight-bold">
-                              Review Done😍
-                            </h5>
+                            <h6 className="text-success font-weight-bold">
+                              Review Done
+                            </h6>
                           ) : !item.contentAbtract && !item.assignReviewer ? (
-                            <h5 className="text-danger font-weight-bold">
+                            <h6 className="text-info font-weight-bold">
                               Awaiting Reviewer Assignment
-                            </h5>
+                            </h6>
                           ) : !item.contentAbtract && item.assignReviewer ? (
-                            <h5 className="text-danger font-weight-bold">
+                            <h6 className="text-danger font-weight-bold">
                               Review pending
-                            </h5>
+                            </h6>
                           ) : (
                             item.assignReviewer
                           )}
@@ -265,7 +266,6 @@ const Dashbord = () => {
           </Card>
         );
       case "AddReviewer":
-        // eslint-disable-next-line no-lone-blocks
         return (
           <Card>
             <Card.Body>
@@ -333,6 +333,7 @@ const Dashbord = () => {
                           <Nav.Item>
                             <Nav.Link
                               href="#"
+                              className="font-weight-bold"
                               active={activeMenu === "dashboard"}
                               onClick={() => handleMenuClick("dashboard")}
                             >
@@ -340,21 +341,25 @@ const Dashbord = () => {
                             </Nav.Link>
                           </Nav.Item>
 
-                          <Nav.Item>
-                            <Nav.Link
-                              href="#"
-                              active={activeMenu === "UnderReview"}
-                              onClick={() => handleMenuClick("UnderReview")}
-                            >
-                              Under Review
-                            </Nav.Link>
-                          </Nav.Item>
+                          {isAdmin ? null : (
+                            <Nav.Item>
+                              <Nav.Link
+                                href="#"
+                                className="font-weight-bold"
+                                active={activeMenu === "UnderReview"}
+                                onClick={() => handleMenuClick("UnderReview")}
+                              >
+                                Under Review
+                              </Nav.Link>
+                            </Nav.Item>
+                          )}
                         </>
                       )}
                       {isAdmin && (
                         <Nav.Item>
                           <Nav.Link
                             href="#"
+                            className="font-weight-bold"
                             active={activeMenu === "All Users"}
                             onClick={() => handleMenuClick("All Users")}
                           >
@@ -366,6 +371,7 @@ const Dashbord = () => {
                       {isAdmin && (
                         <Nav.Item>
                           <Nav.Link
+                            className="font-weight-bold"
                             href="#"
                             active={activeMenu === "AddReviewer"}
                             onClick={() => handleMenuClick("AddReviewer")}
@@ -377,6 +383,7 @@ const Dashbord = () => {
                       {isReviewer && (
                         <Nav.Item>
                           <Nav.Link
+                            className="font-weight-bold"
                             href="#"
                             active={activeMenu === "AssignedReviewer"}
                             onClick={() => handleMenuClick("AssignedReviewer")}
@@ -389,6 +396,7 @@ const Dashbord = () => {
                       <Nav.Item>
                         <Nav.Link
                           href="#"
+                          className="font-weight-bold"
                           active={activeMenu === "updateProfile"}
                           onClick={() => handleMenuClick("updateProfile")}
                         >

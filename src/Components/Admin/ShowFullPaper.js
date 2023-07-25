@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { useQuery } from "react-query";
 import { Link, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -30,6 +30,9 @@ const ShowFullPaper = () => {
     );
     return response.data;
   });
+  const pdfBuffer = data?.file?.data;
+  console.log("Hello", pdfBuffer);
+
   useEffect(() => {
     setData(users);
   }, [users]);
@@ -75,100 +78,101 @@ const ShowFullPaper = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container p-5">
       <div className=" mt-5 p-5 border border-primary text- mb-4">
         <hr />
-        <h4 className="text-info font-weight-bold">
+        <h6 className="text-info font-weight-bold">
           Submitted Article Section {data.name}
-        </h4>
+        </h6>
         <hr />
-        <h4>
+        <h6>
           <strong className="text-info"> Article ID:</strong> {data?.articleId}
-        </h4>
-        <h4>
+        </h6>
+        <h6>
           <strong className="text-info"> Submission Date :</strong>{" "}
           {data?.submissionDate}
-        </h4>
-        <h4>
+        </h6>
+        <h6>
           <strong className="text-info"> Submission Time:</strong>{" "}
           {data?.submissionTime}
-        </h4>
+        </h6>
         <hr />
         <hr />
         <p></p>
-        <h4>
+        <h6>
           <strong className="text-primary"> Article Type:</strong>{" "}
           {data.articleType}
-        </h4>
+        </h6>
         <p></p>
-        <h4>
+        <h6>
           <strong className="text-primary">Title:</strong> {data.title}
-        </h4>
+        </h6>
         <p></p>
-        <h4>
+        <h6>
           <strong className="text-primary">File:</strong>{" "}
           <Link className="text-danger" to={data.url} target="_blank">
             Click to Open
             <FontAwesomeIcon icon={faFileArrowDown} />{" "}
           </Link>
-        </h4>
+        </h6>
+
         <p></p>
-        <h4>
+        <h6>
           <strong className="text-primary">Abstract:</strong> {data.abstract}
-        </h4>
+        </h6>
         <p></p>
-        <h4>
+        <h6>
           <strong className="text-primary">Keyword:</strong> {data.keyword}
-        </h4>
+        </h6>
         <p></p>
-        <h4>
+        <h6>
           <strong className="text-primary">Author Comment:</strong>{" "}
           {data.comment}
-        </h4>
+        </h6>
         <p></p>
         <hr />
-        <h4 className="text-info font-weight-bold">Reviewer Comment Section</h4>
+        <h6 className="text-info font-weight-bold">Reviewer Comment Section</h6>
         <hr />
         {data.contentAbtract && (
           <>
-            <h4>
+            <h6>
               <strong>Content Abtract:</strong> {data.contentAbtract}
-            </h4>
+            </h6>
             <p></p>
-            <h4>
+            <h6>
               <strong>Method Originality:</strong> {data.methodOriginality}
-            </h4>
+            </h6>
             <p></p>
-            <h4>
+            <h6>
               <strong>Experimental Result Originality:</strong>{" "}
               {data.experimentalResultOriginality}
-            </h4>
+            </h6>
             <p></p>
-            <h4>
+            <h6>
               <strong>Reference Originality:</strong>{" "}
               {data.referenceOriginality}
-            </h4>
+            </h6>
             <p></p>
-            <h4>
+            <h6>
               <strong>Ethical Considerations:</strong>{" "}
               {data.ethicalConsiderations}
-            </h4>
+            </h6>
           </>
         )}
 
         <div>
           <hr />
-          <h4 className="text-info mt-2 font-weight-bold">
+          <h6 className="text-info mt-2 font-weight-bold">
             Editor Comment Section
-          </h4>
+          </h6>
           <hr />
           {/* editor comment show case area */}
 
           {data.editorComment && (
             <>
-              <h4>
+              <h6>
                 <strong>Editor Comment:</strong> {data.editorComment}
-              </h4>
+              </h6>
               <p></p>
             </>
           )}
@@ -194,16 +198,18 @@ const ShowFullPaper = () => {
                   Editor Comment...
                 </p>
               )}
-              <Toaster />
             </div>
           )}
           <div className="d-flex">
-            <button
-              className="btn btn-primary mr-2 mt-4"
-              onClick={handleSubmit(handleEditorComment)}
-            >
-              Submit
-            </button>
+            {isAdmin && (
+              <button
+                className="btn btn-primary mr-2 mt-4"
+                onClick={handleSubmit(handleEditorComment)}
+              >
+                Editor Comment Submit
+              </button>
+            )}
+
             <Link to="/dashboard" className="btn ml-2 mt-4 btn-info">
               🔙 Back To Dashboard
             </Link>
@@ -211,7 +217,6 @@ const ShowFullPaper = () => {
               <Link className=" mt-4">
                 <SendEmailToAuthor
                   data={data}
-                 
                   submittedData={data?.articleId}
                   setSubmittedData={data?.articleId}
                 ></SendEmailToAuthor>
