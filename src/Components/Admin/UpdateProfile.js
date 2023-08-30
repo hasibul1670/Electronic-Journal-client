@@ -124,7 +124,7 @@ const UpdateProfile = ({ user }) => {
             src={photo || "https://i.pravatar.cc/300"}
             alt="Imafgfgge"
             className="rounded-circle img-fluid mb-5 mx-auto mx-md-0"
-            style={{ maxWidth: "300px", height: "auto" }}
+            style={{ width: "300px", height: "300px" }}
           />
         </div>
 

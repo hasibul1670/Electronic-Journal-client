@@ -10,6 +10,7 @@ import { useSignOut } from "../LoginInfo/signout";
 const auth = getAuth(app);
 
 export let name;
+export let photo;
 
 const AuthorNav = () => {
   const [loginUserEmail] = useContext(loginUserContext);
@@ -24,6 +25,7 @@ const AuthorNav = () => {
     if (author[i].email === userEmail) {
       const matchingObject = author[i];
       name = matchingObject.authorName || matchingObject.reviewerName;
+      photo = matchingObject.profilePic || matchingObject.profilePic;
       break;
     }
   }

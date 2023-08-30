@@ -29,14 +29,12 @@ const WriteReviewComment = () => {
   return (
     <div className="container p-5">
       <div className=" mt-5 p-5 border border-primary text- mb-4">
-      
         <h6 className="text-danger font-weight-bold">
           Submitted Article Section {data.name}
         </h6>
-      
-{/* Submitted Article Section */}
+
+        {/* Submitted Article Section */}
         <div className="border p-2 border-height border-danger rounded-lg">
-       
           <h6>
             <strong className="text-info"> Article ID:</strong>{" "}
             {data?.articleId}
@@ -83,42 +81,51 @@ const WriteReviewComment = () => {
           </h6>
         </div>
 
- 
-        <h6 className="text-info  font-weight-bold mt-4">Reviewer Comment Section</h6>
-    
+        <h6 className="text-info  font-weight-bold mt-4">
+          Reviewer Comment Section
+        </h6>
+
         {/* Reviewer Comment Section */}
 
-
         <div className="border p-2 border-height border-success rounded-lg">
-        {data.contentAbtract && (
-          <>
-            <h6>
-              <strong className="text-info">Content Abtract:</strong> {data.contentAbtract}
-            </h6>
-            <p></p>
-            <h6>
-              <strong className="text-info">Method Originality:</strong> {data.methodOriginality}
-            </h6>
-            <p></p>
-            <h6>
-              <strong className="text-info">Experimental Result Originality:</strong>{" "}
-              {data.experimentalResultOriginality}
-            </h6>
-            <p></p>
-            <h6>
-              <strong className="text-info">Reference Originality:</strong>{" "}
-              {data.referenceOriginality}
-            </h6>
-            <p></p>
-            <h6>
-              <strong className="text-info">Ethical Considerations:</strong>{" "}
-              {data.ethicalConsiderations}
-            </h6>
-          </>
-        )}
+          {data.contentAbtract ? (
+            <>
+              <h6>
+                <strong className="text-info">Content Abtract:</strong>{" "}
+                {data.contentAbtract}
+              </h6>
+      
+              <h6 >
+                <strong className="text-info">Method Originality:</strong>{" "}
+                {data.methodOriginality}
+              </h6>
+          
+              <h6>
+                <strong className="text-info">
+                  Experimental Result Originality:
+                </strong>{" "}
+                {data.experimentalResultOriginality}
+              </h6>
+           
+              <h6>
+                <strong className="text-info">Reference Originality:</strong>{" "}
+                {data.referenceOriginality}
+              </h6>
+          
+              <h6>
+                <strong className="text-info">Ethical Considerations:</strong>{" "}
+                {data.ethicalConsiderations}
+              </h6>
+            </>
+          ) : (
+            <div>
+              <h6 className="text-danger  font-weight-bold">
+                {" "}
+                The review for this has not been conducted yet.
+              </h6>
+            </div>
+          )}
         </div>
-
-
       </div>
 
       <div>

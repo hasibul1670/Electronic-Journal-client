@@ -16,7 +16,7 @@ import useReviewer from "../../Hooks/useReviewer";
 import app from "../LoginInfo/firebase.config";
 import AddReviewer from "../Reviewer/AddReviewer";
 import AssignedReview from "../Reviewer/AssignedReview";
-import { name } from "../Shared/AuthorNav";
+import { name, photo } from "../Shared/AuthorNav";
 import Loading from "./../Shared/Loading";
 import AllUsers from "./AllUsers";
 import UnderReview from "./UnderReview";
@@ -98,7 +98,7 @@ const Dashbord = () => {
   useEffect(() => {
     async function waitAndSetMenu() {
       await new Promise((resolve) => setTimeout(resolve, 1));
-      setActiveMenu(isReviewer ? "AssignedReviewer" : "dashboard");
+      setActiveMenu(isReviewer ? "Assigned Reviewer" : "dashboard");
       setallLoading(false);
     }
 
@@ -290,8 +290,6 @@ const Dashbord = () => {
           </Card>
         );
       case "update Profile":
-        // eslint-disable-next-line no-lone-blocks
-
         return (
           <Card>
             <Card.Body>
@@ -307,6 +305,7 @@ const Dashbord = () => {
   if (isLoading) {
     return <Loading />;
   }
+
   if (isAdminLoading || isReviewerLoading || loading) {
     <p>
       <Loading />
@@ -321,105 +320,116 @@ const Dashbord = () => {
         </p>
       ) : (
         <div>
-        <Container fluid className="mt-5 p-2">
-          <Row>
-            <Col md={12} lg={3}>
-              <Card>
-                <Card.Body>
-                  <Card.Title className="font-weight-bold">{name}</Card.Title>
-                  <Nav variant="pills" className="flex-column">
-                    {isReviewer ? null : (
-                      <>
-                        <Nav.Item>
-                          <Nav.Link
-                            href="#"
-                            className="font-weight-bold"
-                            active={activeMenu === "dashboard"}
-                            onClick={() => handleMenuClick("dashboard")}
-                          >
-                            {isAdmin ? "Total Submission" : "Your Submission"}
-                          </Nav.Link>
-                        </Nav.Item>
-      
-                        {isAdmin ? null : (
+          <Container fluid className="mt-5 p-2">
+            <Row>
+              <Col md={12} lg={3}>
+                <Card>
+                  <Card.Body >
+                    <Card.Title className="font-weight-bold d-flex justify-content-center">{name}</Card.Title>
+
+                    <div className="d-flex justify-content-center">
+                      <div className="rounded-circle overflow-hidden">
+                        <img
+                          src={photo}
+                          alt="Imafgfgge"
+                          className="rounded-circle img-fluid mb-2"
+                          style={{ width: "100px", height: "100px" }}
+                        />
+                      </div>
+                    </div>
+
+                    <Nav variant="pills" className="flex-column">
+                      {isReviewer ? null : (
+                        <>
                           <Nav.Item>
                             <Nav.Link
                               href="#"
                               className="font-weight-bold"
-                              active={activeMenu === "UnderReview"}
-                              onClick={() => handleMenuClick("UnderReview")}
+                              active={activeMenu === "dashboard"}
+                              onClick={() => handleMenuClick("dashboard")}
                             >
-                              Under Review
+                              {isAdmin ? "Total Submission" : "Your Submission"}
                             </Nav.Link>
                           </Nav.Item>
-                        )}
-                      </>
-                    )}
-                    {isAdmin && (
+
+                          {isAdmin ? null : (
+                            <Nav.Item>
+                              <Nav.Link
+                                href="#"
+                                className="font-weight-bold"
+                                active={activeMenu === "UnderReview"}
+                                onClick={() => handleMenuClick("UnderReview")}
+                              >
+                                Under Review
+                              </Nav.Link>
+                            </Nav.Item>
+                          )}
+                        </>
+                      )}
+                      {isAdmin && (
+                        <Nav.Item>
+                          <Nav.Link
+                            href="#"
+                            className="font-weight-bold"
+                            active={activeMenu === "All Users"}
+                            onClick={() => handleMenuClick("All Users")}
+                          >
+                            All Users
+                          </Nav.Link>
+                        </Nav.Item>
+                      )}
+
+                      {isAdmin && (
+                        <Nav.Item>
+                          <Nav.Link
+                            className="font-weight-bold"
+                            href="#"
+                            active={activeMenu === "AddReviewer"}
+                            onClick={() => handleMenuClick("AddReviewer")}
+                          >
+                            Add Reviewer
+                          </Nav.Link>
+                        </Nav.Item>
+                      )}
+                      {isReviewer && (
+                        <Nav.Item>
+                          <Nav.Link
+                            className="font-weight-bold"
+                            href="#"
+                            active={activeMenu === "Assigned Reviewer"}
+                            onClick={() => handleMenuClick("Assigned Reviewer")}
+                          >
+                            Assigned Paper
+                          </Nav.Link>
+                        </Nav.Item>
+                      )}
+
                       <Nav.Item>
                         <Nav.Link
                           href="#"
                           className="font-weight-bold"
-                          active={activeMenu === "All Users"}
-                          onClick={() => handleMenuClick("All Users")}
+                          active={activeMenu === "updateProfile"}
+                          onClick={() => handleMenuClick("update Profile")}
                         >
-                          All Users
+                          Update Your Profile
                         </Nav.Link>
                       </Nav.Item>
-                    )}
-      
-                    {isAdmin && (
-                      <Nav.Item>
-                        <Nav.Link
-                          className="font-weight-bold"
-                          href="#"
-                          active={activeMenu === "AddReviewer"}
-                          onClick={() => handleMenuClick("AddReviewer")}
-                        >
-                          Add Reviewer
-                        </Nav.Link>
-                      </Nav.Item>
-                    )}
-                    {isReviewer && (
-                      <Nav.Item>
-                        <Nav.Link
-                          className="font-weight-bold"
-                          href="#"
-                          active={activeMenu === "AssignedReviewer"}
-                          onClick={() => handleMenuClick("Assigned Reviewer")}
-                        >
-                          Assigned Review
-                        </Nav.Link>
-                      </Nav.Item>
-                    )}
-      
-                    <Nav.Item>
-                      <Nav.Link
-                        href="#"
-                        className="font-weight-bold"
-                        active={activeMenu === "updateProfile"}
-                        onClick={() => handleMenuClick("update Profile")}
-                      >
-                        Update Your Profile
-                      </Nav.Link>
-                    </Nav.Item>
-                  </Nav>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col md={12} lg={9}>
-              <Card>
-                <Card.Body>
-                  <Card.Title>{activeMenu.toUpperCase()}</Card.Title>
-                  {renderContent()}
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-        <ToastContainer />
-      </div>
-      
+                    </Nav>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col md={12} lg={9}>
+                <Card>
+                  <Card.Body>
+                    <Card.Title>{activeMenu.toUpperCase()}</Card.Title>
+                    {renderContent()}
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+          <ToastContainer />
+        </div>
       )}
     </>
   );

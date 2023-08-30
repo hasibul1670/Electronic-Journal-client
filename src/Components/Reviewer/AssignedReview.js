@@ -42,7 +42,6 @@ const AssignedReview = () => {
       });
   }, [loginUserEmail]);
 
-  const [isDeleted, setIsDeleted] = useState(false);
 
   const [activeMenu, setActiveMenu] = useState("dashboard");
 

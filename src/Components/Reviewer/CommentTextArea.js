@@ -61,11 +61,12 @@ const CommentTextArea = ({ handleRefetch }) => {
 
   return (
     <div className="border border-primary p-4">
-        <label className="font-weight-bold text-danger">
-          Write Your Review Here based on that fields...
-        </label>
+      <label className="font-weight-bold text-danger">
+        Write Your Review Here based on that fields...
+      </label>
+      <hr/>
 
-      <div className="mb-4">
+      <div className="mb-2">
         <label className="font-weight-bold text-info">
           Article/Paper Asbtract Evaluation:
         </label>
@@ -84,68 +85,77 @@ const CommentTextArea = ({ handleRefetch }) => {
         )}
       </div>
 
-      <label className="font-weight-bold text-info">
-        Comment on Methodology:
-      </label>
-      <textarea
-        {...register("methodOriginality", { required: true })}
-        className="form-control mt-3 "
-        rows="4"
-        name="methodOriginality"
-        placeholder="..."
-      ></textarea>
-      {errors.methodOriginality?.type === "required" && (
-        <p className="text-danger" role="alert">
-          Originality of Methodology
-        </p>
-      )}
-
-      <label className="font-weight-bold text-info">
-        Originality of that Experimental Result :
-      </label>
-      <textarea
-        {...register("experimentalResultOriginality", { required: true })}
-        className="form-control mt-3"
-        rows="4"
-        name="experimentalResultOriginality"
-        placeholder="...."
-      ></textarea>
-      {errors.experimentalResultOriginality?.type === "required" && (
-        <p className="text-danger" role="alert">
-          Originality of that Experimental Result is required
-        </p>
-      )}
-      <label className="font-weight-bold text-info">
-        Reference Authenticity :
-      </label>
-      <textarea
-        {...register("referenceOriginality", { required: true })}
-        className="form-control mt-3"
-        rows="4"
-        name="referenceOriginality"
-        placeholder="...."
-      ></textarea>
-      {errors.referenceOriginality?.type === "required" && (
-        <p className="text-danger" role="alert">
-          Reference Authenticity is required
-        </p>
-      )}
-
-      <label className="font-weight-bold text-info">
-        Ethical Considerations :
-      </label>
-      <textarea
-        {...register("ethicalConsiderations", { required: true })}
-        className="form-control mt-3"
-        rows="4"
-        name="ethicalConsiderations"
-        placeholder="...."
-      ></textarea>
-      {errors.ethicalConsiderations?.type === "required" && (
-        <p className="text-danger" role="alert">
-          Ethical Considerations is required
-        </p>
-      )}
+      <div className="mb-2">
+        {" "}
+        <label className="font-weight-bold text-info">
+          Comment on Methodology:
+        </label>
+        <textarea
+          {...register("methodOriginality", { required: true })}
+          className="form-control mt-3 "
+          rows="4"
+          name="methodOriginality"
+          placeholder="..."
+        ></textarea>
+        {errors.methodOriginality?.type === "required" && (
+          <p className="text-danger" role="alert">
+            Originality of Methodology
+          </p>
+        )}
+      </div>
+      <div className="mb-2">
+        {" "}
+        <label className="font-weight-bold text-info">
+          Originality of that Experimental Result :
+        </label>
+        <textarea
+          {...register("experimentalResultOriginality", { required: true })}
+          className="form-control mt-3"
+          rows="4"
+          name="experimentalResultOriginality"
+          placeholder="...."
+        ></textarea>
+        {errors.experimentalResultOriginality?.type === "required" && (
+          <p className="text-danger" role="alert">
+            Originality of that Experimental Result is required
+          </p>
+        )}
+      </div>
+      <div className="mb-2">
+        {" "}
+        <label className="font-weight-bold text-info">
+          Reference Authenticity :
+        </label>
+        <textarea
+          {...register("referenceOriginality", { required: true })}
+          className="form-control mt-3"
+          rows="4"
+          name="referenceOriginality"
+          placeholder="...."
+        ></textarea>
+        {errors.referenceOriginality?.type === "required" && (
+          <p className="text-danger" role="alert">
+            Reference Authenticity is required
+          </p>
+        )}
+      </div>
+      <div className="mb-1">
+        <label className="font-weight-bold text-info">
+          Ethical Considerations :
+        </label>
+        <textarea
+          {...register("ethicalConsiderations", { required: true })}
+          className="form-control mt-3"
+          rows="4"
+          name="ethicalConsiderations"
+          placeholder="...."
+        ></textarea>
+        {errors.ethicalConsiderations?.type === "required" && (
+          <p className="text-danger" role="alert">
+            Ethical Considerations is required
+          </p>
+        )}
+      </div>
 
       <button
         className="btn btn-primary mt-3"
