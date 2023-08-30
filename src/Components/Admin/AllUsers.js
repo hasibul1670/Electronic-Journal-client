@@ -33,39 +33,40 @@ const AllUsers = () => {
   };
 
   return (
-    <div>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>User Name</th>
-            <th>Email</th>
-            <th>Institution Name</th>
-            <th>Admin</th>   
+<div>
+  <Table striped bordered hover responsive>
+    <thead>
+      <tr>
+        <th>User Name</th>
+        <th>Email</th>
+        <th>Institution Name</th>
+        <th>Admin</th>
+      </tr>
+    </thead>
+    <tbody>
+      {users &&
+        users?.map((item) => (
+          <tr key={item._id}>
+            <td>{item?.authorName}</td>
+            <td>{item?.email}</td>
+            <td>{item?.institutionName}</td>
+            <td>
+              {item?.role !== "admin" && (
+                <button
+                  onClick={() => handleAdmin(item._id)}
+                  className="btn btn-primary"
+                >
+                  Make Admin
+                </button>
+              )}
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          {users &&
-            users?.map((item) => (
-              <tr key={item._id}>
-                <td>{item?.authorName}</td>
-                <td>{item?.email}</td>
-                <td>{item?.institutionName}</td>
-                <td>
-                  {item?.role !== "admin" && (
-                    <button
-                      onClick={() => handleAdmin(item._id)}
-                      className="btn btn-primary"
-                    >
-                      Make Admin
-                    </button>
-                  )}
-                </td>
-            
-              </tr>
-            ))}
-        </tbody>
-      </Table>
-    </div>
+        ))}
+    </tbody>
+  </Table>
+</div>
+
+
   );
 };
 

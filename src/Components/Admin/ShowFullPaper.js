@@ -31,7 +31,7 @@ const ShowFullPaper = () => {
     return response.data;
   });
   const pdfBuffer = data?.file?.data;
-  console.log("Hello", pdfBuffer);
+ 
 
   useEffect(() => {
     setData(users);
@@ -85,6 +85,7 @@ const ShowFullPaper = () => {
           Submitted Article Section {data.name}
         </h6>
         <hr />
+        <div className="border border-danger"></div>
         <h6>
           <strong className="text-info"> Article ID:</strong> {data?.articleId}
         </h6>
@@ -117,7 +118,7 @@ const ShowFullPaper = () => {
         </h6>
 
         <p></p>
-        <h6>
+        <h6 className="text-justify">
           <strong className="text-primary">Abstract:</strong> {data.abstract}
         </h6>
         <p></p>
@@ -125,7 +126,7 @@ const ShowFullPaper = () => {
           <strong className="text-primary">Keyword:</strong> {data.keyword}
         </h6>
         <p></p>
-        <h6>
+        <h6  className="text-justify">
           <strong className="text-primary">Author Comment:</strong>{" "}
           {data.comment}
         </h6>
@@ -135,25 +136,25 @@ const ShowFullPaper = () => {
         <hr />
         {data.contentAbtract && (
           <>
-            <h6>
-              <strong>Content Abtract:</strong> {data.contentAbtract}
+            <h6  className="text-justify">
+              <strong>Orginality of the Article:</strong> {data.contentAbtract}
             </h6>
             <p></p>
-            <h6>
-              <strong>Method Originality:</strong> {data.methodOriginality}
+            <h6  className="text-justify">
+              <strong>Contribution of Author :</strong> {data.methodOriginality}
             </h6>
             <p></p>
-            <h6>
-              <strong>Experimental Result Originality:</strong>{" "}
+            <h6  className="text-justify">
+              <strong> Comments on Experimental Result:</strong>{" "}
               {data.experimentalResultOriginality}
             </h6>
             <p></p>
-            <h6>
+            <h6  className="text-justify">
               <strong>Reference Originality:</strong>{" "}
               {data.referenceOriginality}
             </h6>
             <p></p>
-            <h6>
+            <h6  className="text-justify">
               <strong>Ethical Considerations:</strong>{" "}
               {data.ethicalConsiderations}
             </h6>
@@ -170,7 +171,7 @@ const ShowFullPaper = () => {
 
           {data.editorComment && (
             <>
-              <h6>
+              <h6  className="text-justify">
                 <strong>Editor Comment:</strong> {data.editorComment}
               </h6>
               <p></p>

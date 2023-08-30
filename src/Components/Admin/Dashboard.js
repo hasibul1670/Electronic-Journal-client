@@ -120,15 +120,15 @@ const Dashbord = () => {
       case "dashboard":
         return (
           <div className="">
-            <Table striped bordered hover>
+            <Table striped bordered hover responsive>
               <thead>
                 <tr>
                   <th style={{ width: "15px" }}>Username</th>
-                  
+
                   <th>Title of Article</th>
                   <th>Assigned Reviewer</th>
                   <th>Status</th>
-        
+
                   {isAdmin && (
                     <>
                       {" "}
@@ -152,12 +152,10 @@ const Dashbord = () => {
                               className="btn btn-sm btn-primary"
                             >
                               Show Full Paper{" "}
-                        
                             </button>
                           </Link>
                         </td>
 
-                      
                         <td className="text-sm">{item.title}</td>
 
                         <td>
@@ -216,11 +214,10 @@ const Dashbord = () => {
                               className="btn btn-info"
                             >
                               Show Full Paper{" "}
-                         
                             </button>
                           </Link>
                         </td>
-                    
+
                         <td>{item.title}</td>
 
                         <td>
@@ -286,13 +283,13 @@ const Dashbord = () => {
           </Card>
         );
 
-      case "AssignedReviewer":
+      case "Assigned Reviewer":
         return (
           <Card>
             <AssignedReview />
           </Card>
         );
-      case "updateProfile":
+      case "update Profile":
         // eslint-disable-next-line no-lone-blocks
 
         return (
@@ -317,108 +314,112 @@ const Dashbord = () => {
   }
   return (
     <>
-      {allLoading ? (
-        <h3>loading .....</h3>
+      {isAdminLoading || isReviewerLoading || loading ? (
+        <p>
+          {" "}
+          <Loading />
+        </p>
       ) : (
         <div>
-          <Container fluid className="mt-5 p-2">
-            <Row>
-              <Col md={2}>
-                <Card>
-                  <Card.Body>
-                    <Card.Title className="font-weight-bold">{name}</Card.Title>
-                    <Nav variant="pills" className="flex-column">
-                      {isReviewer ? null : (
-                        <>
+        <Container fluid className="mt-5 p-2">
+          <Row>
+            <Col md={12} lg={3}>
+              <Card>
+                <Card.Body>
+                  <Card.Title className="font-weight-bold">{name}</Card.Title>
+                  <Nav variant="pills" className="flex-column">
+                    {isReviewer ? null : (
+                      <>
+                        <Nav.Item>
+                          <Nav.Link
+                            href="#"
+                            className="font-weight-bold"
+                            active={activeMenu === "dashboard"}
+                            onClick={() => handleMenuClick("dashboard")}
+                          >
+                            {isAdmin ? "Total Submission" : "Your Submission"}
+                          </Nav.Link>
+                        </Nav.Item>
+      
+                        {isAdmin ? null : (
                           <Nav.Item>
                             <Nav.Link
                               href="#"
                               className="font-weight-bold"
-                              active={activeMenu === "dashboard"}
-                              onClick={() => handleMenuClick("dashboard")}
+                              active={activeMenu === "UnderReview"}
+                              onClick={() => handleMenuClick("UnderReview")}
                             >
-                              {isAdmin ? "Total Submission" : "Your Submission"}
+                              Under Review
                             </Nav.Link>
                           </Nav.Item>
-
-                          {isAdmin ? null : (
-                            <Nav.Item>
-                              <Nav.Link
-                                href="#"
-                                className="font-weight-bold"
-                                active={activeMenu === "UnderReview"}
-                                onClick={() => handleMenuClick("UnderReview")}
-                              >
-                                Under Review
-                              </Nav.Link>
-                            </Nav.Item>
-                          )}
-                        </>
-                      )}
-                      {isAdmin && (
-                        <Nav.Item>
-                          <Nav.Link
-                            href="#"
-                            className="font-weight-bold"
-                            active={activeMenu === "All Users"}
-                            onClick={() => handleMenuClick("All Users")}
-                          >
-                            All Users
-                          </Nav.Link>
-                        </Nav.Item>
-                      )}
-
-                      {isAdmin && (
-                        <Nav.Item>
-                          <Nav.Link
-                            className="font-weight-bold"
-                            href="#"
-                            active={activeMenu === "AddReviewer"}
-                            onClick={() => handleMenuClick("AddReviewer")}
-                          >
-                            Add Reviewer
-                          </Nav.Link>
-                        </Nav.Item>
-                      )}
-                      {isReviewer && (
-                        <Nav.Item>
-                          <Nav.Link
-                            className="font-weight-bold"
-                            href="#"
-                            active={activeMenu === "AssignedReviewer"}
-                            onClick={() => handleMenuClick("AssignedReviewer")}
-                          >
-                            Assigned Review
-                          </Nav.Link>
-                        </Nav.Item>
-                      )}
-
+                        )}
+                      </>
+                    )}
+                    {isAdmin && (
                       <Nav.Item>
                         <Nav.Link
                           href="#"
                           className="font-weight-bold"
-                          active={activeMenu === "updateProfile"}
-                          onClick={() => handleMenuClick("updateProfile")}
+                          active={activeMenu === "All Users"}
+                          onClick={() => handleMenuClick("All Users")}
                         >
-                          Update Your Profile
+                          All Users
                         </Nav.Link>
                       </Nav.Item>
-                    </Nav>
-                  </Card.Body>
-                </Card>
-              </Col>
-              <Col md={10}>
-                <Card>
-                  <Card.Body>
-                    <Card.Title>{activeMenu.toUpperCase()}</Card.Title>
-                    {renderContent()}
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
-          </Container>
-          <ToastContainer />
-        </div>
+                    )}
+      
+                    {isAdmin && (
+                      <Nav.Item>
+                        <Nav.Link
+                          className="font-weight-bold"
+                          href="#"
+                          active={activeMenu === "AddReviewer"}
+                          onClick={() => handleMenuClick("AddReviewer")}
+                        >
+                          Add Reviewer
+                        </Nav.Link>
+                      </Nav.Item>
+                    )}
+                    {isReviewer && (
+                      <Nav.Item>
+                        <Nav.Link
+                          className="font-weight-bold"
+                          href="#"
+                          active={activeMenu === "AssignedReviewer"}
+                          onClick={() => handleMenuClick("Assigned Reviewer")}
+                        >
+                          Assigned Review
+                        </Nav.Link>
+                      </Nav.Item>
+                    )}
+      
+                    <Nav.Item>
+                      <Nav.Link
+                        href="#"
+                        className="font-weight-bold"
+                        active={activeMenu === "updateProfile"}
+                        onClick={() => handleMenuClick("update Profile")}
+                      >
+                        Update Your Profile
+                      </Nav.Link>
+                    </Nav.Item>
+                  </Nav>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={12} lg={9}>
+              <Card>
+                <Card.Body>
+                  <Card.Title>{activeMenu.toUpperCase()}</Card.Title>
+                  {renderContent()}
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+        <ToastContainer />
+      </div>
+      
       )}
     </>
   );

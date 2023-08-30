@@ -15,7 +15,7 @@ const useReviewer = (email) => {
     }
   }, [email]);
 
-  return [isReviewer, setIsReviewerLoading];
+  return [isReviewer,isReviewerLoading,setIsReviewerLoading];
 };
 
 export default useReviewer;

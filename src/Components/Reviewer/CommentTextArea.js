@@ -61,6 +61,10 @@ const CommentTextArea = ({ handleRefetch }) => {
 
   return (
     <div className="border border-primary p-4">
+        <label className="font-weight-bold text-danger">
+          Write Your Review Here based on that fields...
+        </label>
+
       <div className="mb-4">
         <label className="font-weight-bold text-info">
           Article/Paper Asbtract Evaluation:

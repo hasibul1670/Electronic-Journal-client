@@ -68,11 +68,11 @@ const Footer = () => {
         <div className="text-center p-3">
           <a
             className="text-white"
-            href="https://hasibul-islam365.netlify.app/"
+            href="/"
           >
-            Hasibul Islam Initiative.{" "}
+                International Journal of Computer and Electronics Engineering 
           </a>
-          <span className="text-danger">©2022 All Rights Reserved</span>
+          <span className="text-danger"> © 2023 All Rights Reserved</span>
         </div>
       </div>
     </div>

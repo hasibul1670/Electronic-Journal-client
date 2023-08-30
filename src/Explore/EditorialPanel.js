@@ -68,8 +68,8 @@ const EditorialPanel = () => {
                 >
                   <img
                     className="card-img-top"
-                    style={{ width: "10rem", marginBottom: "1rem" }}
-                    src={card?.imageSrc}
+                    style={{ width: "200px",height:"200px", marginBottom: "1rem" }}
+                    src={card?.imageSrc || "https://i.pravatar.cc/300"}
                     alt="Card cap"
                   />
 

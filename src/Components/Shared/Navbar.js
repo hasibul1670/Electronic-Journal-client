@@ -38,12 +38,15 @@ function Navbar() {
           <Link to="/" className="navbar-brand">
             <img
             className="img-fluid "
-              style={{ height: "100px", width: "350px" }}
+              style={{ height: "80px", width: "350px" }}
               src={logo}
               alt=""
               srcet=""
-            />{" "}
+            />
+      
+            
           </Link>
+         
         </div>
 
         <div className="  p-2">
@@ -56,7 +59,7 @@ function Navbar() {
               Sign Out{" "}
             </Link>
           ) : (
-            <Link to="/login" className="btn  btn-danger rounded-pill">
+            <Link to="/login" className="btn m-2 btn-danger rounded-pill">
               Login{" "}
             </Link>
           )}
@@ -64,12 +67,12 @@ function Navbar() {
           {loginUserEmail ? (
             <Link
               to="/submit/mainmenu"
-              className="btn  btn-primary rounded-pill mr-2"
+              className="btn  btn-primary m-2 rounded-pill mr-2"
             >
               {name}
             </Link>
           ) : (
-            <Link to="/login" className="btn  btn-primary rounded-pill mr-2">
+            <Link to="/login" className="btn m-2  btn-primary rounded-pill mr-2">
               Guest
             </Link>
           )}

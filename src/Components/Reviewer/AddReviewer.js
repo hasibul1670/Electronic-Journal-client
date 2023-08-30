@@ -65,7 +65,7 @@ const AddReviewer = () => {
 
         <div className="form-group row">
           <label className="col-md-2 " htmlFor="email">
-            Email Address :
+            Email:
           </label>
           <input
             type="email"

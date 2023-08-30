@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from "react";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { useQuery } from "react-query";
 import { loginUserContext } from "../../App";
 import Loading from "../Shared/Loading";
@@ -105,124 +105,138 @@ const UpdateProfile = ({ user }) => {
     }
   };
 
+  const [editMode, setEditMode] = useState(false);
+
+  // Function to toggle edit mode
+  const toggleEditMode = () => {
+    setEditMode(!editMode);
+  };
+
   if (isLoading) {
     return <Loading />;
   }
 
   return (
-    <div className="container-fluid w-75 lightgray p-4">
-      <div className="w-100 d-flex  ">
-        <div>
-          {" "}
+    <div className="container-fluid w-100 lightgray p-4">
+      <div className="row">
+        <div className="col-md-6 col-12 d-flex align-items-center">
           <img
-            src={photo}
+            src={photo || "https://i.pravatar.cc/300"}
             alt="Imafgfgge"
-            className="rounded-circle img-fluid mb-5"
-            style={{ width: "300px", height: "300px" }}
+            className="rounded-circle img-fluid mb-5 mx-auto mx-md-0"
+            style={{ maxWidth: "300px", height: "auto" }}
           />
         </div>
 
-        <div className="mt-4 ml-5">
-          <h2>Profile Information </h2>
+        <div className="col-md-6 col-12 mt-4">
+          <h2>Profile Information</h2>
           <hr />
           {users &&
-  users?.map((user) => (
-    <div key={user?._id} className="">
-      <h5>Name: {user?.authorName || user?.reviewerName}</h5>
-      {user?.phone && <h5>Phone: {user?.phone}</h5>}
-      <h5>Institution Name: {user?.institutionName}</h5>
-      <h5>Department: {user?.department}</h5>
-      {user?.city && <h5>City: {user?.city}</h5>}
-    
-    </div>
-  ))}
+            users?.map((user) => (
+              <div key={user?._id} className="mb-4">
+                <h5>Name: {user?.authorName || user?.reviewerName}</h5>
+                {user?.phone && <h5>Phone: {user?.phone}</h5>}
+                <h5>Institution Name: {user?.institutionName}</h5>
+                <h5>Department: {user?.department}</h5>
+                {user?.city && <h5>City: {user?.city}</h5>}
+              </div>
+            ))}
 
+          <button className="btn btn-danger m-2" onClick={toggleEditMode}>
+            {editMode ? "Close" : "Edit"}
+          </button>
         </div>
-    
       </div>
 
-<div className="row justify-content-center">
-{users &&
-        users?.map((user) => (
-          <div key={user?._id} className="">
-            <Form
-              className="font-weight-bold text-primary"
-              name="basic"
-              initialValues={{ remember: true }}
-              onValuesChange={handleValuesChange}
-            >
-              {" "}
-              <Form.Item
-                label="Name"
-                name="authorName"
-                initialValue={user?.authorName || user?.reviewerName}
-              >
-                <Input />
-              </Form.Item>
-              {user?.phone && (
-                <Form.Item
-                  label="Phone"
-                  name="phone"
-                  initialValue={user?.phone}
+      <div className="row justify-content-center">
+        {users &&
+          users?.map((user) => (
+            <div key={user?._id} className="col-md-6 col-12 mb-4">
+              {editMode ? (
+                <Form
+                  className="font-weight-bold text-primary"
+                  name="basic"
+                  initialValues={{ remember: true }}
+                  onValuesChange={handleValuesChange}
                 >
-                  <Input />
-                </Form.Item>
-              )}
-              <Form.Item
-                label="Institution Name"
-                name="institutionName"
-                initialValue={user?.institutionName}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Department"
-                name="department"
-                initialValue={user?.department}
-              >
-                <Input />
-              </Form.Item>
-              {user?.city && (
-                <Form.Item label="City" name="city" initialValue={user?.city}>
-                  <Input />
-                </Form.Item>
-              )}
-              {user?.postalCode && (
-                <Form.Item
-                  label="Postal Code"
-                  name="postalCode"
-                  initialValue={user?.postalCode}
-                >
-                  <Input />
-                </Form.Item>
-              )}
-              <Form.Item label="Upload Your Profile Photo">
-                <Input
-                  type="file"
-                  name="imageUrl"
-                  {...register("image")}
-                  className="input input-bordered w-full max-w-xs"
-                  onChange={uploadImage}
-                />
-              </Form.Item>
-              {isSaving && imageUrl && (
-                <>
-                  <p>Preview Your Uploaded Photo</p>
-                  <img src={imageUrl} alt="Uploaded" />
-                </>
-              )}
-              <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
-                <Button type="primary" onClick={handleSubmit}>
-                  Save
-                </Button>
-              </Form.Item>
-            </Form>
-          </div>
-        ))}
-</div>
-    
-
-      <Toaster />
+                  <Form.Item
+                    label="Name"
+                    name="authorName"
+                    initialValue={user?.authorName || user?.reviewerName}
+                  >
+                    <Input />
+                  </Form.Item>
+                  {user?.phone && (
+                    <Form.Item
+                      label="Phone"
+                      name="phone"
+                      initialValue={user?.phone}
+                    >
+                      <Input />
+                    </Form.Item>
+                  )}
+                  <Form.Item
+                    label="Institution Name"
+                    name="institutionName"
+                    initialValue={user?.institutionName}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    label="Department"
+                    name="department"
+                    initialValue={user?.department}
+                  >
+                    <Input />
+                  </Form.Item>
+                  {user?.city && (
+                    <Form.Item
+                      label="City"
+                      name="city"
+                      initialValue={user?.city}
+                    >
+                      <Input />
+                    </Form.Item>
+                  )}
+                  {user?.postalCode && (
+                    <Form.Item
+                      label="Postal Code"
+                      name="postalCode"
+                      initialValue={user?.postalCode}
+                    >
+                      <Input />
+                    </Form.Item>
+                  )}
+                  <Form.Item label="Upload Your Profile Photo">
+                    <Input
+                      type="file"
+                      name="imageUrl"
+                      {...register("image")}
+                      className="input input-bordered w-full max-w-xs"
+                      onChange={uploadImage}
+                    />
+                  </Form.Item>
+                  {isSaving && imageUrl && (
+                    <>
+                      <p>Preview Your Uploaded Photo</p>
+                      <img
+                        src={imageUrl}
+                        className="mb-5"
+                        alt="Uploaded"
+                        style={{ width: "200px", height: "200px" }}
+                      />
+                    </>
+                  )}
+                  <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
+                    <Button type="primary" onClick={handleSubmit}>
+                      Save
+                    </Button>
+                  </Form.Item>
+                </Form>
+              ) : null}
+            </div>
+          ))}
+      </div>
     </div>
   );
 };
