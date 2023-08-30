@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { useState } from "react";
 import Swal from "sweetalert2";
+import Loading from "../Shared/Loading";
 
 const SendEmailToAuthor = ({ data }) => {
-  const email = data?.email
+  const email = data?.email;
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: data?.email,
     subject: "",
@@ -27,7 +29,7 @@ const SendEmailToAuthor = ({ data }) => {
       ...formData,
       ...options,
     };
-
+    setLoading(true);
     axios
       .post("http://localhost:4000/send-email", dataToSend)
       .then((response) => {
@@ -37,6 +39,12 @@ const SendEmailToAuthor = ({ data }) => {
           title: `Email is Sent to ${email}`,
           //text: "Thank you for submitting your Paper",
         });
+        setFormData({
+          ...formData,
+          subject: "", // Clear subject
+          message: "", // Clear message
+        });
+        setLoading(false);
       })
       .catch((error) => {
         console.error(error);
@@ -52,16 +60,20 @@ const SendEmailToAuthor = ({ data }) => {
   };
   return (
     <div className="container">
-      <button
-        type="button"
-        className="btn btn-success"
-        data-toggle="modal"
-        data-target="#exampleModal"
-        data-whatever="@mdo"
-        onClick={openModal}
-      >
-        Send a Feedback to Author ✉️
-      </button>
+      {loading ? (
+        <Loading />
+      ) : (
+        <button
+          type="button"
+          className="btn btn-success"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-whatever="@mdo"
+          onClick={openModal}
+        >
+          Send a Feedback to Author ✉️
+        </button>
+      )}
 
       <div
         className="modal fade bd-example-modal-lg"

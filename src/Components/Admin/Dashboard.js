@@ -1,5 +1,3 @@
-import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { loginUserContext } from "../../App";
@@ -187,11 +185,13 @@ const Dashbord = () => {
                           )}
                         </td>
                         <td>
-                          {" "}
-                          <Link to={`/dashboard/fulldetails/${item._id}`}>
-                            Assign Reviewer{" "}
-                            <FontAwesomeIcon icon={faCircleInfo} />{" "}
-                          </Link>{" "}
+                          {item.assignReviewer ? (
+                            <p className="text-danger">Reviewer Assigned</p>
+                          ) : (
+                            <Link to={`/dashboard/fulldetails/${item._id}`}>
+                              Assign Reviewer
+                            </Link>
+                          )}
                         </td>
                         <td>
                           <button
@@ -254,7 +254,7 @@ const Dashbord = () => {
             </Table>
           </div>
         );
-      case "UnderReview":
+      case "Under Review":
         return (
           <Card>
             <Card.Body>
@@ -262,7 +262,7 @@ const Dashbord = () => {
             </Card.Body>
           </Card>
         );
-      case "AddReviewer":
+      case "Add Reviewer":
         return (
           <Card>
             <Card.Body>
@@ -289,7 +289,7 @@ const Dashbord = () => {
             <AssignedReview />
           </Card>
         );
-      case "update Profile":
+      case "Update Profile":
         return (
           <Card>
             <Card.Body>
@@ -324,8 +324,10 @@ const Dashbord = () => {
             <Row>
               <Col md={12} lg={3}>
                 <Card>
-                  <Card.Body >
-                    <Card.Title className="font-weight-bold d-flex justify-content-center">{name}</Card.Title>
+                  <Card.Body>
+                    <Card.Title className="font-weight-bold d-flex justify-content-center">
+                      {name}
+                    </Card.Title>
 
                     <div className="d-flex justify-content-center">
                       <div className="rounded-circle overflow-hidden">
@@ -357,8 +359,8 @@ const Dashbord = () => {
                               <Nav.Link
                                 href="#"
                                 className="font-weight-bold"
-                                active={activeMenu === "UnderReview"}
-                                onClick={() => handleMenuClick("UnderReview")}
+                                active={activeMenu === "Under Review"}
+                                onClick={() => handleMenuClick("Under Review")}
                               >
                                 Under Review
                               </Nav.Link>
@@ -384,8 +386,8 @@ const Dashbord = () => {
                           <Nav.Link
                             className="font-weight-bold"
                             href="#"
-                            active={activeMenu === "AddReviewer"}
-                            onClick={() => handleMenuClick("AddReviewer")}
+                            active={activeMenu === "Add Reviewer"}
+                            onClick={() => handleMenuClick("Add Reviewer")}
                           >
                             Add Reviewer
                           </Nav.Link>
@@ -408,8 +410,8 @@ const Dashbord = () => {
                         <Nav.Link
                           href="#"
                           className="font-weight-bold"
-                          active={activeMenu === "updateProfile"}
-                          onClick={() => handleMenuClick("update Profile")}
+                          active={activeMenu === "Update Profile"}
+                          onClick={() => handleMenuClick("Update Profile")}
                         >
                           Update Your Profile
                         </Nav.Link>

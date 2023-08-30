@@ -31,7 +31,6 @@ const ShowFullPaper = () => {
     return response.data;
   });
   const pdfBuffer = data?.file?.data;
- 
 
   useEffect(() => {
     setData(users);
@@ -80,150 +79,153 @@ const ShowFullPaper = () => {
   return (
     <div className="container p-5">
       <div className=" mt-5 p-5 border border-primary text- mb-4">
-        <hr />
         <h6 className="text-info font-weight-bold">
           Submitted Article Section {data.name}
         </h6>
-        <hr />
-        <div className="border border-danger"></div>
-        <h6>
-          <strong className="text-info"> Article ID:</strong> {data?.articleId}
-        </h6>
-        <h6>
-          <strong className="text-info"> Submission Date :</strong>{" "}
-          {data?.submissionDate}
-        </h6>
-        <h6>
-          <strong className="text-info"> Submission Time:</strong>{" "}
-          {data?.submissionTime}
-        </h6>
-        <hr />
-        <hr />
-        <p></p>
-        <h6>
-          <strong className="text-primary"> Article Type:</strong>{" "}
-          {data.articleType}
-        </h6>
-        <p></p>
-        <h6>
-          <strong className="text-primary">Title:</strong> {data.title}
-        </h6>
-        <p></p>
-        <h6>
-          <strong className="text-primary">File:</strong>{" "}
-          <Link className="text-danger" to={data.url} target="_blank">
-            Click to Open
-            <FontAwesomeIcon icon={faFileArrowDown} />{" "}
-          </Link>
-        </h6>
-
-        <p></p>
-        <h6 className="text-justify">
-          <strong className="text-primary">Abstract:</strong> {data.abstract}
-        </h6>
-        <p></p>
-        <h6>
-          <strong className="text-primary">Keyword:</strong> {data.keyword}
-        </h6>
-        <p></p>
-        <h6  className="text-justify">
-          <strong className="text-primary">Author Comment:</strong>{" "}
-          {data.comment}
-        </h6>
-        <p></p>
-        <hr />
-        <h6 className="text-info font-weight-bold">Reviewer Comment Section</h6>
-        <hr />
-        {data.contentAbtract && (
-          <>
-            <h6  className="text-justify">
-              <strong>Orginality of the Article:</strong> {data.contentAbtract}
-            </h6>
-            <p></p>
-            <h6  className="text-justify">
-              <strong>Contribution of Author :</strong> {data.methodOriginality}
-            </h6>
-            <p></p>
-            <h6  className="text-justify">
-              <strong> Comments on Experimental Result:</strong>{" "}
-              {data.experimentalResultOriginality}
-            </h6>
-            <p></p>
-            <h6  className="text-justify">
-              <strong>Reference Originality:</strong>{" "}
-              {data.referenceOriginality}
-            </h6>
-            <p></p>
-            <h6  className="text-justify">
-              <strong>Ethical Considerations:</strong>{" "}
-              {data.ethicalConsiderations}
-            </h6>
-          </>
-        )}
-
-        <div>
-          <hr />
-          <h6 className="text-info mt-2 font-weight-bold">
-            Editor Comment Section
+        <div className="border p-2 mb-3 border-height border-danger rounded-lg">
+          <h6>
+            <strong className="text-info"> Article ID:</strong>{" "}
+            {data?.articleId}
+          </h6>
+          <h6>
+            <strong className="text-info"> Submission Date :</strong>{" "}
+            {data?.submissionDate}
+          </h6>
+          <h6>
+            <strong className="text-info"> Submission Time:</strong>{" "}
+            {data?.submissionTime}
           </h6>
           <hr />
-          {/* editor comment show case area */}
+          <hr />
+          <p></p>
+          <h6>
+            <strong className="text-primary"> Article Type:</strong>{" "}
+            {data.articleType}
+          </h6>
+          <p></p>
+          <h6>
+            <strong className="text-primary">Title:</strong> {data.title}
+          </h6>
+          <p></p>
+          <h6>
+            <strong className="text-primary">File:</strong>{" "}
+            <Link className="text-danger" to={data.url} target="_blank">
+              Click to Open
+              <FontAwesomeIcon icon={faFileArrowDown} />{" "}
+            </Link>
+          </h6>
 
-          {data.editorComment && (
+          <h6 className="text-justify">
+            <strong className="text-primary">Abstract:</strong> {data.abstract}
+          </h6>
+
+          <h6>
+            <strong className="text-primary">Keyword:</strong> {data.keyword}
+          </h6>
+
+          <h6 className="text-justify">
+            <strong className="text-primary">Author Comment:</strong>{" "}
+            {data.comment}
+          </h6>
+        </div>
+        {/* Reviewer Comment Section */}
+        <h6 className="text-info font-weight-bold">Reviewer Comment Section</h6>
+
+        <div className="border p-2 mb-3 border-height border-danger rounded-lg">
+          {data.contentAbtract && (
             <>
-              <h6  className="text-justify">
-                <strong>Editor Comment:</strong> {data.editorComment}
+              <h6 className="text-justify">
+                <strong>Orginality of the Article:</strong>{" "}
+                {data.contentAbtract}
+              </h6>
+              <p></p>
+              <h6 className="text-justify">
+                <strong>Contribution of Author :</strong>{" "}
+                {data.methodOriginality}
+              </h6>
+              <p></p>
+              <h6 className="text-justify">
+                <strong> Comments on Experimental Result:</strong>{" "}
+                {data.experimentalResultOriginality}
+              </h6>
+              <p></p>
+              <h6 className="text-justify">
+                <strong>Reference Originality:</strong>{" "}
+                {data.referenceOriginality}
+              </h6>
+              <p></p>
+              <h6 className="text-justify">
+                <strong>Ethical Considerations:</strong>{" "}
+                {data.ethicalConsiderations}
+              </h6>
+            </>
+          )}
+        </div>
+
+        {/* editor comment show case area */}
+
+        <h6 className="text-success  mt-2 font-weight-bold">
+          Editor Comment Section
+        </h6>
+        <div className="border p-2 mb-4 border-height border-danger rounded-lg">
+          {data.editorComment ? (
+            <>
+              <h6 className="text-justify">
+                <strong className="text-success ">Editor Comment:</strong> {data.editorComment}
               </h6>
               <p></p>
             </>
+          ) : (
+            <h6 className="text-danger  font-weight-bold">
+              {" "}
+              Editor Comment has not been conducted yet.
+            </h6>
           )}
+        </div>
 
-          {/* editor  comment section */}
+        {/* editor  comment section */}
 
-          {isAdmin && (
-            <div className="border border-primary p-4">
-              <label className="font-weight-bold text-info">
-                Editor Comment Area
-              </label>
-              <textarea
-                {...register("editorComment", { required: true })}
-                className="form-control mt-3 "
-                rows="4"
-                value={editorComment}
-                onChange={(e) => setEditorComment(e.target.value)}
-                name="editorComment"
-                placeholder=" Editor Comment here...."
-              ></textarea>
-              {errors.methodOriginality?.type === "required" && (
-                <p className="text-danger" role="alert">
-                  Editor Comment...
-                </p>
-              )}
-            </div>
-          )}
-          <div className="d-flex">
-            {isAdmin && (
-              <button
-                className="btn btn-primary mr-2 mt-4"
-                onClick={handleSubmit(handleEditorComment)}
-              >
-                Editor Comment Submit
-              </button>
-            )}
-
-            <Link to="/dashboard" className="btn ml-2 mt-4 btn-info">
-              🔙 Back To Dashboard
-            </Link>
-            {isAdmin && (
-              <Link className=" mt-4">
-                <SendEmailToAuthor
-                  data={data}
-                  submittedData={data?.articleId}
-                  setSubmittedData={data?.articleId}
-                ></SendEmailToAuthor>
-              </Link>
+        {isAdmin && (
+          <div className="border border-primary p-4">
+    
+            <textarea
+              {...register("editorComment", { required: true })}
+              className="form-control mt-3 "
+              rows="4"
+              value={editorComment}
+              onChange={(e) => setEditorComment(e.target.value)}
+              name="editorComment"
+              placeholder=" Editor Comment here...."
+            ></textarea>
+            {errors.methodOriginality?.type === "required" && (
+              <p className="text-danger" role="alert">
+                Editor Comment...
+              </p>
             )}
           </div>
+        )}
+        <div className="d-flex">
+          {isAdmin && (
+            <button
+              className="btn btn-primary mr-2 mt-4"
+              onClick={handleSubmit(handleEditorComment)}
+            >
+              Editor Comment Submit
+            </button>
+          )}
+
+          <Link to="/dashboard" className="btn ml-2 mt-4 btn-info">
+            🔙 Back To Dashboard
+          </Link>
+          {isAdmin && (
+            <Link className=" mt-4">
+              <SendEmailToAuthor
+                data={data}
+                submittedData={data?.articleId}
+                setSubmittedData={data?.articleId}
+              ></SendEmailToAuthor>
+            </Link>
+          )}
         </div>
       </div>
     </div>
