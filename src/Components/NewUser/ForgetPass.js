@@ -1,15 +1,13 @@
 /* eslint-disable no-const-assign */
 import axios from "axios";
-import { getAuth } from "firebase/auth";
 import React, { useState } from "react";
-
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
-import app from "../LoginInfo/firebase.config";
-const auth = getAuth(app);
+import Loading from "../Shared/Loading";
 
 const ForgetPass = () => {
+  const [loading, setLoading] = useState(false);
   const {
     register,
     formState: { errors },
@@ -22,6 +20,7 @@ const ForgetPass = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
+    setLoading(true);
     try {
       const result = await axios.post("http://localhost:4000/forget-password", {
         email: data.email,
@@ -38,9 +37,8 @@ const ForgetPass = () => {
           icon: "error",
           title: result?.data.message,
         });
-        setError(result?.data.message)
+        setError(result?.data.message);
       }
-
     } catch (error) {
       setError = (
         <p className="font-weight-bold text-danger">
@@ -48,7 +46,9 @@ const ForgetPass = () => {
         </p>
       );
       setSuccess(null);
+      setLoading(false);
     }
+    setLoading(false);
   };
 
   return (
@@ -85,13 +85,18 @@ const ForgetPass = () => {
           />
           <p className="text-danger">{errors.email?.message}</p>
         </div>
-        <button
-          onSubmit={handleSubmit(onSubmit)}
-          type="submit"
-          className="btn ml-3 btn-primary rounded-pill"
-        >
-          Reset Your Password
-        </button>
+
+        {loading ? (
+          <Loading />
+        ) : (
+          <button
+            onSubmit={handleSubmit(onSubmit)}
+            type="submit"
+            className="btn ml-3 btn-primary rounded-pill"
+          >
+            Reset Your Password
+          </button>
+        )}
 
         <a
           className="btn ml-3 btn-secondary rounded-pill"
@@ -99,7 +104,7 @@ const ForgetPass = () => {
           role="button"
         >
           Go to Login Page
-        </a >
+        </a>
         <div className="text-danger mt-2 font-bold">
           {success && <div>{success}</div>}
 

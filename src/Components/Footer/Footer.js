@@ -33,7 +33,7 @@ const Footer = () => {
                   </li>
 
                   <li>
-                    <a href="#!" className="text-white">
+                    <a href="explore/contactus" className="text-white">
                       Contact Us
                     </a>
                   </li>

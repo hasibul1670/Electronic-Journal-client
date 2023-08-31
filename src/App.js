@@ -1,7 +1,9 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
+import ActivateUser from "./Components/ActivateUser/ActivateUser";
 import Dashbord from "./Components/Admin/Dashboard";
 import FullDetails from "./Components/Admin/FullDetails";
 import ShowFullPaper from "./Components/Admin/ShowFullPaper";
@@ -9,6 +11,7 @@ import Header from "./Components/Header/Header";
 import Login from "./Components/LoginInfo/Login";
 import ForgetPass from "./Components/NewUser/ForgetPass";
 import NewUser from "./Components/NewUser/NewUser";
+import ResetPassword from "./Components/NewUser/ResetPassword";
 import VerifyEmail from "./Components/NewUser/VerifyEmail";
 import WriteReviewComment from "./Components/Reviewer/WriteReviewComment";
 import AboutUs from "./Components/Shared/AboutUs";
@@ -32,8 +35,6 @@ import DashboardLayout from "./layout/DashboardLayout";
 import ExploreNavbar from "./layout/ExploreNavbar";
 import Main from "./layout/Main";
 import PrivateRoute from "./routes/PrivateRoute";
-import ResetPassword from "./Components/NewUser/ResetPassword";
-import { Toaster } from "react-hot-toast";
 
 export const editorContext = createContext();
 export const authorContext = createContext();
@@ -112,6 +113,7 @@ function App() {
         { path: "/openaccess", element: <OpenAccess /> },
         { path: "/about", element: <AboutUs /> },
         { path: "/help", element: <Help /> },
+        { path: "/users/activate/:token", element: <ActivateUser /> },
         { path: "*", element: <Nomatch /> },
       ],
     },
@@ -196,9 +198,8 @@ function App() {
           </reviewerContext.Provider>
         </authorContext.Provider>
       </userNameContext.Provider>
-      <Toaster/>
+      <Toaster />
     </loginUserContext.Provider>
- 
   );
 }
 

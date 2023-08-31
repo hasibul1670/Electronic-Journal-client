@@ -9,7 +9,6 @@ export const useSignOut = () => {
     setLoginUserEmail(null);
     localStorage.removeItem("loginUserEmail");
     navigate("/login");
-    console.log("logout successful", loginUserEmail);
   };
 
   return handleSignOut;

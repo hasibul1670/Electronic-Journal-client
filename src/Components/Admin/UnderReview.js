@@ -23,7 +23,7 @@ const UnderReview = () => {
     return <Loading />;
   }
 
-  console.log("Hello", users);
+
 
   return (
     <div className="container-fluid p-4 ">

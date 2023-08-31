@@ -61,7 +61,6 @@ const ShowPassword = () => {
         const userEmail = data.user.email;
         setLoginUserEmail(userEmail);
         localStorage.setItem("loginUserEmail", userEmail);
-        console.log("Login successful", data.message);
       } else {
         Swal.fire({
           position: "top-middle",

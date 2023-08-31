@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { Link } from 'react-router-dom';
 const LoginNav = () => {
@@ -16,27 +17,15 @@ const LoginNav = () => {
         <a className="nav-link nav-text" href="/">Home</a>
       </li>
 
-      <li className="nav-item active">
-        <a className="nav-link nav-text" href="#About">Journals</a>
-      </li>
-    
-      <li className="nav-right mr-3 ">
-          <Link to="/Service" className="nav-link nav-text active">Books</Link>
-            </li>
-            <li className="nav-right mr-3 ">        
-          <a className="nav-link active nav-text">Major Reference Works</a>
+         
+            <li className="nav-right mr-3 ">
+          <a  className="nav-link active nav-text" href="/openaccess">Open Access</a>
             </li>
             <li className="nav-right mr-3 ">
-          <a className="nav-link active nav-text">Resources For Partners</a>
+          <a className="nav-link active nav-text" href="/about">About Us</a>
             </li>
             <li className="nav-right mr-3 ">
-          <a className="nav-link active nav-text">Open Access</a>
-            </li>
-            <li className="nav-right mr-3 ">
-          <a className="nav-link active nav-text">About Us</a>
-            </li>
-            <li className="nav-right mr-3 ">
-          <a className="nav-link active nav-text" >Help</a>
+          <a className="nav-link active nav-text"  href='/help'>Help</a>
             </li>
       
    

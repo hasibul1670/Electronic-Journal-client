@@ -15,7 +15,6 @@ const ReviewerList = (props) => {
 
   const handleReviewer = (name, email, id) => {
     setSelectedReviewer([...selectedReviewer, { name, email }]);
-        console.log("Hello", selectedReviewer);
     setDisabledButtons((prevState) => ({
       ...prevState,
       [id]: true, // set the value for the clicked button's id to true

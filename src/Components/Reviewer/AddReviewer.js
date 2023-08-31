@@ -31,7 +31,7 @@ const AddReviewer = () => {
       .then((res) => res.json())
       .then((data) => {
         toast.success("Reviewer added successfully");
-        console.log("Hello", data);
+     
       });
   };
 

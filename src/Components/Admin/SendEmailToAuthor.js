@@ -33,7 +33,6 @@ const SendEmailToAuthor = ({ data }) => {
     axios
       .post("http://localhost:4000/send-email", dataToSend)
       .then((response) => {
-        console.log(response.data);
         Swal.fire({
           icon: "success",
           title: `Email is Sent to ${email}`,

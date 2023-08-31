@@ -28,21 +28,23 @@ const ManuscriptData = ({ data, setData }) => {
           Manuscript Data
         </legend>
 
-        <div className="p-4">
-          <div  onClick={() => handleToggle("title")}
-             style={{
-                transition: "background-color 1s"
-              }}
+        {/* title */}
+        <div className="p-4 border border-danger  mb-2 ">
+          <div
+            onClick={() => handleToggle("title")}
+            style={{
+              transition: "background-color 1s",
+            }}
             className={`d-flex p-1 align-items-center toggle-icon text-white ${
               isExpanded.title ? "bg-info" : "bg-secondary"
             }`}
           >
-            <div  >
+            <div>
               <FontAwesomeIcon icon={isExpanded.title ? faMinus : faPlus} />
             </div>
-            
+
             <h5 className="ml-1 toggle-label" htmlFor="title">
-              Title
+              Title (required)
             </h5>
           </div>
           <p></p>
@@ -52,30 +54,30 @@ const ManuscriptData = ({ data, setData }) => {
               name="title"
               value={data.title}
               onChange={handleChange}
-              className={`form-control custom-textarea ${isExpanded.title ? 'textarea-animation' : ''} `}
+              className={`form-control custom-textarea ${
+                isExpanded.title ? "textarea-animation" : ""
+              } `}
               id="exampleFormControlTextarea1"
               rows="3"
               style={{
                 display: isExpanded.title ? "block" : "none",
-                transition: "height 2s"
+                transition: "height 2s",
               }}
             ></textarea>
           </div>
         </div>
 
-        <div className="p-4">
-          <div onClick={() => handleToggle("abstract")}
-              style={{
-                transition: "background-color 0.5s"
-              }}
+        <div className="p-4 border border-danger mb-2 ">
+          <div
+            onClick={() => handleToggle("abstract")}
+            style={{
+              transition: "background-color 0.5s",
+            }}
             className={`d-flex p-1 align-items-center toggle-icon text-white ${
               isExpanded.abstract ? "bg-info" : "bg-secondary"
             }`}
           >
-            <div
-              className="toggle-button "
-              
-            >
+            <div className="toggle-button ">
               <FontAwesomeIcon icon={isExpanded.abstract ? faMinus : faPlus} />
             </div>
 
@@ -95,28 +97,26 @@ const ManuscriptData = ({ data, setData }) => {
               id="exampleFormControlTextarea1"
               rows="3"
               style={{ display: isExpanded.abstract ? "block" : "none" }}
-              
             ></textarea>
           </div>
         </div>
 
-        <div className="p-4 border border-round ">
-          <div onClick={() => handleToggle("keywords")}
-           style={{
-            transition: "background-color 0.5s"
-          }}
+        {/* Keywords */}
+        <div className="p-4 border border-danger  ">
+          <div
+            onClick={() => handleToggle("keywords")}
+            style={{
+              transition: "background-color 0.5s",
+            }}
             className={`d-flex p-1 align-items-center toggle-icon text-white ${
               isExpanded.keywords ? "bg-info" : "bg-secondary"
             }`}
           >
-            <div
-              className="toggle-button"
-              
-            >
+            <div className="toggle-button">
               <FontAwesomeIcon icon={isExpanded.keywords ? faMinus : faPlus} />
             </div>
             <h5 className="ml-1 toggle-label" htmlFor="title">
-              Keywords
+              Keywords (required)
             </h5>
           </div>
 
@@ -135,7 +135,10 @@ const ManuscriptData = ({ data, setData }) => {
               className="form-control custom-textarea"
               id="exampleFormControlTextarea1"
               rows="3"
-              style={{ display: isExpanded.keywords ? "block" : "none",   transition: "background-color 2s" }}
+              style={{
+                display: isExpanded.keywords ? "block" : "none",
+                transition: "background-color 2s",
+              }}
             ></textarea>
           </div>
         </div>

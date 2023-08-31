@@ -38,7 +38,6 @@ const PreviewAll = ({
       );
       const fileUrl = response.data;
       setUrl(fileUrl);
-      console.log("Hello", url);
     } catch (error) {
       console.error(error);
       setMessage("Error uploading file");

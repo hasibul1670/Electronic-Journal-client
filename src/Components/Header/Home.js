@@ -42,7 +42,7 @@ const Home = () => {
                 </h4>
                 <h6 className="card-text text-primary">
                   ISSN (online) || 1793-6756 ||
-                  <span className="text-warning"> proposed </span>{" "}
+                  <span className="text-danger"> proposed </span>{" "}
                 </h6>
               </div>
             </div>

@@ -1,26 +1,37 @@
 import React from "react";
 
 import { useForm, Controller } from "react-hook-form";
+import Swal from "sweetalert2";
 
 const ContactUs = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
+
+
+  const onSubmit = async (data) => {
+
+        reset();
+        Swal.fire({
+          icon: "success",
+          title: "Your Message is Send Successfully",
+          text: "Thanks For your Message !",
+        });
+     
+  
+  };
+
 
 
   return (
     <div className="container p-4 container-fluid ">
       <h2 className="text-primary"></h2>
 
-      <form
-  className="form-group"
-  onSubmit={handleSubmit((data) => {
-    console.log(data)
+      <form onSubmit={handleSubmit(onSubmit)}>
 
-  })}
->
   <div className="form-group">
     <label htmlFor="name">Enter Your Name:</label>
     <input

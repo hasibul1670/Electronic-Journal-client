@@ -25,7 +25,6 @@ const AttachFile = ({ file, setFile, url, setUrl }) => {
       );
       const fileUrl = response.data;
       setUrl(fileUrl);
-      console.log("Hello", url);
     } catch (error) {
       console.error(error);
       setMessage("Error uploading file");

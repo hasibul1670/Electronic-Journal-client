@@ -56,7 +56,6 @@ const ShowFullPaper = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data?.lastErrorObject?.updatedExisting === true) {
           Swal.fire({
             icon: "success",
@@ -132,7 +131,7 @@ const ShowFullPaper = () => {
         <h6 className="text-info font-weight-bold">Reviewer Comment Section</h6>
 
         <div className="border p-2 mb-3 border-height border-danger rounded-lg">
-          {data.contentAbtract && (
+          {data.contentAbtract ? (
             <>
               <h6 className="text-justify">
                 <strong>Orginality of the Article:</strong>{" "}
@@ -159,6 +158,13 @@ const ShowFullPaper = () => {
                 {data.ethicalConsiderations}
               </h6>
             </>
+          ) : (
+            <div>
+              <h6 className="text-danger  font-weight-bold">
+                {" "}
+                Reviewer Comment has not been conducted yet.
+              </h6>
+            </div>
           )}
         </div>
 
@@ -171,7 +177,8 @@ const ShowFullPaper = () => {
           {data.editorComment ? (
             <>
               <h6 className="text-justify">
-                <strong className="text-success ">Editor Comment:</strong> {data.editorComment}
+                <strong className="text-success ">Editor Comment:</strong>{" "}
+                {data.editorComment}
               </h6>
               <p></p>
             </>
@@ -187,7 +194,6 @@ const ShowFullPaper = () => {
 
         {isAdmin && (
           <div className="border border-primary p-4">
-    
             <textarea
               {...register("editorComment", { required: true })}
               className="form-control mt-3 "

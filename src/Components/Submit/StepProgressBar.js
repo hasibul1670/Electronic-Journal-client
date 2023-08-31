@@ -100,9 +100,9 @@ export default function HorizontalLinearStepper() {
         }
       );
 
-      console.log(response.data);
+
       toast.success("data submitted succcessfully");
-      console.log(" data submitted succcessfully");
+      
       navigate("/SuccessSubmission");
    
     } catch (error) {

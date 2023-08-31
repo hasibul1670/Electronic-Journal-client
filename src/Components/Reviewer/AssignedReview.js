@@ -35,7 +35,7 @@ const AssignedReview = () => {
       })
       .then((data) => {
         setData(data);
-        // console.log("Hello", data);
+   
       })
       .catch((error) => {
         console.error(error.message);

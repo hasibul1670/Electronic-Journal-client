@@ -121,7 +121,7 @@ const WriteReviewComment = () => {
             <div>
               <h6 className="text-danger  font-weight-bold">
                 {" "}
-                The review for this has not been conducted yet.
+                The review for this Paper has not been conducted yet.
               </h6>
             </div>
           )}

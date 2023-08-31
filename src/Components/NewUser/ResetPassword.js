@@ -33,7 +33,7 @@ const ResetPassword = ({ resetToken }) => {
             token,
           }
         );
-        console.log("Hello", result.status);
+      
         if (result.status === 200) {
           setMessage("Password has been successfully set!");
           toast.success("Password has been successfully set!");
